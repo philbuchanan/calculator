@@ -1,0 +1,304 @@
+/* RESET
+   ---------------------------------- */
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+blockquote,
+q {
+  quotes: none;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #000;
+  margin: 1em 0;
+  padding: 0;
+}
+input,
+select {
+  vertical-align: middle;
+}
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+/* LAYOUT
+   ---------------------------------- */
+body {
+  color: #494949;
+  background: #f7eee6;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 100;
+  line-height: 24px;
+  margin: 0;
+}
+/* DISPLAY
+   ---------------------------------- */
+#result {
+  background: #fff;
+  text-align: right;
+  font-size: 46px;
+  border-bottom: 1px solid #ebe3db;
+  width: 296px;
+  height: 47px;
+  margin: 0;
+  padding: 36px 12px 12px;
+  z-index: 10;
+  -webkit-transform: translate3d(0, 0, 10px);
+  transform: translate3d(0, 0, 10px);
+}
+#equation {
+  color: #569286;
+  background: #fff;
+  text-align: right;
+  text-overflow: ellipsis;
+  border-bottom: 6px solid #ebe3db;
+  width: 296px;
+  height: 36px;
+  margin-bottom: 0;
+  padding: 14px 12px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 5;
+  -webkit-transform: translate3d(0, 0, 5px);
+  transform: translate3d(0, 0, 5px);
+}
+#equation span {
+  color: #999;
+  margin: 0 5px;
+}
+#equation span.left-bracket {
+  margin-left: 0;
+}
+#equation span.right-bracket {
+  margin-right: 0;
+}
+/* HISTORY
+   ---------------------------------- */
+#keypad .recent {
+  color: #959595;
+  font-size: 18px;
+  width: 240px;
+  height: 66px;
+}
+#history {
+  color: #494949;
+  background: #f7eee6;
+  position: absolute;
+  width: 320px;
+  height: 395px;
+  z-index: 3;
+  -webkit-transform: translate3d(0, -243px, 3px);
+  transform: translate3d(0, -243px, 3px);
+  -webkit-transition: all .35s;
+  transition: all .35s;
+}
+#history .navbar {
+  background: #ebe3db;
+  text-align: center;
+  height: 36px;
+  padding: 10px 12px 0;
+}
+#history .navbar span {
+  position: absolute;
+  top: -6px;
+  right: 0;
+  padding: 14px 12px 15px 20px;
+}
+.active {
+  -webkit-transform: translate3d(0, 152px, 0) !important;
+  transform: translate3d(0, 152px, 0) !important;
+}
+#list {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+}
+#list li {
+  border-top: 1px solid #ebe3db;
+  padding: 0;
+}
+#list li button {
+  position: static;
+  border: none;
+  width: 100%;
+  height: 49px;
+}
+#list li p {
+  text-align: center;
+  padding: 24px 36px 0;
+}
+/* KEYPAD
+   ---------------------------------- */
+#keypad button,
+button {
+  position: absolute;
+  color: #494949;
+  background: none;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 100;
+  border: 1px solid #ebe3db;
+  border-right: none;
+  border-bottom: none;
+  width: 80px;
+  height: 66px;
+  margin: 0;
+  padding: 0;
+}
+#keypad button:active,
+button:active {
+  color: #fff;
+  background: #569286;
+}
+#keypad .row1 {
+  bottom: 330px;
+}
+#keypad .row2 {
+  bottom: 264px;
+}
+#keypad .row3 {
+  bottom: 198px;
+}
+#keypad .row4 {
+  bottom: 132px;
+}
+#keypad .row5 {
+  bottom: 66px;
+}
+#keypad .row6 {
+  bottom: 0;
+}
+#keypad .col1 {
+  left: 0;
+}
+#keypad .col2 {
+  left: 80px;
+}
+#keypad .col3 {
+  left: 160px;
+}
+#keypad .col4 {
+  left: 240px;
+}
+#keypad .row1 {
+  border-top: none;
+}
+#keypad .col1 {
+  border-left: none;
+}
+#keypad .equ {
+  background: #ebe3db;
+  width: 160px;
+}
+/* iPhone 4
+   ---------------------------------- */
+@media all and (max-height: 460px) {
+  #result {
+    padding: 22px 12px 8px;
+  }
+  #equation {
+    padding: 7px 12px 3px;
+  }
+  #recent {
+    height: 56px;
+  }
+  button {
+    height: 56px;
+  }
+  #keypad .row1 {
+    bottom: 280px;
+  }
+  #keypad .row2 {
+    bottom: 224px;
+  }
+  #keypad .row3 {
+    bottom: 168px;
+  }
+  #keypad .row4 {
+    bottom: 112px;
+  }
+  #keypad .row5 {
+    bottom: 56px;
+  }
+  #keypad .row6 {
+    bottom: 0;
+  }
+}
