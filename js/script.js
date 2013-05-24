@@ -1,3 +1,10 @@
+// Copyright 2013 Phil Buchanan
+//
+// A calculator iOS web application that supports
+// brackets and saved history.
+// 
+// @version 0.1
+
 (function() {
 	'use strict';
 	
@@ -81,6 +88,10 @@
 					if (/[\d)]/.test(last)) {
 						this.append(value);
 					}
+					else if (/[+*\-\/]/.test(last)) {
+						this.backspace();
+						this.append(value);
+					}
 				
 				}
 				else if (value === '.') {
@@ -130,7 +141,7 @@
 		
 		equals: function() {
 		
-			var result = this.compute(this.appstate.input);
+			var result = calc.compute(this.appstate.input);
 			
 			if (result !== null) {
 				//history.save(result);
@@ -163,9 +174,14 @@
 		
 		},
 		
-		clear: function() {
+		clear: function(result) {
 		
-			this.appstate.input = 0;
+			if (result) {
+				this.appstate.input = result;
+			}
+			else {
+				this.appstate.input = 0;
+			}
 			this.appstate.brackets = 0;
 			this.appstate.last = null;
 			
@@ -279,7 +295,39 @@
 	//
 	// Handles all history related items.
 	
-	history = {},
+	history = {
+	
+		history: [],
+		
+		addItem: function(value) {
+		
+			while (history.length >= settings.history) {
+				histoey.pop();
+			}
+			this.history.unshift(value);
+		
+		},
+		
+		display: function() {
+		
+			var button,
+				recent = document.getElementById('recent'),
+				historyList = document.getElementById('history-list'),
+				i;
+			
+			for (i = 1; i < history.length; i += 1) {
+				button = document.createElement('button');
+				button.value = history[i];
+				button.innerText = history[i];
+				history.list.appendChild(button);
+			}
+			
+			recent.value = history[0];
+			recent.innerText = history[0];
+		
+		}
+	
+	},
 	
 	
 	
