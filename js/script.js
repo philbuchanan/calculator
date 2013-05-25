@@ -10,7 +10,7 @@
 	
 	var settings = {
 		decimals: 4,
-		history: 8,
+		history: 7,
 		timerlen: 750,
 		fontsize: 46
 	},
@@ -31,6 +31,21 @@
 		
 		restoreAppState: function() {
 		
+			this.loadAppState();
+			display.update();
+			history.load();
+		
+		},
+		
+		saveAppState: function() {
+		
+			var json = JSON.stringify(this.appstate);
+			localStorage.setItem('appState', json);
+		
+		},
+		
+		loadAppState: function() {
+		
 			var savedAppState, json;
 			
 			if (localStorage.getItem('appState')) {
@@ -43,13 +58,6 @@
 				this.appstate.brackets = savedAppState.brackets;
 			
 			}
-		
-		},
-		
-		saveAppState: function() {
-		
-			var json = JSON.stringify(this.appstate);
-			localStorage.setItem('appState', json);
 		
 		},
 		
@@ -144,8 +152,7 @@
 			var result = calc.compute(this.appstate.input);
 			
 			if (result !== null) {
-				//history.save(result);
-				//history.updateRecent();
+				history.addItem(result);
 				this.clear(result);
 			}
 		
@@ -249,6 +256,8 @@
 			eq = eq.replace(/\)/g, '<span class="right-bracket">)</span>');
 			
 			this.equation.innerHTML = eq;
+			
+			app.saveAppState();
 		
 		},
 		
@@ -301,29 +310,83 @@
 		
 		addItem: function(value) {
 		
-			while (history.length >= settings.history) {
-				histoey.pop();
+			while (this.history.length >= settings.history) {
+				this.histoey.pop();
 			}
 			this.history.unshift(value);
+			
+			this.appendItem(value);
+			this.save();
 		
 		},
 		
-		display: function() {
+		appendItem: function(value) {
 		
-			var button,
-				recent = document.getElementById('recent'),
-				historyList = document.getElementById('history-list'),
+			var li,
+				button,
+				list = document.getElementById('list');
+			
+			// There should be a better way to do this instead of checking every single time I append a new item
+			document.getElementById('history-help').style.display = 'none';
+			
+			li = document.createElement('li');
+			button = document.createElement('button');
+			button.value = value;
+			button.innerText = value;
+			li.appendChild(button);
+			list.appendChild(li);
+			
+			// This event listener doesn't work
+			/*button.addEventListener(
+				'click',
+				this.append(value),
+				false
+			);*/
+		
+		},
+		
+		append: function(value) {
+		
+			if (app.appstate.start) {app.appstate.input = value;}
+			else {app.appstate.input += value;}
+			
+			display.update();
+			app.saveAppState();
+		
+		},
+		
+		showList: function() {
+		
+			document.getElementById('history').className = 'active';
+		
+		},
+		
+		hideList: function() {
+		
+			document.getElementById('history').className = '';
+		
+		},
+		
+		save: function() {
+		
+			var json;
+			
+			json = JSON.stringify(this.history);
+			localStorage.setItem('history', json);
+		
+		},
+		
+		load: function() {
+		
+			var json = localStorage.getItem('history'),
 				i;
 			
-			for (i = 1; i < history.length; i += 1) {
-				button = document.createElement('button');
-				button.value = history[i];
-				button.innerText = history[i];
-				history.list.appendChild(button);
-			}
+			if (json !== null && json !== '') {this.history = JSON.parse(json);}
+			else {this.history = [];}
 			
-			recent.value = history[0];
-			recent.innerText = history[0];
+			for (i = 0; i < this.history.length; i += 1) {
+				this.appendItem(this.history[i]);
+			}
 		
 		}
 	
@@ -357,6 +420,9 @@
 				else if (this.value === 'c') {
 					app.clear();
 				}
+				else if (this.value === 'h') {
+					history.showList();
+				}
 				else {
 					app.buttonPress(this.value);
 				}
@@ -364,5 +430,13 @@
 			false
 		);
 	}
+	
+	document.getElementById('history-close').addEventListener(
+		buttonMode,
+		history.hideList,
+		false
+	);
+	
+	app.restoreAppState();
 
 }());

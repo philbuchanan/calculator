@@ -14,9 +14,9 @@
 <body>
 	<div id="calculator">
 		<div id="history">
-			<div class="navbar">Your History <span>&times;</span></div>
+			<div class="navbar">Your History <span id="history-close">&times;</span></div>
 			<ul id="list">
-				<li>
+				<li id="history-help">
 					<p>Your most recent result will be saved on the main calculator screen every time you tap the equals button. A quick tap will use it in the current equation.</p>
 					<p>Your remaining recent <br/>results will be saved here.</p>
 				</li>
@@ -25,8 +25,9 @@
 		<div id="result" style="width:296px;font-size:46px;">0</div>
 		<div id="equation"></div>
 		<div id="keypad">
-			<!-- Will need to find a new way to handle this special button -->
-			<!--button value="0" id="recent" class="row1 col1 recent"></button-->
+			<button value="s" class="row1 col2">S</button>
+			<button value="h" class="row1 col3">H</button>
+			<button value="h" class="row2 col1">+/-</button>
 			<button value="0" class="row6 col1">0</button>
 			<button value="1" class="row5 col1">1</button>
 			<button value="2" class="row5 col2">2</button>
@@ -45,7 +46,7 @@
 			<button value="(" class="row2 col2">(</button>
 			<button value=")" class="row2 col3">)</button>
 			<button value="b" class="row1 col4">&larr;</button>
-			<button value="c" class="row2 col1">c</button>
+			<button value="c" class="row1 col1">c</button>
 			<button value="=" class="row6 col3 equ">=</button>
 		</div>
 	</div>
