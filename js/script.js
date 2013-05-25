@@ -192,10 +192,7 @@ document.ontouchstart = function(e) {
 		backspace: function() {
 		
 			var input = this.appstate.input,
-				last = this.appstate.last,
-				_this = this;
-			
-			settings.timer = setTimeout(function() {_this.clear();}, settings.timerlen);
+				last = this.appstate.last;
 			
 			if (last === '(') {
 				this.appstate.brackets -= 1;
@@ -212,6 +209,13 @@ document.ontouchstart = function(e) {
 			else {
 				this.clear();
 			}
+		
+		},
+		
+		addTimer: function() {
+		
+			var _this = this;
+			settings.timer = setTimeout(function() {_this.clear();}, settings.timerlen);
 		
 		},
 		
@@ -469,6 +473,7 @@ document.ontouchstart = function(e) {
 					app.equals();
 				}
 				else if (this.value === 'b') {
+					app.addTimer();
 					app.backspace();
 				}
 				else if (this.value === 'c') {
