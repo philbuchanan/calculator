@@ -147,6 +147,31 @@
 		
 		},
 		
+		invert: function() {
+		
+			var arr = this.appstate.input.split('').reverse(),
+				i = 0;
+			
+			while (/[\d.]/.test(arr[i])) {
+				i += 1;
+			}
+			
+			if (/[+*\/]/.test(arr[i + 1])) {
+				arr.splice(i, 1);
+			}
+			else if (arr[i] === '-') {}
+			else if (i === arr.length - 1) {
+				arr.splice(i, 1);
+			}
+			else {
+				arr.splice(i, 0, '-');
+			}
+			this.appstate.input = arr.reverse().join('');
+			
+			display.update();
+		
+		},
+		
 		equals: function() {
 		
 			var result = calc.compute(this.appstate.input);
@@ -244,7 +269,12 @@
 				result = calc.compute(eq);
 			
 			if (result !== null && !isNaN(result)) {
-				this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
+				if (result > 9E13) {
+					this.result.innerHTML = '<span>' + result.toExponential(settings.decimals) + '</span>';
+				}
+				else {
+					this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
+				}
 				this.resizeFont();
 			}
 			
@@ -419,6 +449,9 @@
 				}
 				else if (this.value === 'c') {
 					app.clear();
+				}
+				else if (this.value === '+-') {
+					app.invert();
 				}
 				else if (this.value === 'h') {
 					history.showList();
