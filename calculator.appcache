@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# v0.9: 2013-05-25
+# v0.9.1: 2013-05-25
 index.html
-js/calculator.js
+js/script.js
 css/style.css
 assets/touch-icon-iphone-retina.png
