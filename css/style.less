@@ -80,11 +80,10 @@ body {
 /* HISTORY
    ---------------------------------- */
 
-#keypad .recent {
+#keypad .btn-history {
 	color: lighten(#494949, 30%);
 	font-size: 18px;
-	width: 240px;
-	height: 66px;
+	width: 160px;
 }
 #history {
 	color: #494949;
@@ -183,16 +182,31 @@ button {
 
 @media all and (max-height: 460px) {
 
-	#result {padding: 22px 12px 8px;}
-	#equation {padding: 7px 12px 3px;}
-	#recent {height: 56px;}
-	button {height: 56px;}
+	#result {padding: 26px 12px 4px;}
+	#equation {padding: 10px 12px 0;}
+	#keypad button,
+	button {height: 55px;}
+	#history {
+	-webkit-transform: translate3d(0,-265px,3px);
+	        transform: translate3d(0,-265px,3px);
+		.navbar {
+			height: 35px;
+			padding-top: 8px;
+		}
+	}
+	.active {
+		-webkit-transform: translate3d(0,130px,0) !important;
+		        transform: translate3d(0,130px,0) !important;
+	}
+	#list li button {
+		height: 40px;
+	}
 	#keypad {
-		.row1 {bottom: 280px;}
-		.row2 {bottom: 224px;}
-		.row3 {bottom: 168px;}
-		.row4 {bottom: 112px;}
-		.row5 {bottom: 56px;}
+		.row1 {bottom: 275px;}
+		.row2 {bottom: 220px;}
+		.row3 {bottom: 165px;}
+		.row4 {bottom: 110px;}
+		.row5 {bottom: 55px;}
 		.row6 {bottom: 0;}
 	}
 

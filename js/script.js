@@ -5,6 +5,11 @@
 // 
 // @version 0.1
 
+document.ontouchstart = function(e) {
+	'use strict';
+	e.preventDefault();
+};
+
 (function() {
 	'use strict';
 	
@@ -12,6 +17,7 @@
 		decimals: 4,
 		history: 7,
 		timerlen: 750,
+		timer: null,
 		fontsize: 46
 	},
 	
@@ -186,7 +192,10 @@
 		backspace: function() {
 		
 			var input = this.appstate.input,
-				last = this.appstate.last;
+				last = this.appstate.last,
+				_this = this;
+			
+			settings.timer = setTimeout(function() {_this.clear();}, settings.timerlen);
 			
 			if (last === '(') {
 				this.appstate.brackets -= 1;
@@ -203,6 +212,12 @@
 			else {
 				this.clear();
 			}
+		
+		},
+		
+		removeTimer: function() {
+		
+			clearTimeout(settings.timer);
 		
 		},
 		
@@ -340,10 +355,17 @@
 		
 		addItem: function(value) {
 		
+			var i = this.history.length,
+				list = document.getElementById('list'),
+				ele;
+			
 			while (this.history.length >= settings.history) {
-				this.histoey.pop();
+				this.history.shift();
+				i -= 1; // The last element in the list is the helper text
+				ele = list.childNodes[i];
+				ele.parentNode.removeChild(ele);
 			}
-			this.history.unshift(value);
+			this.history.push(value);
 			
 			this.appendItem(value);
 			this.save();
@@ -354,9 +376,9 @@
 		
 			var li,
 				button,
-				list = document.getElementById('list');
+				list = document.getElementById('list'),
+				children = list.childNodes;
 			
-			// There should be a better way to do this instead of checking every single time I append a new item
 			document.getElementById('history-help').style.display = 'none';
 			
 			li = document.createElement('li');
@@ -364,7 +386,8 @@
 			button.value = value;
 			button.innerText = value;
 			li.appendChild(button);
-			list.appendChild(li);
+			
+			list.insertBefore(li, children[0]);
 			
 			// This event listener doesn't work
 			/*button.addEventListener(
@@ -426,20 +449,17 @@
 	
 	// Set up the button handlers
 	buttons = document.getElementById('keypad').childNodes,
-	buttonMode = 'click',
+	buttonModeStart = 'mousedown',
+	buttonModeEnd = 'mouseup',
 	i;
 	
-	document.ontouchstart = function(e) {
-		e.preventDefault();
-	};
-	
-	if (('standalone' in window.navigator) && !window.navigator.standalone) {
-		buttonMode = 'ontouchstart';
+	if (('standalone' in window.navigator) && window.navigator.standalone) {
+		buttonMode = 'touchstart';
 	}
 	
 	for (i = 0; i < buttons.length; i += 1) {
 		buttons[i].addEventListener(
-			buttonMode,
+			buttonModeStart,
 			function() {
 				if (this.value === '=') {
 					app.equals();
@@ -464,12 +484,19 @@
 		);
 	}
 	
+	document.getElementById('bs').addEventListener(
+		buttonModeEnd,
+		app.removeTimer,
+		false
+	);
+	
 	document.getElementById('history-close').addEventListener(
-		buttonMode,
+		buttonModeStart,
 		history.hideList,
 		false
 	);
 	
+	// Restore app state
 	app.restoreAppState();
 
 }());

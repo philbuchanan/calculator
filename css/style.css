@@ -152,11 +152,10 @@ body {
 }
 /* HISTORY
    ---------------------------------- */
-#keypad .recent {
+#keypad .btn-history {
   color: #959595;
   font-size: 18px;
-  width: 240px;
-  height: 66px;
+  width: 160px;
 }
 #history {
   color: #494949;
@@ -272,31 +271,44 @@ button:active {
    ---------------------------------- */
 @media all and (max-height: 460px) {
   #result {
-    padding: 22px 12px 8px;
+    padding: 26px 12px 4px;
   }
   #equation {
-    padding: 7px 12px 3px;
+    padding: 10px 12px 0;
   }
-  #recent {
-    height: 56px;
-  }
+  #keypad button,
   button {
-    height: 56px;
+    height: 55px;
+  }
+  #history {
+    -webkit-transform: translate3d(0, -265px, 3px);
+    transform: translate3d(0, -265px, 3px);
+  }
+  #history .navbar {
+    height: 35px;
+    padding-top: 8px;
+  }
+  .active {
+    -webkit-transform: translate3d(0, 130px, 0) !important;
+    transform: translate3d(0, 130px, 0) !important;
+  }
+  #list li button {
+    height: 40px;
   }
   #keypad .row1 {
-    bottom: 280px;
+    bottom: 275px;
   }
   #keypad .row2 {
-    bottom: 224px;
+    bottom: 220px;
   }
   #keypad .row3 {
-    bottom: 168px;
+    bottom: 165px;
   }
   #keypad .row4 {
-    bottom: 112px;
+    bottom: 110px;
   }
   #keypad .row5 {
-    bottom: 56px;
+    bottom: 55px;
   }
   #keypad .row6 {
     bottom: 0;
