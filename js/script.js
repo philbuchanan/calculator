@@ -306,10 +306,11 @@ document.ontouchstart = function(e) {
 		
 		},
 		
-		resizeFont: function() { // This function doesn't work properly. It will only scale down, but not back up.
+		resizeFont: function() {
 		
 			var size, displayWidth, textWidth;
 			
+			result.style.fontSize = settings.fontsize + 'px';
 			size = settings.fontsize;
 			displayWidth = parseInt(result.style.width, 10);
 			textWidth = result.childNodes[0].offsetWidth;
@@ -377,7 +378,8 @@ document.ontouchstart = function(e) {
 			var li,
 				button,
 				list = document.getElementById('list'),
-				children = list.childNodes;
+				children = list.childNodes,
+				_this = this;
 			
 			document.getElementById('history-help').style.display = 'none';
 			
@@ -385,24 +387,25 @@ document.ontouchstart = function(e) {
 			button = document.createElement('button');
 			button.value = value;
 			button.innerText = value;
+			button.onclick = function() {_this.append(this.value)};
+			button.ontouchstart = function() {_this.append(this.value)};
 			li.appendChild(button);
 			
 			list.insertBefore(li, children[0]);
-			
-			// This event listener doesn't work
-			/*button.addEventListener(
-				'click',
-				this.append(value),
-				false
-			);*/
 		
 		},
 		
 		append: function(value) {
 		
-			if (app.appstate.start) {app.appstate.input = value;}
-			else {app.appstate.input += value;}
+			if (app.appstate.last === null) {
+				app.appstate.input = value;
+			}
+			else if (/[(+*\-\/]/.test(app.appstate.last)) {
+				app.appstate.input += value;
+				app.appstate.last = 1;
+			}
 			
+			this.hideList();
 			display.update();
 			app.saveAppState();
 		
