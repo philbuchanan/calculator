@@ -454,7 +454,8 @@ document.ontouchstart = function(e) {
 	i;
 	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
-		buttonMode = 'touchstart';
+		buttonModeStart = 'touchstart';
+		buttonModeEnd = 'touchend';
 	}
 	
 	for (i = 0; i < buttons.length; i += 1) {
