@@ -364,16 +364,20 @@ document.ontouchstart = function(e) {
 				list = document.getElementById('list'),
 				ele;
 			
-			while (this.history.length >= settings.history) {
-				this.history.shift();
-				i -= 1; // The last element in the list is the helper text
-				ele = list.childNodes[i];
-				ele.parentNode.removeChild(ele);
-			}
-			this.history.push(value);
+			if (value !== this.history[this.history.length - 1]) {
 			
-			this.appendItem(value);
-			this.save();
+				while (this.history.length >= settings.history) {
+					this.history.shift();
+					i -= 1; // The last element in the list is the helper text so start one in from that
+					ele = list.childNodes[i];
+					ele.parentNode.removeChild(ele);
+				}
+				this.history.push(value);
+				
+				this.appendItem(value);
+				this.save();
+			
+			}
 		
 		},
 		
