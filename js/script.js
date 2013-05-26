@@ -413,6 +413,7 @@ document.ontouchstart = function(e) {
 				}
 				this.history.push(value);
 				
+				this.flashBtn();
 				this.appendItem(value);
 				this.save();
 			
@@ -455,6 +456,16 @@ document.ontouchstart = function(e) {
 			this.hideList();
 			display.update();
 			app.saveAppState();
+		
+		},
+		
+		flashBtn: function() {
+		
+			var btn = document.getElementById('his'),
+				str = btn.className;
+			
+			btn.className = str + ' flash';
+			setTimeout(function() {btn.className = str;}, 200);
 		
 		},
 		
