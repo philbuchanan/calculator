@@ -71,8 +71,6 @@ document.ontouchstart = function(e) {
 		
 			var last = this.appstate.last;
 			
-			
-			
 			if (last === null) {
 			
 				if (/[\d(]/.test(value)) {
@@ -111,7 +109,9 @@ document.ontouchstart = function(e) {
 				else if (value === '.') {
 				
 					if (/[\d(+*\-\/]/.test(last)) {
-						this.append(value);
+						if (!this.hasDecimal(this.lastNum())) {
+							this.append(value);
+						}
 					}
 				
 				}
@@ -237,6 +237,45 @@ document.ontouchstart = function(e) {
 			this.appstate.last = null;
 			
 			display.update();
+		
+		},
+		
+		hasDecimal: function(value) {
+		
+			var decimals = 0;
+				i = 0;
+			
+			while (i < value.length) {
+				if (value[i] === '.') {
+					decimals += 1;
+				}
+				i += 1;
+			}
+			
+			if (decimals > 0) {
+				return true;
+			}
+			return false;
+		
+		},
+		
+		lastNum: function() {
+		
+			var arr,
+				i = 0;
+			
+			if (this.appstate.input.length > 0) {
+			
+				arr = this.appstate.input.split('').reverse();
+				while (/[\d.]/.test(arr[i])) {
+					i += 1;
+				}
+				
+				return arr.slice(0, i).reverse().join('');
+			
+			}
+			
+			return false;
 		
 		}
 	
