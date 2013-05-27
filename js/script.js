@@ -212,10 +212,9 @@ document.ontouchstart = function(e) {
 		
 		},
 		
-		addTimer: function() {
+		addTimer: function(callback) {
 		
-			var _this = this;
-			settings.timer = setTimeout(function() {_this.clear();}, settings.timerlen);
+			settings.timer = setTimeout(function() {callback();}, settings.timerlen);
 		
 		},
 		
@@ -407,9 +406,9 @@ document.ontouchstart = function(e) {
 			
 				while (this.history.length >= settings.history) {
 					this.history.shift();
-					i -= 1; // The last element in the list is the helper text so start one in from that
 					ele = list.childNodes[i];
 					ele.parentNode.removeChild(ele);
+					i -= 1;
 				}
 				this.history.push(value);
 				
@@ -453,7 +452,7 @@ document.ontouchstart = function(e) {
 				app.appstate.last = 1;
 			}
 			
-			this.hideList();
+			this.close();
 			display.update();
 			app.saveAppState();
 		
@@ -469,13 +468,13 @@ document.ontouchstart = function(e) {
 		
 		},
 		
-		showList: function() {
+		open: function() {
 		
 			document.getElementById('history').className = 'active';
 		
 		},
 		
-		hideList: function() {
+		close: function() {
 		
 			document.getElementById('history').className = '';
 		
@@ -502,6 +501,21 @@ document.ontouchstart = function(e) {
 				this.appendItem(this.history[i]);
 			}
 		
+		},
+		
+		clear: function() {
+		
+			var list = document.getElementById('list');
+			
+			this.history = [];
+			this.save();
+			
+			while (list.hasChildNodes()) {
+				list.removeChild(list.lastChild);
+			}
+			
+			document.getElementById('history-help').style.display = 'block';
+		
 		}
 	
 	},
@@ -527,7 +541,7 @@ document.ontouchstart = function(e) {
 					app.equals();
 				}
 				else if (this.value === 'b') {
-					app.addTimer();
+					app.addTimer(app.clear.bind(app));
 					app.backspace();
 				}
 				else if (this.value === 'c') {
@@ -537,7 +551,7 @@ document.ontouchstart = function(e) {
 					app.invert();
 				}
 				else if (this.value === 'h') {
-					history.showList();
+					history.open();
 				}
 				else {
 					app.buttonPress(this.value);
@@ -555,7 +569,18 @@ document.ontouchstart = function(e) {
 	
 	document.getElementById('history-close').addEventListener(
 		buttonModeStart,
-		history.hideList,
+		function() {
+			app.addTimer(history.clear.bind(history));
+		},
+		false
+	);
+	
+	document.getElementById('history-close').addEventListener(
+		buttonModeEnd,
+		function() {
+			app.removeTimer();
+			history.close();
+		},
 		false
 	);
 	

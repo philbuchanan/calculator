@@ -35,7 +35,10 @@ body {
 	line-height: 24px;
 	margin: 0;
 }
-
+p {
+	text-align: center;
+	padding: 24px 36px 0;
+}
 
 /* DISPLAY
    ---------------------------------- */
@@ -43,7 +46,7 @@ body {
 #result {
 	background: #fff;
 	text-align: right;
-	font-size: 46px; // Must be updated in JS as well
+	font-size: 46px; // Must be updated in JS settings as well
 	border-bottom: 1px solid #ebe3db;
 	width: 296px;
 	height: 47px;
@@ -80,16 +83,6 @@ body {
 /* HISTORY
    ---------------------------------- */
 
-#keypad .btn-history {
-	font-size: 18px;
-	width: 160px;
-	-webkit-transition: all 0.2s ease;
-	        transition: all 0.2s ease;
-}
-#keypad .flash {
-	color: #fff;
-	background: #569286;
-}
 #history {
 	color: #494949;
 	background: #f7eee6;
@@ -131,10 +124,6 @@ body {
 			width: 100%;
 			height: 49px;
 		}
-		p {
-			text-align: center;
-			padding: 24px 36px 0;
-		}
 	}
 }
 
@@ -161,6 +150,7 @@ button {
 		color: #fff;
 		background: #569286;
 	}
+	
 }
 #keypad {
 	.row1 {bottom: 330px;}
@@ -178,6 +168,16 @@ button {
 	.equ {
 		background: #ebe3db;
 		width: 160px;
+	}
+	.btn-history {
+		font-size: 18px;
+		width: 160px;
+		-webkit-transition: all 0.2s ease;
+		        transition: all 0.2s ease;
+	}
+	.flash {
+		color: #fff;
+		background: #569286;
 	}
 }
 

@@ -109,6 +109,10 @@ body {
   line-height: 24px;
   margin: 0;
 }
+p {
+  text-align: center;
+  padding: 24px 36px 0;
+}
 /* DISPLAY
    ---------------------------------- */
 #result {
@@ -152,16 +156,6 @@ body {
 }
 /* HISTORY
    ---------------------------------- */
-#keypad .btn-history {
-  font-size: 18px;
-  width: 160px;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-#keypad .flash {
-  color: #fff;
-  background: #569286;
-}
 #history {
   color: #494949;
   background: #f7eee6;
@@ -204,10 +198,6 @@ body {
   border: none;
   width: 100%;
   height: 49px;
-}
-#list li p {
-  text-align: center;
-  padding: 24px 36px 0;
 }
 /* KEYPAD
    ---------------------------------- */
@@ -271,6 +261,16 @@ button:active {
 #keypad .equ {
   background: #ebe3db;
   width: 160px;
+}
+#keypad .btn-history {
+  font-size: 18px;
+  width: 160px;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+#keypad .flash {
+  color: #fff;
+  background: #569286;
 }
 /* iPhone 4
    ---------------------------------- */
