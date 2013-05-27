@@ -88,6 +88,7 @@ document.ontouchstart = function(e) {
 			}
 			else {
 			
+				// Digits
 				if (/\d/.test(value)) {
 				
 					if (/[\d.(+*\-\/]/.test(last)) {
@@ -95,6 +96,7 @@ document.ontouchstart = function(e) {
 					}
 				
 				}
+				// Operators
 				else if (/[+*\-\/]/.test(value)) {
 				
 					if (/[\d)]/.test(last)) {
@@ -106,6 +108,7 @@ document.ontouchstart = function(e) {
 					}
 				
 				}
+				// Decimal
 				else if (value === '.') {
 				
 					if (/[\d(+*\-\/]/.test(last)) {
@@ -115,6 +118,7 @@ document.ontouchstart = function(e) {
 					}
 				
 				}
+				// Open bracket
 				else if (value === '(') {
 				
 					if (/[(+*\-\/]/.test(last)) {
@@ -123,6 +127,7 @@ document.ontouchstart = function(e) {
 					}
 				
 				}
+				// Close bracket
 				else if (value === ')') {
 				
 					if (last === '(') {
@@ -239,6 +244,7 @@ document.ontouchstart = function(e) {
 		
 		},
 		
+		// Returns true if the supplied number has a decimal
 		hasDecimal: function(value) {
 		
 			var decimals = 0;
@@ -258,6 +264,7 @@ document.ontouchstart = function(e) {
 		
 		},
 		
+		// Parses the last full number from the input string (eg. 42.63)
 		lastNum: function() {
 		
 			var arr,
@@ -507,14 +514,15 @@ document.ontouchstart = function(e) {
 		
 			var list = document.getElementById('list');
 			
-			this.history = [];
-			this.save();
-			
 			while (list.hasChildNodes()) {
 				list.removeChild(list.lastChild);
 			}
 			
 			document.getElementById('history-help').style.display = 'block';
+			
+			this.history = [];
+			this.save();
+			this.close();
 		
 		}
 	
