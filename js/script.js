@@ -359,15 +359,15 @@ document.ontouchstart = function(e) {
 		
 			var size, displayWidth, textWidth;
 			
-			result.style.fontSize = settings.fontsize + 'px';
+			this.result.style.fontSize = settings.fontsize + 'px';
 			size = settings.fontsize;
-			displayWidth = parseInt(result.style.width, 10);
-			textWidth = result.childNodes[0].offsetWidth;
+			displayWidth = parseInt(this.result.style.width, 10);
+			textWidth = this.result.childNodes[0].offsetWidth;
 			
 			while (textWidth > displayWidth) {
 				size -= 1;
-				result.style.fontSize = size + 'px';
-				textWidth = result.childNodes[0].offsetWidth;
+				this.result.style.fontSize = size + 'px';
+				textWidth = this.result.childNodes[0].offsetWidth;
 				if (size === 10) {break;}
 			}
 		
@@ -441,8 +441,8 @@ document.ontouchstart = function(e) {
 			button = document.createElement('button');
 			button.value = value;
 			button.innerText = value;
-			button.onclick = function() {_this.append(this.value)};
-			button.ontouchstart = function() {_this.append(this.value)};
+			button.onclick = function() {_this.append(this.value);};
+			button.ontouchstart = function() {_this.append(this.value);};
 			li.appendChild(button);
 			
 			list.insertBefore(li, children[0]);
