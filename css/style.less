@@ -53,8 +53,8 @@ p {
 	margin: 0;
 	padding: 36px 12px 12px;
 	z-index: 10;
-	-webkit-transform: translate3d(0,0,10px);
-	        transform: translate3d(0,0,10px);
+	-webkit-transform: translate3d(0, 0, 10px);
+	        transform: translate3d(0, 0, 10px);
 }
 #equation {
 	color: #569286;
@@ -69,8 +69,8 @@ p {
 	white-space: nowrap;
 	overflow: hidden;
 	z-index: 5;
-	-webkit-transform: translate3d(0,0,5px);
-	        transform: translate3d(0,0,5px);
+	-webkit-transform: translate3d(0, 0, 5px);
+	        transform: translate3d(0, 0, 5px);
 	span {
 		color: #999;
 		margin: 0 5px;
@@ -90,8 +90,8 @@ p {
 	width: 320px;
 	height: 395px;
 	z-index: 3;
-	-webkit-transform: translate3d(0,-243px,3px);
-	        transform: translate3d(0,-243px,3px);
+	-webkit-transform: translate3d(0, -243px, 3px);
+	        transform: translate3d(0, -243px, 3px);
 	-webkit-transition: all .35s;
 	        transition: all .35s;
 	.navbar {
@@ -106,10 +106,10 @@ p {
 			padding: 14px 12px 15px 20px;
 		}
 	}
-}
-.active {
-	-webkit-transform: translate3d(0,152px,0) !important;
-	        transform: translate3d(0,152px,0) !important;
+	&.active {
+		-webkit-transform: translate3d(0, 152px, 0);
+		        transform: translate3d(0, 152px, 0);
+	}
 }
 #list {
 	list-style: none;
@@ -150,7 +150,6 @@ button {
 		color: #fff;
 		background: #569286;
 	}
-	
 }
 #keypad {
 	.row1 {bottom: 330px;}
@@ -192,16 +191,16 @@ button {
 	#keypad button,
 	button {height: 55px;}
 	#history {
-	-webkit-transform: translate3d(0,-265px,3px);
-	        transform: translate3d(0,-265px,3px);
+	-webkit-transform: translate3d(0, -265px, 3px);
+	        transform: translate3d(0, -265px, 3px);
 		.navbar {
 			height: 35px;
 			padding-top: 8px;
 		}
-	}
-	.active {
-		-webkit-transform: translate3d(0,130px,0) !important;
-		        transform: translate3d(0,130px,0) !important;
+		&.active {
+			-webkit-transform: translate3d(0, 130px, 0);
+			        transform: translate3d(0, 130px, 0);
+		}
 	}
 	#list li button {
 		height: 40px;

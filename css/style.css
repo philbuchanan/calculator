@@ -180,9 +180,9 @@ p {
   right: 0;
   padding: 14px 12px 15px 20px;
 }
-.active {
-  -webkit-transform: translate3d(0, 152px, 0) !important;
-  transform: translate3d(0, 152px, 0) !important;
+#history.active {
+  -webkit-transform: translate3d(0, 152px, 0);
+  transform: translate3d(0, 152px, 0);
 }
 #list {
   list-style: none;
@@ -293,9 +293,9 @@ button:active {
     height: 35px;
     padding-top: 8px;
   }
-  .active {
-    -webkit-transform: translate3d(0, 130px, 0) !important;
-    transform: translate3d(0, 130px, 0) !important;
+  #history.active {
+    -webkit-transform: translate3d(0, 130px, 0);
+    transform: translate3d(0, 130px, 0);
   }
   #list li button {
     height: 40px;
