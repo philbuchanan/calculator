@@ -160,26 +160,32 @@ document.ontouchstart = function(e) {
 		
 		invert: function() {
 		
-			var arr = this.appstate.input.split('').reverse(),
-				i = 0;
+			var str = this.appstate.input,
+				lastNum = this.lastNum(),
+				len,
+				before;
 			
-			while (/[\d.]/.test(arr[i])) {
-				i += 1;
-			}
+			if (lastNum) {
 			
-			if (/[+*\/]/.test(arr[i + 1])) {
-				arr.splice(i, 1);
-			}
-			else if (arr[i] === '-') {}
-			else if (i === arr.length - 1) {
-				arr.splice(i, 1);
-			}
-			else {
-				arr.splice(i, 0, '-');
-			}
-			this.appstate.input = arr.reverse().join('');
+				len = lastNum.length;
+				before = str.charAt(str.length - len - 1);
+				
+				if (/[+*\-\/()]/.test(before) || before === '') {
+				
+					if (lastNum[0] === '-') {
+						lastNum = lastNum.substr(1, len);
+					}
+					else {
+						lastNum = '-' + lastNum;
+					}
+				
+				}
+				
+				this.appstate.input = str.substr(0, str.length - len) + lastNum;
+				
+				display.update();
 			
-			display.update();
+			}
 		
 		},
 		
@@ -264,20 +270,19 @@ document.ontouchstart = function(e) {
 		
 		},
 		
-		// Parses the last full number from the input string (eg. 42.63)
+		// Parses the last full number from the input string (eg. -42.63)
 		lastNum: function() {
 		
-			var arr,
-				i = 0;
+			var str = this.appstate.input,
+				arr;
 			
-			if (this.appstate.input.length > 0) {
+			if (str.length > 0) {
 			
-				arr = this.appstate.input.split('').reverse();
-				while (/[\d.]/.test(arr[i])) {
-					i += 1;
-				}
+				arr = str.match(/-?\d*\.?\d*$/);
 				
-				return arr.slice(0, i).reverse().join('');
+				if (arr !== null) {
+					return arr[0];
+				}
 			
 			}
 			
