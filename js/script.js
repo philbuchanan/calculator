@@ -60,7 +60,7 @@ document.ontouchstart = function(e) {
 				savedAppState = JSON.parse(json);
 				
 				this.appstate.input = savedAppState.input;
-				this.appstate.start = savedAppState.start;
+				this.appstate.last = savedAppState.last;
 				this.appstate.brackets = savedAppState.brackets;
 			
 			}
@@ -405,13 +405,13 @@ document.ontouchstart = function(e) {
 		
 		addItem: function(value) {
 		
-			var i = this.history.length,
+			var i = this.history.length - 1,
 				list = document.getElementById('list'),
 				ele;
 			
 			if (value !== this.history[this.history.length - 1]) {
 			
-				while (this.history.length >= settings.history - 1) {
+				while (this.history.length >= settings.history) {
 					this.history.shift();
 					ele = list.childNodes[i];
 					ele.parentNode.removeChild(ele);
