@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 0.9.1
+// @version 0.9.3
 
 document.ontouchstart = function(e) {
 	'use strict';
