@@ -92,7 +92,9 @@ document.ontouchstart = function(e) {
 				if (/\d/.test(value)) {
 				
 					if (/[\d.(+*\-\/]/.test(last)) {
-						this.append(value);
+						//if (this.isValidNum(this.lastNum() + value)) {
+							this.append(value);
+						//}
 					}
 				
 				}
@@ -195,7 +197,7 @@ document.ontouchstart = function(e) {
 			
 			if (result !== null) {
 				history.addItem(result);
-				this.clear(result);
+				this.clear(result.toString());
 			}
 		
 		},
@@ -267,6 +269,19 @@ document.ontouchstart = function(e) {
 				return true;
 			}
 			return false;
+		
+		},
+		
+		isValidNum: function(num) {
+		
+			if (num[0] === '-') {
+				num = num.substr(1, num.length);
+			}
+			
+			if (num.substr(0, 2) === '0.') {
+				return true;
+			}
+			return !/^0{1,}/.test(num[0]);
 		
 		},
 		
