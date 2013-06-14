@@ -92,9 +92,9 @@ document.ontouchstart = function(e) {
 				if (/\d/.test(value)) {
 				
 					if (/[\d.(+*\-\/]/.test(last)) {
-						//if (this.isValidNum(this.lastNum() + value)) {
+						if (this.isValidNum(this.lastNum() + value)) {
 							this.append(value);
-						//}
+						}
 					}
 				
 				}
@@ -114,7 +114,7 @@ document.ontouchstart = function(e) {
 				else if (value === '.') {
 				
 					if (/[\d(+*\-\/]/.test(last)) {
-						if (!this.hasDecimal(this.lastNum())) {
+						if (this.isValidNum(this.lastNum() + value)) {
 							this.append(value);
 						}
 					}
@@ -252,36 +252,26 @@ document.ontouchstart = function(e) {
 		
 		},
 		
-		// Returns true if the supplied number has a decimal
-		hasDecimal: function(value) {
-		
-			var decimals = 0;
-				i = 0;
-			
-			while (i < value.length) {
-				if (value[i] === '.') {
-					decimals += 1;
-				}
-				i += 1;
-			}
-			
-			if (decimals > 0) {
-				return true;
-			}
-			return false;
-		
-		},
-		
+		// Returns true if the number is valid (eg. -42.63)
 		isValidNum: function(num) {
 		
 			if (num[0] === '-') {
 				num = num.substr(1, num.length);
 			}
 			
-			if (num.substr(0, 2) === '0.') {
-				return true;
+			if (num[0] === '0') {
+			
+				if (/^0{2,}/.test(num) ||    // test multiple leading 0s
+					!/^0(?=\.)/.test(num)) { // ensure leading 0 is followed by a decimal point
+						return false;
+				}
+			
 			}
-			return !/^0{1,}/.test(num[0]);
+			else if (!/^\d*\.?\d*$/.test(num)) { // ensure only one decimal point
+				return false;
+			}
+			
+			return true;
 		
 		},
 		
