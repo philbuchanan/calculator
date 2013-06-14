@@ -267,7 +267,7 @@ document.ontouchstart = function(e) {
 				}
 			
 			}
-			else if (!/^\d*\.?\d*$/.test(num)) { // ensure only one decimal point
+			if (!/^\d*\.?\d*$/.test(num)) { // ensure only one decimal point
 				return false;
 			}
 			
@@ -540,67 +540,85 @@ document.ontouchstart = function(e) {
 	
 	
 	
-	// Set up the button handlers
-	buttons = document.getElementById('keypad').childNodes,
-	buttonModeStart = 'mousedown',
-	buttonModeEnd = 'mouseup',
-	i;
+	events = {
 	
-	if (('standalone' in window.navigator) && window.navigator.standalone) {
-		buttonModeStart = 'touchstart';
-		buttonModeEnd = 'touchend';
-	}
-	
-	for (i = 0; i < buttons.length; i += 1) {
-		buttons[i].addEventListener(
-			buttonModeStart,
-			function() {
-				if (this.value === '=') {
-					app.equals();
-				}
-				else if (this.value === 'b') {
-					app.addTimer(app.clear.bind(app));
-					app.backspace();
-				}
-				else if (this.value === 'c') {
-					app.clear();
-				}
-				else if (this.value === '+-') {
-					app.invert();
-				}
-				else if (this.value === 'h') {
-					history.open();
-				}
-				else {
-					app.buttonPress(this.value);
-				}
-			}.bind(buttons[i]),
-			false
-		);
-	}
-	
-	document.getElementById('bs').addEventListener(
-		buttonModeEnd,
-		app.removeTimer,
-		false
-	);
-	
-	document.getElementById('history-close').addEventListener(
-		buttonModeStart,
-		function() {
-			app.addTimer(history.clear.bind(history));
+		buttons: document.getElementById('keypad').childNodes,
+		buttonModeStart: 'mousedown',
+		buttonModeEnd: 'mouseup',
+		
+		addEventHandlers: function() {
+		
+			var i;
+			
+			if (('standalone' in window.navigator) && window.navigator.standalone) {
+				this.buttonModeStart = 'touchstart';
+				this.buttonModeEnd = 'touchend';
+			}
+			
+			for (i = 0; i < this.buttons.length; i += 1) {
+				this.buttons[i].addEventListener(
+					this.buttonModeStart,
+					this.buttonEvent.bind(this.buttons[i]),
+					false
+				);
+			}
+			
+			document.getElementById('bs').addEventListener(
+				this.buttonModeEnd,
+				app.removeTimer,
+				false
+			);
+			
+			document.getElementById('history-close').addEventListener(
+				this.buttonModeStart,
+				function() {
+					app.addTimer(history.clear.bind(history));
+				},
+				false
+			);
+			
+			document.getElementById('history-close').addEventListener(
+				this.buttonModeEnd,
+				function() {
+					app.removeTimer();
+					history.close();
+				},
+				false
+			);
+		
 		},
-		false
-	);
+		
+		buttonEvent: function() {
+		
+			if (this.value === '=') {
+				app.equals();
+			}
+			else if (this.value === 'b') {
+				app.addTimer(app.clear.bind(app));
+				app.backspace();
+			}
+			else if (this.value === 'c') {
+				app.clear();
+			}
+			else if (this.value === '+-') {
+				app.invert();
+			}
+			else if (this.value === 'h') {
+				history.open();
+			}
+			else {
+				app.buttonPress(this.value);
+			}
+		
+		}
+		
+	};
 	
-	document.getElementById('history-close').addEventListener(
-		buttonModeEnd,
-		function() {
-			app.removeTimer();
-			history.close();
-		},
-		false
-	);
+	
+	
+	// Initialize app
+	// Add event handlers
+	events.addEventHandlers();
 	
 	// Restore app state
 	app.restoreAppState();
