@@ -352,6 +352,10 @@ document.ontouchstart = function(e) {
 				this.resizeFont();
 			}
 			
+			if (eq.length >= 19) {
+				eq = '...' + eq.substr(eq.length - 18, 18);
+			}
+			
 			eq = eq.replace(/\//g, '<span>&divide;</span>');
 			eq = eq.replace(/\*/g, '<span>&times;</span>');
 			eq = eq.replace(/\+/g, '<span>+</span>');
