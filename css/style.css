@@ -318,3 +318,17 @@ button:active {
     bottom: 0;
   }
 }
+/* LANDSCAPE
+   ---------------------------------- */
+#landscape {
+  display: none;
+}
+#landscape p {
+  margin-top: 108px;
+}
+body.landscape #calculator {
+  display: none;
+}
+body.landscape #landscape {
+  display: block;
+}

@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 0.9.3
+// @version 1.0
 
 document.ontouchstart = function(e) {
 	'use strict';
@@ -589,6 +589,23 @@ document.ontouchstart = function(e) {
 				},
 				false
 			);
+			
+			// Orientation changes
+			window.onorientationchange = function() {
+			
+				var body = document.body;
+				
+				switch(window.orientation) {
+					case 0:
+						body.setAttribute('class', '');
+						break;
+					case 90:
+					case -90:
+						body.setAttribute('class', 'landscape');
+						break;
+				}
+			
+			};
 		
 		},
 		
