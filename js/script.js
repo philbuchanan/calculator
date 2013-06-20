@@ -389,19 +389,23 @@ document.ontouchstart = function(e) {
 		
 		addCommas: function(number) {
 		
-			var x, x1, x2, rgx;
+			var parts, x, y, regx;
 			
-			number += '';
-			x = number.split('.');
-			x1 = x[0];
-			x2 = x.length > 1 ? '.' + x[1] : '';
-			rgx = /(\d+)(\d{3})/;
+			parts = number.toString().split('.');
+			x = parts[0];
+			if (parts.length > 1) {
+				y = '.' + parts[1];
+			}
+			else {
+				y = '';
+			}
+			regx = /(\d+)(\d{3})/;
 			
-			while (rgx.test(x1)) {
-				x1 = x1.replace(rgx, '$1' + ',' + '$2');
+			while (regx.test(x)) {
+				x = x.replace(regx, '$1' + ',' + '$2');
 			}
 			
-			return x1 + x2;
+			return x + y;
 		
 		}
 	
