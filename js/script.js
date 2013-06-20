@@ -688,8 +688,10 @@ document.ontouchstart = function(e) {
 	app.restoreAppState();
 	
 	// Track app installs
-	if (!localStorage.getItem('id')) {
-		tracking.init();
+	if (('standalone' in window.navigator) && window.navigator.standalone) {
+		if (!localStorage.getItem('id')) {
+			tracking.init();
+		}
 	}
 
 }());
