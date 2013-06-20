@@ -6,6 +6,8 @@
 
 It has been fully tested on iOS 6 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on older devices and iOS 5.
 
+It has not been test on iOS 7 yet, but full support for the new OS is planned.
+
 ## Features
 
 - full standard calculator functions
@@ -28,6 +30,12 @@ The history can be cleared by simply tapping and holding on the history close bu
 The app will function completely without any sort of internet connection. The entire app state is saved between app runs as well.
 
 If an internet connection is present, the app will automatically check for updates. If any updates are available it will download them and new bug fixes and features will be available on the next app run.
+
+## Tracking
+
+Absolutely no personal or identifiable information is sent to the server. However, the app does attempt to track the total number of installs. It only iterates a counter on my server so I can get a rough idea of how many people have installed the app.
+
+It will only check in once, ideally on first launch (but will try again if, for whatever reason, it could not connect or it did not receive a response from the server).
 
 ## Questions / Suggestions / Bug Reports
 

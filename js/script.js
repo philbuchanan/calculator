@@ -18,7 +18,8 @@ document.ontouchstart = function(e) {
 		history: 7,
 		timerlen: 750,
 		timer: null,
-		fontsize: 46
+		fontsize: 46,
+		url: 'http://philbuchanan.com/projects/calculator-dev/'
 	},
 	
 	// App Object
@@ -636,7 +637,45 @@ document.ontouchstart = function(e) {
 			}
 		
 		}
+	
+	},
+	
+	
+	
+	tracking = {
+	
+		request: new XMLHttpRequest(),
 		
+		init: function() {
+		
+			var response;
+			
+			tracking.request.onreadystatechange = function() {
+			
+				if (tracking.request.readyState === 4 && tracking.request.status === 200) {
+				
+					response = tracking.request.responseText;
+					
+					if (response) {
+						localStorage.setItem('id', tracking.request.responseText);
+					}
+				
+				}
+			
+			};
+			
+			tracking.trackInstall();
+		
+		},
+		
+		trackInstall: function() {
+		
+			this.request.open('POST', settings.url + 'tracking/tracking.php', true);
+			this.request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			this.request.send('p=EW5dn45p');
+		
+		}
+	
 	};
 	
 	
@@ -647,5 +686,10 @@ document.ontouchstart = function(e) {
 	
 	// Restore app state
 	app.restoreAppState();
+	
+	// Track app installs
+	if (!localStorage.getItem('id')) {
+		tracking.init();
+	}
 
 }());
