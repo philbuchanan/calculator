@@ -1,3 +1,29 @@
+// COLORS
+// ------
+
+// Display
+@displayBgColor:        #fff;
+@displayTextColor:      #444;
+@equationTextColor:     #ff556f;
+@equationOperatorColor: #999;
+@displayRuleColor:      #e8e8e8;
+@displayThickRuleColor: #ff556f;
+
+// Keypad
+@keypadBgColor:         #f4f4f4;
+@keypadTextColor:       #111;
+@keypadRuleColor:       #e8e8e8;
+@keypadActiveBgColor:   #ff556f;
+@keypadActiveTextColor: #fff;
+@equalsBgColor:         #e8e8e8;
+@equalsTextColor:       #000;
+
+// History
+@historyBgColor:        rgba(244, 244, 244, 0.95);
+@historyNavBgColor:     #e8e8e8;
+@historyRuleColor:      #e8e8e8;
+
+
 /* RESET
    ---------------------------------- */
  
@@ -27,8 +53,8 @@ button, input, select, textarea {margin: 0;}
    ---------------------------------- */
 
 body {
-	color: #494949;
-	background: #f7eee6;
+	color: @displayTextColor;
+	background: @keypadBgColor;
 	font-family: Helvetica, Arial, sans-serif;;
 	font-size: 20px;
 	font-weight: 100;
@@ -45,10 +71,10 @@ p {
    ---------------------------------- */
 
 #result {
-	background: #fff;
+	background: @displayBgColor;
 	text-align: right;
 	font-size: 46px; // Must be updated in JS settings as well
-	border-bottom: 1px solid #ebe3db;
+	border-bottom: 1px solid @displayRuleColor;
 	width: 296px;
 	height: 47px;
 	margin: 0;
@@ -58,11 +84,11 @@ p {
 	        transform: translate3d(0, 0, 10px);
 }
 #equation {
-	color: #569286;
-	background: #fff;
+	color: @equationTextColor;
+	background: @displayBgColor;
 	text-align: right;
 	//text-overflow: ellipsis;
-	border-bottom: 6px solid #569286;
+	border-bottom: 6px solid @displayThickRuleColor;
 	width: 296px;
 	height: 36px;
 	margin-bottom: 0;
@@ -73,7 +99,7 @@ p {
 	-webkit-transform: translate3d(0, 0, 5px);
 	        transform: translate3d(0, 0, 5px);
 	span {
-		color: #999;
+		color: @equationOperatorColor;
 		margin: 0 5px;
 		&.left-bracket {margin-left: 0;}
 		&.right-bracket {margin-right: 0;}
@@ -85,8 +111,8 @@ p {
    ---------------------------------- */
 
 #history {
-	color: #494949;
-	background: rgba(247, 238, 230, 0.95);
+	color: @keypadTextColor;
+	background: @historyBgColor;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	position: absolute;
 	width: 320px;
@@ -97,7 +123,7 @@ p {
 	-webkit-transition: all .35s;
 	        transition: all .35s;
 	.navbar {
-		background: #ebe3db;
+		background: @historyNavBgColor;
 		text-align: center;
 		height: 36px;
 		padding: 10px 12px 0;
@@ -118,7 +144,7 @@ p {
 	width: 100%;
 	margin: 0;
 	li {
-		border-bottom: 1px solid #ebe3db;
+		border-bottom: 1px solid @keypadRuleColor;
 		padding: 0;
 		button {
 			position: static;
@@ -126,7 +152,7 @@ p {
 			width: 100%;
 			height: 49px;
 		}
-		&:first-child {border-top: 1px solid #ebe3db;}
+		&:first-child {border-top: 1px solid @keypadRuleColor;}
 	}
 }
 
@@ -137,12 +163,12 @@ p {
 #keypad button,
 button {
 	position: absolute;
-	color: #494949;
+	color: @keypadTextColor;
 	background: none;
 	font-family: Helvetica, Arial, sans-serif;;
 	font-size: 20px;
 	font-weight: 100;
-	border: 1px solid #ebe3db;
+	border: 1px solid @keypadRuleColor;
 	border-right: none;
 	border-bottom: none;
 	width: 80px;
@@ -150,8 +176,8 @@ button {
 	margin: 0;
 	padding: 0;
 	&:active {
-		color: #fff;
-		background: #569286;
+		color: @keypadActiveTextColor;
+		background: @keypadActiveBgColor;
 	}
 }
 #keypad {
@@ -168,7 +194,8 @@ button {
 	.row1 {border-top: none;}
 	.col1 {border-left: none;}
 	.equ {
-		background: #ebe3db;
+		color: @equalsTextColor;
+		background: @equalsBgColor;
 		width: 160px;
 	}
 	.btn-history {
@@ -178,8 +205,8 @@ button {
 		        transition: all 0.2s ease;
 	}
 	.flash {
-		color: #fff;
-		background: #569286;
+		color: @keypadActiveTextColor;
+		background: @keypadActiveBgColor;
 	}
 }
 
