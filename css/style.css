@@ -102,7 +102,7 @@ textarea {
    ---------------------------------- */
 body {
   color: #444444;
-  background: #f4f4f4;
+  background: #eeeeee;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 100;
@@ -157,7 +157,7 @@ p {
    ---------------------------------- */
 #history {
   color: #111111;
-  background: rgba(244, 244, 244, 0.95);
+  background: rgba(250, 250, 250, 0.95);
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   position: absolute;
   width: 320px;
@@ -169,7 +169,7 @@ p {
   transition: all .35s;
 }
 #history .navbar {
-  background: #e8e8e8;
+  background: #ededed;
   text-align: center;
   height: 36px;
   padding: 10px 12px 0;
@@ -190,7 +190,7 @@ p {
   margin: 0;
 }
 #list li {
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #ededed;
   padding: 0;
 }
 #list li button {
@@ -200,7 +200,7 @@ p {
   height: 49px;
 }
 #list li:first-child {
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #ededed;
 }
 /* KEYPAD
    ---------------------------------- */
@@ -212,7 +212,7 @@ button {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 100;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #d9d9d9;
   border-right: none;
   border-bottom: none;
   width: 80px;
@@ -263,7 +263,7 @@ button:active {
 }
 #keypad .equ {
   color: #000000;
-  background: #e8e8e8;
+  background: #d9d9d9;
   width: 160px;
 }
 #keypad .btn-history {

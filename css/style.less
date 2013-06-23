@@ -10,18 +10,18 @@
 @displayThickRuleColor: #ff556f;
 
 // Keypad
-@keypadBgColor:         #f4f4f4;
+@keypadBgColor:         #eee;
 @keypadTextColor:       #111;
-@keypadRuleColor:       #e8e8e8;
+@keypadRuleColor:       #d9d9d9;
 @keypadActiveBgColor:   #ff556f;
 @keypadActiveTextColor: #fff;
-@equalsBgColor:         #e8e8e8;
+@equalsBgColor:         #d9d9d9;
 @equalsTextColor:       #000;
 
 // History
-@historyBgColor:        rgba(244, 244, 244, 0.95);
-@historyNavBgColor:     #e8e8e8;
-@historyRuleColor:      #e8e8e8;
+@historyBgColor:        rgba(250, 250, 250, 0.95);
+@historyNavBgColor:     #ededed;
+@historyRuleColor:      #ededed;
 
 
 /* RESET
@@ -144,7 +144,7 @@ p {
 	width: 100%;
 	margin: 0;
 	li {
-		border-bottom: 1px solid @keypadRuleColor;
+		border-bottom: 1px solid @historyRuleColor;
 		padding: 0;
 		button {
 			position: static;
@@ -152,7 +152,7 @@ p {
 			width: 100%;
 			height: 49px;
 		}
-		&:first-child {border-top: 1px solid @keypadRuleColor;}
+		&:first-child {border-top: 1px solid @historyRuleColor;}
 	}
 }
 
