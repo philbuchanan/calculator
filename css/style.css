@@ -102,7 +102,7 @@ textarea {
    ---------------------------------- */
 body {
   color: #444444;
-  background: #eeeeee;
+  background: #ebedeb;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 100;
@@ -129,10 +129,10 @@ p {
   transform: translate3d(0, 0, 10px);
 }
 #equation {
-  color: #ff556f;
+  color: #099d93;
   background: #ffffff;
   text-align: right;
-  border-bottom: 6px solid #ff556f;
+  border-bottom: 6px solid #099d93;
   width: 296px;
   height: 36px;
   margin-bottom: 0;
@@ -165,11 +165,11 @@ p {
   z-index: 3;
   -webkit-transform: translate3d(0, -253px, 3px);
   transform: translate3d(0, -253px, 3px);
-  -webkit-transition: all .35s;
-  transition: all .35s;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
 }
 #history .navbar {
-  background: #ededed;
+  background: #ebedeb;
   text-align: center;
   height: 36px;
   padding: 10px 12px 0;
@@ -190,7 +190,7 @@ p {
   margin: 0;
 }
 #list li {
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ebedeb;
   padding: 0;
 }
 #list li button {
@@ -200,7 +200,7 @@ p {
   height: 49px;
 }
 #list li:first-child {
-  border-top: 1px solid #ededed;
+  border-top: 1px solid #ebedeb;
 }
 /* KEYPAD
    ---------------------------------- */
@@ -223,7 +223,7 @@ button {
 #keypad button:active,
 button:active {
   color: #ffffff;
-  background: #ff556f;
+  background: #099d93;
 }
 #keypad .row1 {
   bottom: 330px;
@@ -274,7 +274,7 @@ button:active {
 }
 #keypad .flash {
   color: #ffffff;
-  background: #ff556f;
+  background: #099d93;
 }
 /* iPhone 4
    ---------------------------------- */

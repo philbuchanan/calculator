@@ -14,7 +14,7 @@ document.ontouchstart = function(e) {
 	'use strict';
 	
 	var settings = {
-		decimals: 4,
+		decimals: 2,
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -478,7 +478,7 @@ document.ontouchstart = function(e) {
 				app.appstate.last = 1;
 			}
 			
-			this.close();
+			setTimeout(this.close, 150);
 			display.update();
 			app.saveAppState();
 		
