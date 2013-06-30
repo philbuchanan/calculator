@@ -257,3 +257,43 @@ body.landscape {
 	#calculator {display: none;}
 	#landscape {display: block;}
 }
+
+
+/* INSTALL SCREEN
+   ---------------------------------- */
+
+#install {display: none;}
+body.install {
+	background: #383838;
+	background-attachment: fixed;
+	height: 100%;
+	#calculator {display: none;}
+	#install {
+		display: block;
+		margin: 0 auto;
+		width: 175px;
+	}
+	#instructions {
+		position: absolute;
+		top: 50%;
+		color: #d9d9d9;
+		text-align: center;
+		font-size: 14px;
+		line-height: 20px;
+		text-shadow: 0 1px 2px #000;
+		width: 175px;
+		height: 180px;
+		margin-top: -90px;
+		span {
+			font-size: 16px;
+			font-weight: bold;
+		}
+	}
+	#app-icon {
+		background: url(../assets/app-icon-large.png) no-repeat;
+		background-size: 125px 125px;
+		width: 125px;
+		height: 125px;
+		margin: 0 auto 20px;
+	}
+}

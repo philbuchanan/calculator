@@ -1,6 +1,7 @@
 CACHE MANIFEST
-# v1.0.2: 2013-06-30
+# v1.0.4: 2013-06-30
 index.html
 js/script.js
 css/style.css
 assets/touch-icon-iphone-retina.png
+assets/app-icon-large.png
