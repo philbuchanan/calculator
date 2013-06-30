@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.0.1
+// @version 1.0.2
 
 document.ontouchstart = function(e) {
 	'use strict';
@@ -19,7 +19,7 @@ document.ontouchstart = function(e) {
 		timerlen: 750,
 		timer: null,
 		fontsize: 46,
-		url: 'http://philbuchanan.com/projects/calculator-dev/'
+		url: 'http://ioscalc.com'
 	},
 	
 	// App Object
@@ -70,9 +70,10 @@ document.ontouchstart = function(e) {
 		
 		buttonPress: function(value) {
 		
-			var last = this.appstate.last;
+			var digit = this.appstate.last,
+				number = this.lastNum();
 			
-			if (last === null) {
+			if (digit === null) {
 			
 				if (/[\d(]/.test(value)) {
 					if (value === '(') {
@@ -92,8 +93,11 @@ document.ontouchstart = function(e) {
 				// Digits
 				if (/\d/.test(value)) {
 				
-					if (/[\d.(+*\-\/]/.test(last)) {
-						if (this.isValidNum(this.lastNum() + value)) {
+					if (/[\d.(+*\-\/]/.test(digit)) {
+						if (digit === '0' && number.length === 1) {
+							this.append(value, true);
+						}
+						else if (this.isValidNum(number + value)) {
 							this.append(value);
 						}
 					}
@@ -102,10 +106,10 @@ document.ontouchstart = function(e) {
 				// Operators
 				else if (/[+*\-\/]/.test(value)) {
 				
-					if (/[\d)]/.test(last)) {
+					if (/[\d)]/.test(digit)) {
 						this.append(value);
 					}
-					else if (/[+*\-\/]/.test(last)) {
+					else if (/[+*\-\/]/.test(digit)) {
 						this.backspace();
 						this.append(value);
 					}
@@ -114,8 +118,8 @@ document.ontouchstart = function(e) {
 				// Decimal
 				else if (value === '.') {
 				
-					if (/[\d(+*\-\/]/.test(last)) {
-						if (this.isValidNum(this.lastNum() + value)) {
+					if (/[\d(+*\-\/]/.test(digit)) {
+						if (this.isValidNum(number + value)) {
 							this.append(value);
 						}
 					}
@@ -124,7 +128,10 @@ document.ontouchstart = function(e) {
 				// Open bracket
 				else if (value === '(') {
 				
-					if (/[(+*\-\/]/.test(last)) {
+					if (digit === '0' && number.length === 1) {
+						this.append(value, true);
+					}
+					else if (/[(+*\-\/]/.test(digit)) {
 						this.append(value);
 						this.appstate.brackets += 1;
 					}
@@ -133,10 +140,10 @@ document.ontouchstart = function(e) {
 				// Close bracket
 				else if (value === ')') {
 				
-					if (last === '(') {
+					if (digit === '(') {
 						this.backspace();
 					}
-					else if (/\d/.test(last) && this.appstate.brackets > 0) {
+					else if (/\d/.test(digit) && this.appstate.brackets > 0) {
 						this.append(value);
 						this.appstate.brackets -= 1;
 					}
@@ -475,8 +482,8 @@ document.ontouchstart = function(e) {
 			}
 			else if (/[(+*\-\/]/.test(app.appstate.last)) {
 				app.appstate.input += value;
-				app.appstate.last = 1;
 			}
+			app.appstate.last = value.charAt(value.length - 1);
 			
 			setTimeout(this.close, 150);
 			display.update();
@@ -670,7 +677,7 @@ document.ontouchstart = function(e) {
 		
 		trackInstall: function() {
 		
-			this.request.open('POST', settings.url + 'tracking/tracking.php', true);
+			this.request.open('POST', settings.url + '/tracking/tracking.php', true);
 			this.request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			this.request.send('p=EW5dn45p');
 		

@@ -2,6 +2,8 @@
 
 **A calculator iOS web app.**
 
+[Install the app](http://ioscalc.com).
+
 ## Support
 
 It has been fully tested on iOS 6 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on older devices and iOS 5.
