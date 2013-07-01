@@ -3,18 +3,51 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.0.4
+// @version 1.1.0
 
 (function() {
 	'use strict';
 	
 	var settings = {
-		decimals: 2,
+	
 		history: 7,
 		timerlen: 750,
 		timer: null,
 		fontsize: 46,
-		url: 'http://ioscalc.com'
+		url: 'http://ioscalc.com',
+		
+		user: {
+			decimals: 2
+		},
+		
+		saveUserSettings: function() {
+		
+			var json = JSON.stringify(this.user);
+			localStorage.setItem('userSettings', json);
+		
+		},
+		
+		loadUserSettings: function() {
+		
+			var json;
+			
+			if (localStorage.getItem('userSettings')) {
+			
+				json = localStorage.getItem('userSettings');
+				this.user = JSON.parse(json);
+			
+			}
+		
+		},
+		
+		set: function(setting, value) {
+		
+			settings.user[setting] = value;
+			settings.saveUserSettings();
+			display.update();
+		
+		}
+	
 	},
 	
 	// App Object
@@ -33,6 +66,7 @@
 		
 		restoreAppState: function() {
 		
+			settings.loadUserSettings();
 			this.loadAppState();
 			display.update();
 			history.load();
@@ -312,7 +346,7 @@
 		compute: function(string) {
 		
 			var result,
-				round = Math.pow(10, settings.decimals);
+				round = Math.pow(10, settings.user.decimals);
 			
 			try {
 				result = eval(string);
@@ -347,7 +381,7 @@
 			
 			if (result !== null && !isNaN(result)) {
 				if (result > 9E13) {
-					this.result.innerHTML = '<span>' + result.toExponential(settings.decimals) + '</span>';
+					this.result.innerHTML = '<span>' + result.toExponential(settings.user.decimals) + '</span>';
 				}
 				else {
 					this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
