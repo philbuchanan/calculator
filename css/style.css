@@ -181,8 +181,8 @@ p {
   padding: 16px 12px 15px 18px;
 }
 #history.active {
-  -webkit-transform: translate3d(0, 152px, 0);
-  transform: translate3d(0, 152px, 0);
+  -webkit-transform: translate3d(0, 152px, 3px);
+  transform: translate3d(0, 152px, 3px);
 }
 #list {
   list-style: none;
