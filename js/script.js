@@ -3,12 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.0.3
-
-document.ontouchstart = function(e) {
-	'use strict';
-	e.preventDefault();
-};
+// @version 1.0.4
 
 (function() {
 	'use strict';
@@ -645,44 +640,6 @@ document.ontouchstart = function(e) {
 		
 		}
 	
-	},
-	
-	
-	
-	tracking = {
-	
-		request: new XMLHttpRequest(),
-		
-		init: function() {
-		
-			var response;
-			
-			tracking.request.onreadystatechange = function() {
-			
-				if (tracking.request.readyState === 4 && tracking.request.status === 200) {
-				
-					response = tracking.request.responseText;
-					
-					if (response) {
-						localStorage.setItem('id', tracking.request.responseText);
-					}
-				
-				}
-			
-			};
-			
-			tracking.trackInstall();
-		
-		},
-		
-		trackInstall: function() {
-		
-			this.request.open('POST', settings.url + '/tracking/tracking.php', true);
-			this.request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			this.request.send('p=EW5dn45p');
-		
-		}
-	
 	};
 	
 	
@@ -690,17 +647,16 @@ document.ontouchstart = function(e) {
 	// Is app installed?
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
 	
+		document.ontouchstart = function(e) {
+			e.preventDefault();
+		};
+		
 		// Initialize app
 		// Add event handlers
 		events.addEventHandlers();
 		
 		// Restore app state
 		app.restoreAppState();
-		
-		// Tracking
-		if (!localStorage.getItem('id')) {
-			tracking.init();
-		}
 	
 	}
 	else {

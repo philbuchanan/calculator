@@ -33,11 +33,9 @@ The app will function completely without any sort of internet connection. The en
 
 If an internet connection is present, the app will automatically check for updates. If any updates are available it will download them and new bug fixes and features will be available on the next app run.
 
-## Tracking
+## Privacy
 
-Absolutely no personal or identifiable information is sent to the server. However, the app does attempt to track the total number of installs. It only iterates a counter on my server so I can get a rough idea of how many people have installed the app.
-
-It will only check in once, ideally on first launch (but will try again if, for whatever reason, it could not connect or it did not receive a response from the server).
+I take privacy seriously. Absolutely no personal or identifiable information is tracked.
 
 ## Questions / Suggestions / Bug Reports
 
