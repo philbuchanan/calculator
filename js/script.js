@@ -66,7 +66,7 @@
 		
 		restoreAppState: function() {
 		
-			settings.loadUserSettings();
+			//settings.loadUserSettings();
 			this.loadAppState();
 			display.update();
 			history.load();

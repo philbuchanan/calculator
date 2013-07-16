@@ -103,8 +103,7 @@ textarea {
 body {
   color: #444444;
   background: #ebedeb;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 100;
   line-height: 24px;
@@ -146,7 +145,6 @@ p {
 }
 #equation span {
   color: #999999;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   margin: 0 5px;
 }
@@ -212,8 +210,8 @@ button {
   position: absolute;
   color: #111111;
   background: none;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 20px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 22px;
   font-weight: 100;
   border: 1px solid #d9d9d9;
   border-right: none;
@@ -386,8 +384,9 @@ body.install #instructions {
   margin-top: -90px;
 }
 body.install #instructions span {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 800;
 }
 body.install #app-icon {
   background: url(../assets/app-icon-large.png) no-repeat;
