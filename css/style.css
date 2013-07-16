@@ -103,6 +103,7 @@ textarea {
 body {
   color: #444444;
   background: #ebedeb;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   font-weight: 100;
@@ -145,6 +146,8 @@ p {
 }
 #equation span {
   color: #999999;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
   margin: 0 5px;
 }
 #equation span.left-bracket {
@@ -269,6 +272,15 @@ button:active {
 #keypad .plus-minus {
   letter-spacing: 2px;
 }
+#keypad #bs {
+  background-image: url(../assets/backspace.png);
+  background-repeat: no-repeat;
+  background-position: 27px 25px;
+  background-size: 82px 16px;
+}
+#keypad #bs:active {
+  background-position-x: -30px;
+}
 #keypad .btn-history {
   font-size: 18px;
   width: 160px;
@@ -324,6 +336,9 @@ button:active {
   }
   #keypad .row6 {
     bottom: 0;
+  }
+  #keypad #bs {
+    background-position: 27px 20px;
   }
 }
 /* LANDSCAPE

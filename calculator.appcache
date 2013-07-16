@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# v1.0.4: 2013-07-01
+# v1.0.5: 2013-07-15
 index.html
 js/script.js
 css/style.css
+assets/backspace.png
 assets/touch-icon-iphone-retina.png
 assets/app-icon-large.png

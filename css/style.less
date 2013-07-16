@@ -55,6 +55,7 @@ button, input, select, textarea {margin: 0;}
 body {
 	color: @displayTextColor;
 	background: @keypadBgColor;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-family: Helvetica, Arial, sans-serif;;
 	font-size: 20px;
 	font-weight: 100;
@@ -87,7 +88,6 @@ p {
 	color: @equationTextColor;
 	background: @displayBgColor;
 	text-align: right;
-	//text-overflow: ellipsis;
 	border-bottom: 6px solid @displayThickRuleColor;
 	width: 296px;
 	height: 36px;
@@ -100,6 +100,8 @@ p {
 	        transform: translate3d(0, 0, 5px);
 	span {
 		color: @equationOperatorColor;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-weight: 300;
 		margin: 0 5px;
 		&.left-bracket {margin-left: 0;}
 		&.right-bracket {margin-right: 0;}
@@ -199,6 +201,13 @@ button {
 		width: 160px;
 	}
 	.plus-minus {letter-spacing: 2px;}
+	#bs {
+		background-image: url(../assets/backspace.png);
+		background-repeat: no-repeat;
+		background-position: 27px 25px;
+		background-size: 82px 16px;
+		&:active {background-position-x: -30px;}
+	}
 	.btn-history {
 		font-size: 18px;
 		width: 160px;
@@ -241,6 +250,7 @@ button {
 		.row4 {bottom: 110px;}
 		.row5 {bottom: 55px;}
 		.row6 {bottom: 0;}
+		#bs {background-position: 27px 20px;}
 	}
 
 }
