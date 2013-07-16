@@ -8,7 +8,7 @@
 
 It has been fully tested on iOS 6 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on older devices and iOS 5.
 
-It has not been test on iOS 7 yet, but full support for the new OS is planned.
+It has not been tested on iOS 7 yet, but full support for the new OS is planned.
 
 ## Features
 
@@ -35,7 +35,7 @@ If an internet connection is present, the app will automatically check for updat
 
 ## Privacy
 
-I take privacy seriously. Absolutely no personal or identifiable information is tracked.
+I take privacy seriously. Absolutely no personal or identifiable information is tracked. As such, if you decide to use the app, please let me know.
 
 ## Questions / Suggestions / Bug Reports
 
