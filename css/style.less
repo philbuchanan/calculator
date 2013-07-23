@@ -218,6 +218,21 @@ button {
 	}
 }
 
+/* In Call */
+@media all and (max-height: 528px) {
+
+	#result {padding: 26px 12px 2px;}
+	#history {
+		-webkit-transform: translate3d(0, -273px, 3px);
+		        transform: translate3d(0, -273px, 3px);
+		&.active {
+			-webkit-transform: translate3d(0, 132px, 3px);
+			        transform: translate3d(0, 132px, 3px);
+		}
+	}
+
+}
+
 
 /* iPhone 4
    ---------------------------------- */
@@ -249,6 +264,24 @@ button {
 		.row5 {bottom: 55px;}
 		.row6 {bottom: 0;}
 		#bs {background-position: 27px 20px;}
+	}
+
+}
+
+/* In Call */
+@media all and (max-height: 440px) {
+
+	#result {
+		padding: 16px 12px 0;		
+		height: 43px;
+	}
+	#history {
+		-webkit-transform: translate3d(0, -295px, 3px);
+		        transform: translate3d(0, -295px, 3px);
+		&.active {
+			-webkit-transform: translate3d(0, 110px, 3px);
+			        transform: translate3d(0, 110px, 3px);
+		}
 	}
 
 }
