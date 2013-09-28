@@ -6,9 +6,7 @@
 
 ## Support
 
-It has been fully tested on iOS 6 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on older devices and iOS 5.
-
-It has not been tested on iOS 7 yet, but full support for the new OS is planned.
+It has been fully tested on iOS 7 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on devices still running iOS 6. It has not be designed or tested to work with non-retina iPhones. An iPad version is in the works, but still a ways away from completion.
 
 ## Features
 

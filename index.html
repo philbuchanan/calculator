@@ -10,12 +10,13 @@
 	
 	<meta name="viewport" content="initial-scale=1, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<meta name="apple-mobile-web-app-title" content="Calculator">
 	<meta name="format-detection" content="telephone=no">
 	
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-retina.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-114.png" />
 </head>
 <body>
 	<div id="calculator">
@@ -24,7 +25,8 @@
 			<ul id="list"></ul>
 			<p id="history-help">Your most recent results will be saved here every time you tap the equals button. A quick tap of one of these will use it in the current equation.<br/><br/>Tap and hold on the &lsquo;&times;&rsquo; button to clear your history.</p>
 		</div>
-		<div id="result" style="width:296px;">0</div>
+		<div id="statusbar"></div>
+		<div id="result">0</div>
 		<div id="equation"></div>
 		<div id="keypad">
 			<button value="h" class="row1 col2 btn-history" id="his">History</button>
