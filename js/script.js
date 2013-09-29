@@ -10,6 +10,7 @@
 	
 	var settings = {
 	
+		devmode: false,
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -691,7 +692,7 @@
 	
 	
 	// Is app installed?
-	if (('standalone' in window.navigator) && window.navigator.standalone) {
+	if ((('standalone' in window.navigator) && window.navigator.standalone) || settings.devmode) {
 	
 		document.ontouchstart = function(e) {
 			e.preventDefault();
