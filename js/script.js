@@ -61,7 +61,8 @@
 		appstate: {
 			input: 0,
 			brackets: 0,
-			last: null
+			last: null,
+			landscape: false
 		},
 		
 		restoreAppState: function() {
@@ -389,8 +390,15 @@
 				this.resizeFont();
 			}
 			
-			if (eq.length >= 19) {
-				eq = '...' + eq.substr(eq.length - 18, 18);
+			if (app.appstate.landscape) {
+				if (eq.length >= 31) {
+					eq = '...' + eq.substr(eq.length - 30, 30);
+				}
+			}
+			else {
+				if (eq.length >= 19) {
+					eq = '...' + eq.substr(eq.length - 18, 18);
+				}
 			}
 			
 			eq = eq.replace(/\//g, '<span>&divide;</span>');
@@ -638,13 +646,17 @@
 				
 				switch(window.orientation) {
 					case 0:
+						app.appstate.landscape = false;
 						body.setAttribute('class', '');
 						break;
 					case 90:
 					case -90:
+						app.appstate.landscape = true;
 						body.setAttribute('class', 'landscape');
 						break;
 				}
+				
+				display.update();
 			
 			};
 		

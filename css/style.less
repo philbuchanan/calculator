@@ -147,7 +147,7 @@ p {
 			text-align: right;
 			width: 48px;
 			height: 46px;
-			padding: 12px 12px 0;
+			padding: 9px 12px 0;
 		}
 	}
 	&.active {
@@ -164,7 +164,7 @@ p {
 		padding: 0;
 		button {
 			position: static;
-			border: none;
+			border: none !important;
 			width: 100%;
 			height: 49px;
 		}
@@ -284,13 +284,63 @@ button {
 /* LANDSCAPE
    ---------------------------------- */
 
-#landscape {
-	display: none;
-	p {margin-top: 108px;}
-}
-body.landscape {
-	#calculator {display: none;}
-	#landscape {display: block;}
+@media all and (max-height: 320px) {
+
+	p {padding: 14px 36px 0;}
+	#result {
+		height: 56px;
+		padding-top: 15px;
+	}
+	#equation {
+		height: 40px;
+		padding-top: 5px;
+	}
+	#history {
+		height: 204px;
+		overflow: hidden;
+		-webkit-transform: translate3d(0, -97px, 3px);
+		        transform: translate3d(0, -97px, 3px);
+		.navbar {
+			height: 36px;
+			padding-top: 6px;
+			span {padding-top: 4px;}
+		}
+		&.active {
+			-webkit-transform: translate3d(0, 116px, 0);
+			        transform: translate3d(0, 116px, 0);
+		}
+	}
+	#list li button {height: 33px;}
+	#keypad button,
+	button {
+		border: 1px solid @keypadRuleColor !important;
+		border-right: none !important;
+		border-bottom: none !important;
+		width: 16.9%;
+		height: 51px;
+	}
+	#keypad {
+		.lrow1 {bottom: 153px;}
+		.lrow2 {bottom: 102px;}
+		.lrow3 {bottom: 51px;}
+		.lrow4 {bottom: 0;}
+		.lcol1 {left: 0;}
+		.lcol2 {left: 16.6666%;}
+		.lcol3 {left: 33.3333%;}
+		.lcol4 {left: 50%;}
+		.lcol5 {left: 66.6666%;}
+		.lcol6 {left: 83.3333%;}
+		.lrow1 {border-top: none !important;}
+		.lcol1 {border-left: none !important;}
+		.btn-history {width: 33.3333%}
+		.equ {width: 16.9%;}
+		#bs {
+			width: 33.3333%;
+			background-position-y: 17px;
+			&:active {background-position-y: -32px;}
+		}
+	}
+
 }
 
 
