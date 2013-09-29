@@ -235,6 +235,28 @@ button {
 }
 
 
+/* In-Call
+   ---------------------------------- */
+
+@media (max-height: 528px) and (min-height: 528px) {
+
+	.statusbar {display: none;}
+	#result {
+		height: 76px;
+		padding-top: 25px;
+	}
+	#history {
+		-webkit-transform: translate3d(0, -274px, 3px);
+		        transform: translate3d(0, -274px, 3px);
+	}
+	#history.active {
+		-webkit-transform: translate3d(0, 132px, 3px);
+		        transform: translate3d(0, 132px, 3px);
+	}
+
+}
+
+
 /* iPhone 4
    ---------------------------------- */
 
@@ -332,10 +354,10 @@ button {
 		.lcol6 {left: 83.3333%;}
 		.lrow1 {border-top: none !important;}
 		.lcol1 {border-left: none !important;}
-		.btn-history {width: 33.3333%}
+		.btn-history,
+		.plus-minus {width: 33.3333%}
 		.equ {width: 16.9%;}
 		#bs {
-			width: 33.3333%;
 			background-position-y: 17px;
 			&:active {background-position-y: -32px;}
 		}
