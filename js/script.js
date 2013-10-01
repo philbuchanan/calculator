@@ -232,10 +232,13 @@
 		
 		equals: function() {
 		
-			var result = calc.compute(this.appstate.input);
+			var result = calc.compute(this.appstate.input),
+				historyItem = {};
 			
 			if (result !== null) {
-				history.addItem(result);
+				historyItem.result = result;
+				historyItem.equ = this.appstate.input;
+				history.addItem(historyItem);
 				this.clear(result.toString());
 			}
 		
@@ -402,16 +405,24 @@
 				}
 			}
 			
-			eq = eq.replace(/\//g, '<span>&divide;</span>');
-			eq = eq.replace(/\*/g, '<span>&times;</span>');
-			eq = eq.replace(/\+/g, '<span>+</span>');
-			eq = eq.replace(/\-/g, '<span>-</span>');
-			eq = eq.replace(/\(/g, '<span class="left-bracket">(</span>');
-			eq = eq.replace(/\)/g, '<span class="right-bracket">)</span>');
+			equStr = this.replaceOperators(eq);
 			
-			this.equation.innerHTML = eq;
+			this.equation.innerHTML = equStr;
 			
 			app.saveAppState();
+		
+		},
+		
+		replaceOperators: function(str) {
+		
+			str = str.replace(/\//g, '<span>&divide;</span>');
+			str = str.replace(/\*/g, '<span>&times;</span>');
+			str = str.replace(/\+/g, '<span>+</span>');
+			str = str.replace(/\-/g, '<span>-</span>');
+			str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
+			str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
+			
+			return str;
 		
 		},
 		
@@ -467,13 +478,14 @@
 	
 		history: [],
 		
-		addItem: function(value) {
+		addItem: function(historyItem) {
 		
 			var i = this.history.length - 1,
 				list = document.getElementById('list'),
 				ele;
 			
-			if (value !== this.history[this.history.length - 1]) {
+			if (typeof this.history[i] !== 'object' ||
+				historyItem.result !== this.history[i].result) {
 			
 				while (this.history.length >= settings.history) {
 					this.history.shift();
@@ -481,20 +493,21 @@
 					ele.parentNode.removeChild(ele);
 					i -= 1;
 				}
-				this.history.push(value);
+				this.history.push(historyItem);
 				
 				this.flashBtn();
-				this.appendItem(value);
+				this.appendItem(historyItem);
 				this.save();
 			
 			}
 		
 		},
 		
-		appendItem: function(value) {
+		appendItem: function(historyItem) {
 		
 			var li,
 				button,
+				span,
 				list = document.getElementById('list'),
 				children = list.childNodes,
 				_this = this;
@@ -503,8 +516,12 @@
 			
 			li = document.createElement('li');
 			button = document.createElement('button');
-			button.value = value;
-			button.innerText = display.addCommas(value);
+			button.value = historyItem.result;
+			button.innerText = display.addCommas(historyItem.result);
+			span = document.createElement('span');
+			span.className = 'equ';
+			span.innerHTML = display.replaceOperators(historyItem.equ);
+			button.appendChild(span);
 			button.onclick = function() {_this.append(this.value);};
 			button.ontouchstart = function() {_this.append(this.value);};
 			li.appendChild(button);
