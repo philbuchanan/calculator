@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.2.0
+// @version 1.3.0
 
 (function() {
 	'use strict';
@@ -18,7 +18,8 @@
 		url: 'http://ioscalc.com',
 		
 		user: {
-			decimals: 2
+			decimals: 2,
+			lastlaunch: null
 		},
 		
 		saveUserSettings: function() {
@@ -70,6 +71,8 @@
 		
 			//settings.loadUserSettings();
 			this.loadAppState();
+			settings.loadUserSettings();
+			this.lastLaunch();
 			display.update();
 			history.load();
 		
@@ -96,6 +99,21 @@
 				this.appstate.brackets = savedAppState.brackets;
 			
 			}
+		
+		},
+		
+		lastLaunch: function() {
+		
+			var time = new Date();
+			
+			time = time.getTime();
+			
+			if (settings.user.lastlaunch < 1380648666360) {
+				history.clear();
+			}
+			
+			settings.user.lastlaunch = time;
+			settings.saveUserSettings();
 		
 		},
 		
@@ -405,9 +423,9 @@
 				}
 			}
 			
-			equStr = this.replaceOperators(eq);
+			eq = this.replaceOperators(eq);
 			
-			this.equation.innerHTML = equStr;
+			this.equation.innerHTML = eq;
 			
 			app.saveAppState();
 		
