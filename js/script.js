@@ -11,6 +11,7 @@
 	var settings = {
 	
 		devmode: false,
+		version: '1.3.0',
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -18,8 +19,7 @@
 		url: 'http://ioscalc.com',
 		
 		user: {
-			decimals: 2,
-			lastlaunch: null
+			decimals: 2
 		},
 		
 		saveUserSettings: function() {
@@ -48,6 +48,38 @@
 			settings.saveUserSettings();
 			display.update();
 		
+		},
+		
+		// Version check. Is a less than than b?
+		ltVersion: function(a, b) {
+		
+			var i;
+			
+			a = a.split('.');
+			b = b.split('.');
+			
+			for (i = 0; i < a.length; i += 1) {
+				if (b.length === i) {
+					return false;
+				}
+				
+				if (a[i] === b[i]) {
+					continue;
+				}
+				else if (a[i] > b[i]) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+			
+			if (a.length !== b.length) {
+				return true;
+			}
+		
+			return false;
+		
 		}
 	
 	},
@@ -72,7 +104,7 @@
 			//settings.loadUserSettings();
 			this.loadAppState();
 			settings.loadUserSettings();
-			this.lastLaunch();
+			this.init();
 			display.update();
 			history.load();
 		
@@ -102,17 +134,18 @@
 		
 		},
 		
-		lastLaunch: function() {
+		init: function() {
 		
-			var time = new Date();
+			if (typeof settings.user.version === 'undefined') {
+				settings.user.version = '0.0.1';
+			}
 			
-			time = time.getTime();
-			
-			if (settings.user.lastlaunch < 1380648666360) {
+			// Reset history for version 1.3.0
+			if (settings.ltVersion(settings.user.version, '1.3.0')) {
 				history.clear();
 			}
 			
-			settings.user.lastlaunch = time;
+			settings.user.version = settings.version;
 			settings.saveUserSettings();
 		
 		},
