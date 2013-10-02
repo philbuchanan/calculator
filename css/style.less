@@ -23,6 +23,8 @@
 @historyNavBgColor:     #ebedeb;
 @historyRuleColor:      #ebedeb;
 
+@horizontalRule: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'><rect fill='#d9d9d9' x='0' y='0' width='1' height='0.5'/></svg>";
+
 
 /* RESET
    ---------------------------------- */
@@ -84,10 +86,9 @@ p {
 	        transform: translate3d(0, 0, 15px);
 }
 #result {
-	background: @displayBgColor;
+	background: url(@horizontalRule) left bottom repeat-x @displayBgColor;
 	text-align: right;
 	font-size: 46px; // Must be updated in JS settings as well
-	border-bottom: 1px solid @displayRuleColor;
 	width: 100%;
 	height: 95px;
 	margin: 0;
@@ -160,7 +161,7 @@ p {
 	width: 100%;
 	margin: 0;
 	li {
-		border-bottom: 1px solid @historyRuleColor;
+		background: url(@horizontalRule) left bottom repeat-x;
 		padding: 0;
 		button {
 			position: static;
