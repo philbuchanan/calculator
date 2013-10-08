@@ -14,7 +14,7 @@ It has been fully tested on iOS 7 running on an iPhone 4, iPhone 4S and iPhone 5
 - brackets
 - invert individual numbers (+/-)
 - backspace
-- results history
+- results and equation history
 - HTML5 app caching
 
 ### History
