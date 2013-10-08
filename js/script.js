@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.3.1
+// @version 1.3.2
 
 (function() {
 	'use strict';
@@ -11,7 +11,7 @@
 	var settings = {
 	
 		devmode: false,
-		version: '1.3.1',
+		version: '1.3.2',
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -176,7 +176,7 @@
 				if (/\d/.test(value)) {
 				
 					if (/[\d.(+*\-\/]/.test(digit)) {
-						if (digit === '0' && number.length === 1) {
+						if (digit === '0' && app.appstate.input.length === 1) {
 							this.append(value, true);
 						}
 						else if (this.isValidNum(number + value)) {
@@ -354,8 +354,11 @@
 			
 			if (num[0] === '0') {
 			
-				if (/^0{2,}/.test(num) ||    // test multiple leading 0s
-					!/^0(?=\.)/.test(num)) { // ensure leading 0 is followed by a decimal point
+				if (num.length === 1) { // if number is a sinlge digit it's valid
+					return true;
+				}
+				else if (/^0{2,}/.test(num) || // test multiple leading 0s
+					!/^0(?=\.)/.test(num)) {   // ensure leading 0 is followed by a decimal point
 						return false;
 				}
 			
