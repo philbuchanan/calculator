@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.3.0
+// @version 1.3.1
 
 (function() {
 	'use strict';
@@ -11,7 +11,7 @@
 	var settings = {
 	
 		devmode: false,
-		version: '1.3.0',
+		version: '1.3.1',
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -214,8 +214,8 @@
 						this.append(value, true);
 					}
 					else if (/[(+*\-\/]/.test(digit)) {
-						this.append(value);
 						this.appstate.brackets += 1;
+						this.append(value);
 					}
 				
 				}
@@ -225,9 +225,9 @@
 					if (digit === '(') {
 						this.backspace();
 					}
-					else if (/\d/.test(digit) && this.appstate.brackets > 0) {
-						this.append(value);
+					else if (/[\d)]/.test(digit) && this.appstate.brackets > 0) {
 						this.appstate.brackets -= 1;
+						this.append(value);
 					}
 				
 				}
