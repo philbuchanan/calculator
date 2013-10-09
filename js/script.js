@@ -3,15 +3,15 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.3.2
+// @version 1.4.0
 
 (function() {
 	'use strict';
 	
 	var settings = {
 	
-		devmode: false,
-		version: '1.3.2',
+		devmode: true,
+		version: '1.4.0',
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -766,7 +766,7 @@
 	if ((('standalone' in window.navigator) && window.navigator.standalone) || settings.devmode) {
 	
 		document.ontouchstart = function(e) {
-			e.preventDefault();
+			return false;
 		};
 		
 		// Initialize app
