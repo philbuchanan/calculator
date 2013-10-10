@@ -10,7 +10,7 @@
 	
 	var settings = {
 	
-		devmode: true,
+		devmode: false,
 		version: '1.4.0',
 		history: 7,
 		timerlen: 750,
@@ -448,22 +448,26 @@
 				this.resizeFont();
 			}
 			
-			if (app.appstate.landscape) {
-				if (eq.length >= 31) {
-					eq = '...' + eq.substr(eq.length - 30, 30);
-				}
-			}
-			else {
-				if (eq.length >= 19) {
-					eq = '...' + eq.substr(eq.length - 18, 18);
-				}
-			}
-			
-			eq = this.replaceOperators(eq);
-			
-			this.equation.innerHTML = eq;
+			this.displayEquation(eq);
 			
 			app.saveAppState();
+		
+		},
+		
+		displayEquation: function(eq) {
+		
+			var ele = document.getElementById('eq'),
+				i = eq.length,
+				width;
+			
+			ele.innerHTML = this.replaceOperators(eq);
+			width = ele.offsetWidth;
+			
+			while (width > this.equation.offsetWidth - 24) {
+				ele.innerHTML = '...' + this.replaceOperators(eq.substr(eq.length - i, i));
+				width = ele.offsetWidth;
+				i -= 1;
+			}
 		
 		},
 		

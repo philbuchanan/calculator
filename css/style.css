@@ -155,15 +155,18 @@ p {
   -webkit-transform: translate3d(0, 0, 5px);
   transform: translate3d(0, 0, 5px);
 }
-#equation span {
+#equation #eq {
+  display: inline;
+}
+#equation #eq span {
   color: #999999;
   font-weight: 300;
   margin: 0 5px;
 }
-#equation span.left-bracket {
+#equation #eq span.left-bracket {
   margin-left: 0;
 }
-#equation span.right-bracket {
+#equation #eq span.right-bracket {
   margin-right: 0;
 }
 /* HISTORY
