@@ -111,12 +111,15 @@ p {
 	z-index: 5;
 	-webkit-transform: translate3d(0, 0, 5px);
 	        transform: translate3d(0, 0, 5px);
-	span {
-		color: @equationOperatorColor;
-		font-weight: 300;
-		margin: 0 5px;
-		&.left-bracket {margin-left: 0;}
-		&.right-bracket {margin-right: 0;}
+	#eq {
+		display: inline;
+		span {
+			color: @equationOperatorColor;
+			font-weight: 300;
+			margin: 0 5px;
+			&.left-bracket {margin-left: 0;}
+			&.right-bracket {margin-right: 0;}
+		}
 	}
 }
 
@@ -134,8 +137,8 @@ p {
 	z-index: 3;
 	-webkit-transform: translate3d(0, -234px, 3px);
 	        transform: translate3d(0, -234px, 3px);
-	-webkit-transition: all .4s ease;
-	        transition: all .4s ease;
+	-webkit-transition: all .4s ease-in-out;
+	        transition: all .4s ease-in-out;
 	.navbar {
 		background: @historyNavBgColor;
 		text-align: center;

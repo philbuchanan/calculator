@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.3.3
+// @version 1.4.0
 
 (function() {
 	'use strict';
@@ -11,10 +11,11 @@
 	var settings = {
 	
 		devmode: false,
-		version: '1.3.3',
+		version: '1.4.0',
 		history: 7,
 		timerlen: 750,
 		timer: null,
+		minswipe: 60,
 		fontsize: 46,
 		url: 'http://ioscalc.com',
 		
@@ -448,22 +449,26 @@
 				this.resizeFont();
 			}
 			
-			if (app.appstate.landscape) {
-				if (eq.length >= 31) {
-					eq = '...' + eq.substr(eq.length - 30, 30);
-				}
-			}
-			else {
-				if (eq.length >= 19) {
-					eq = '...' + eq.substr(eq.length - 18, 18);
-				}
-			}
-			
-			eq = this.replaceOperators(eq);
-			
-			this.equation.innerHTML = eq;
+			this.displayEquation(eq);
 			
 			app.saveAppState();
+		
+		},
+		
+		displayEquation: function(eq) {
+		
+			var ele = document.getElementById('eq'),
+				i = eq.length,
+				width;
+			
+			ele.innerHTML = this.replaceOperators(eq);
+			width = ele.offsetWidth;
+			
+			while (width > this.equation.offsetWidth - 24) {
+				ele.innerHTML = '...' + this.replaceOperators(eq.substr(eq.length - i, i));
+				width = ele.offsetWidth;
+				i -= 1;
+			}
 		
 		},
 		
@@ -671,6 +676,8 @@
 		buttonModeStart: 'mousedown',
 		buttonModeEnd: 'mouseup',
 		
+		start: {},
+		
 		addEventHandlers: function() {
 		
 			var i;
@@ -707,6 +714,23 @@
 				function() {
 					app.removeTimer();
 					history.close();
+				},
+				false
+			);
+			
+			// Result touch events
+			document.getElementById('result').addEventListener(
+				this.buttonModeStart,
+				function(e) {
+					events.resultTouchStart(e);
+				},
+				false
+			);
+			
+			document.getElementById('result').addEventListener(
+				this.buttonModeEnd,
+				function(e) {
+					events.resultTouchEnd(e);
 				},
 				false
 			);
@@ -756,6 +780,43 @@
 				app.buttonPress(this.value);
 			}
 		
+		},
+		
+		resultTouchStart: function(event) {
+		
+			var d = new Date();
+			
+			this.start = {
+				x: event.changedTouches[0].pageX,
+				y: event.changedTouches[0].pageY,
+				time: d.getTime()
+			};
+		
+		},
+		
+		resultTouchEnd: function(event) {
+		
+			var d = new Date();
+			
+			if (d < this.start.time + 350) {
+			
+				var delta = {
+					x: event.changedTouches[0].pageX - this.start.x,
+					y: event.changedTouches[0].pageY - this.start.y
+				};
+				
+				if (delta.x > settings.minswipe * 4) {
+					app.clear();
+				}
+				else if (delta.x > settings.minswipe &&
+					(Math.abs(delta.y) / Math.abs(delta.x)) < 0.3) {
+						app.backspace();
+				}
+				
+				this.start = {};
+			
+			}
+		
 		}
 	
 	};
@@ -766,7 +827,7 @@
 	if ((('standalone' in window.navigator) && window.navigator.standalone) || settings.devmode) {
 	
 		document.ontouchstart = function(e) {
-			e.preventDefault();
+			return false;
 		};
 		
 		// Initialize app
