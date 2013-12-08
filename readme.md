@@ -6,7 +6,7 @@
 
 ## Support
 
-It has been fully tested on iOS 7 running on an iPhone 4, iPhone 4S and iPhone 5, but should work well on devices still running iOS 6. It has not be designed or tested to work with non-retina iPhones. An iPad version is in the works, but still a ways away from completion.
+The current version has been fully tested on iOS 7 running on an iPhone 4, iPhone 4S, iPhone 5 and iPhone 5s. It should work on iOS 6 but has not been tested.
 
 ## Features
 
@@ -15,7 +15,8 @@ It has been fully tested on iOS 7 running on an iPhone 4, iPhone 4S and iPhone 5
 - invert individual numbers (+/-)
 - backspace
 - results and equation history
-- HTML5 app caching
+- HTML5 app caching (so it'll work offline)
+- Landscape support
 
 ### History
 
