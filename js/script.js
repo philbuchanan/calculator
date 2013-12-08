@@ -11,7 +11,7 @@
 	var settings = {
 	
 		devmode: false,
-		version: '1.4.1',
+		version: '1.4.2',
 		history: 7,
 		timerlen: 750,
 		timer: null,
