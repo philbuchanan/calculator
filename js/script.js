@@ -3,7 +3,7 @@
 // A calculator iOS web application that supports
 // brackets and saved history.
 // 
-// @version 1.4.1
+// @version 1.4.3
 
 (function() {
 	'use strict';
@@ -11,7 +11,7 @@
 	var settings = {
 	
 		devmode: false,
-		version: '1.4.2',
+		version: '1.4.3',
 		history: 7,
 		timerlen: 750,
 		timer: null,
@@ -476,7 +476,7 @@
 			str = str.replace(/\//g, '<span>&divide;</span>');
 			str = str.replace(/\*/g, '<span>&times;</span>');
 			str = str.replace(/\+/g, '<span>+</span>');
-			str = str.replace(/\-/g, '<span>-</span>');
+			str = str.replace(/\-/g, '<span>&minus;</span>');
 			str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
 			str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
 			
