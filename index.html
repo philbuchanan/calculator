@@ -9,14 +9,19 @@
 	<meta name="description" content="A minimal calculator for iPhone with support for backspace, brackets and history.">
 	
 	<meta name="viewport" content="initial-scale=1, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="Calculator">
 	<meta name="format-detection" content="telephone=no">
 	
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-114.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-114.png">
+	
+	<script type="text/javascript">
+		navigator.standalone = navigator.standalone || (screen.height - document.documentElement.clientHeight < 40);
+	</script>
 </head>
 <body>
 	<div id="calculator">
