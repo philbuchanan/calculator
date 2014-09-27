@@ -18,12 +18,12 @@
 @equalsBgColor:         #d9d9d9;
 @equalsTextColor:       #000;
 
+@borderWidth:           0.5px;
+
 // History
 @historyBgColor:        rgba(250, 250, 250, 0.97);
 @historyNavBgColor:     #ebedeb;
 @historyRuleColor:      #ebedeb;
-
-@horizontalRule: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'><rect fill='#d9d9d9' x='0' y='0' width='1' height='0.5'/></svg>";
 
 
 /* RESET
@@ -86,9 +86,10 @@ p {
 	        transform: translate3d(0, 0, 15px);
 }
 #result {
-	background: url(@horizontalRule) left bottom repeat-x @displayBgColor;
+	background: @displayBgColor;
 	text-align: right;
 	font-size: 46px; // Must be updated in JS settings as well
+	border-bottom: @borderWidth solid @keypadRuleColor;
 	width: 100%;
 	height: 95px;
 	margin: 0;
@@ -135,6 +136,7 @@ p {
 	width: 100%;
 	height: 396px;
 	z-index: 3;
+	overflow: hidden;
 	-webkit-transform: translate3d(0, -234px, 3px);
 	        transform: translate3d(0, -234px, 3px);
 	-webkit-transition: all .4s ease-in-out;
@@ -164,7 +166,7 @@ p {
 	width: 100%;
 	margin: 0;
 	li {
-		background: url(@horizontalRule) left bottom repeat-x;
+		border-bottom: @borderWidth solid @keypadRuleColor;
 		padding: 0;
 		button {
 			position: static;
@@ -204,7 +206,7 @@ button {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 22px;
 	font-weight: 100;
-	border: 1px solid @keypadRuleColor;
+	border: @borderWidth solid @keypadRuleColor;
 	border-right: none;
 	border-bottom: none;
 	width: 25%;
@@ -277,10 +279,77 @@ button {
 }
 
 
+/* iPhone 6+
+   ---------------------------------- */
+
+@media (min-height: 640px) {
+	#result {
+		height: 104px;
+		padding-top: 38px;
+	}
+	#equation {
+		height: 65px;
+		padding-top: 17px;
+	}
+	#keypad button,
+	button {height: 75px;}
+	#history {
+		height: 450px;
+		-webkit-transform: translate3d(0, -280px, 3px);
+		        transform: translate3d(0, -280px, 3px);
+		.navbar {
+			height: 45px;
+			padding-top: 11px;
+			span {padding-top: 10px;}
+		}
+		&.active {
+			-webkit-transform: translate3d(0, 190px, 0);
+			        transform: translate3d(0, 190px, 0);
+		}
+	}
+	#keypad {
+		.row1 {bottom: 375px;}
+		.row2 {bottom: 300px;}
+		.row3 {bottom: 225px;}
+		.row4 {bottom: 150px;}
+		.row5 {bottom: 75px;}
+		.row6 {bottom: 0;}
+		#bs {
+			background-position-y: 30px;
+			&:active {background-position-y: -19px;}
+		}
+	}
+}
+
+
+/* iPhone 6
+   ---------------------------------- */
+
+@media (min-height: 667px) {
+	#result {
+		height: 121px;
+		padding-top: 45px;
+	}
+	#equation {
+		height: 75px;
+		padding-top: 22px;
+	}
+	#history {
+		height: 450px;
+		-webkit-transform: translate3d(0, -250px, 3px);
+		        transform: translate3d(0, -250px, 3px);
+		&.active {
+			-webkit-transform: translate3d(0, 217px, 0);
+			        transform: translate3d(0, 217px, 0);
+		}
+	}
+}
+
+
 /* iPhone 4
    ---------------------------------- */
 
-@media all and (max-height: 480px) {
+@media (max-height: 480px) {
 
 	#result {
 		height: 79px;
@@ -326,7 +395,7 @@ button {
 /* LANDSCAPE
    ---------------------------------- */
 
-@media all and (max-height: 320px) {
+@media (max-height: 320px) {
 
 	p {padding: 14px 36px 0;}
 	#result {
