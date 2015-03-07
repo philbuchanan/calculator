@@ -1,10 +1,10 @@
 /**
- * Copyright 2013 Phil Buchanan
+ * Copyright 2013-2015 Phil Buchanan
  *
- * A calculator iOS web application that supports
- * brackets and saved history.
+ * A calculator iOS web application that supports brackets, backspace and saved
+ * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 2.0
+ * @version 3.0
  */
 
 "use strict";
@@ -13,7 +13,7 @@ var devmode = true;
 
 function Calculator() {
 	this.settings = {
-		version: '2.5',
+		version: '3.0',
 		history: 100,
 		timerlen: 750,
 		timer: null,
@@ -511,7 +511,7 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
 	
 	this.updateDisplay();
 	this.saveAppState();
-}
+};
 
 
 
@@ -645,15 +645,6 @@ Calculator.prototype.addEventHandlers = function() {
 		buttonModeEnd = 'touchend';
 	}
 	
-	// Touch move events
-	this.historyList.addEventListener('touchmove', function() {
-		this.dragging = true;
-	}.bind(this), false);
-	
-	this.historyList.addEventListener('touchstart', function() {
-		this.dragging = false;
-	}.bind(this), false);
-	
 	// Keypad events
 	document.getElementById('bs').addEventListener(buttonModeStart, function() {
 		this.addTimer(this.clearAll.bind(this));
@@ -666,11 +657,23 @@ Calculator.prototype.addEventHandlers = function() {
 		}
 	}.bind(this), false);
 	
-	// History events
+	// History list events
 	this.historyList.addEventListener(buttonModeStart, function(event) {
-		this.addTimer(this.clearHistory.bind(this));
+		this.dragging = false;
 	}.bind(this), false);
 	
+	this.historyList.addEventListener('touchmove', function() {
+		this.dragging = true;
+	}.bind(this), false);
+	
+	this.historyList.addEventListener(buttonModeEnd, function(event) {
+		if (!this.dragging) {
+			this.appendHistoryItemToEquation(event.target.value);
+			this.closeHistoryPanel();
+		}
+	}.bind(this), false);
+	
+	// History close events
 	this.historyClose.addEventListener(buttonModeStart, function() {
 		this.addTimer(this.clearHistory.bind(this));
 	}.bind(this), false);
