@@ -21,47 +21,46 @@
 <body>
 	<div id="calculator" class="calculator">
 		<div class="statusbar"></div>
-		<div id="history">
+		<div id="history" class="history">
 			<div class="navbar">Your History<span id="history-close">&times;</span></div>
-			<ul id="history-list"></ul>
-			<p id="history-help">Your most recent results will be saved here every time you tap the equals button. A quick tap of one of these will use it in the current equation.<br/><br/>Tap and hold on the &lsquo;&times;&rsquo; button to clear your history.</p>
+			<ul id="history-list" class="history-list"></ul>
 		</div>
 		<div id="application" class="application">
 			<div id="result" class="result">0</div>
 			<div id="equation" class="equation"><div id="eq" class="eq"></div></div>
 			<div id="keypad" class="keypad">
-				<button value="c">c</button>
-				<button value="h" id="his" class="btn-history">History</button>
-				<button value="b" id="bs" class="btn-backspace"></button>
+				<button value="c" class="btn-clear">c</button>
+				<button value="h" class="btn-history">History</button>
+				<button value="b" class="btn-backspace"></button>
 				<button value="+-" class="btn-plus-minus">+/&minus;</button>
-				<button value="(">(</button>
-				<button value=")">)</button>
-				<button value="/" class="operator">&divide;</button>
-				<button value="7">7</button>
-				<button value="8">8</button>
-				<button value="9">9</button>
-				<button value="*" class="operator">&times;</button>
-				<button value="4">4</button>
-				<button value="5">5</button>
-				<button value="6">6</button>
-				<button value="-" class="operator">&minus;</button>
-				<button value="1">1</button>
-				<button value="2">2</button>
-				<button value="3">3</button>
-				<button value="+" class="operator">+</button>
-				<button value="0">0</button>
-				<button value=".">.</button>
+				<button value="(" class="btn-bracket">(</button>
+				<button value=")" class="btn-bracket">)</button>
+				<button value="/" class="btn-operator">&divide;</button>
+				<button value="7" class="btn-digit">7</button>
+				<button value="8" class="btn-digit">8</button>
+				<button value="9" class="btn-digit">9</button>
+				<button value="*" class="btn-operator">&times;</button>
+				<button value="4" class="btn-digit">4</button>
+				<button value="5" class="btn-digit">5</button>
+				<button value="6" class="btn-digit">6</button>
+				<button value="-" class="btn-operator">&minus;</button>
+				<button value="1" class="btn-digit">1</button>
+				<button value="2" class="btn-digit">2</button>
+				<button value="3" class="btn-digit">3</button>
+				<button value="+" class="btn-operator">+</button>
+				<button value="0" class="btn-digit">0</button>
+				<button value="." class="btn-decimal">.</button>
 				<button value="=" class="btn-equals">=</button>
 			</div>
 		</div>
 	</div>
-	<div id="install" class="install">
+	<div class="installation">
 		<div class="instructions">
 			<div class="app-icon"></div>
 			<span>Add to Home Screen</span><br/>
 			to install on the iPhone
 		</div>
-		<a href="https://twitter.com/philbuchanan" target="_blank" id="twitter">@philbuchanan</a>
+		<a href="https://twitter.com/philbuchanan" target="_blank" class="twitter">@philbuchanan</a>
 	</div>
 	<script src="js/slideout.min.js" type="text/javascript"></script>
 	<script src="js/script.js" type="text/javascript"></script>

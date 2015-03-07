@@ -14,7 +14,7 @@ var devmode = true;
 function Calculator() {
 	this.settings = {
 		version: '2.5',
-		history: 8,
+		history: 100,
 		timerlen: 750,
 		timer: null,
 		fontsize: 46,
@@ -507,7 +507,7 @@ Calculator.prototype.appendToHistoryList = function(item) {
 	button.innerText = this.addCommas(item.result);
 	
 	span.className = 'equ';
-	span.innerHTML = this.replaceOperators(item.equ);
+	span.innerHTML = this.replaceOperators(item.equ.toString());
 	
 	button.appendChild(span);
 	li.appendChild(button);

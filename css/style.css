@@ -123,6 +123,24 @@ p {
 .application {
   height: 100%;
 }
+button {
+  color: #111111;
+  background: none;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 22px;
+  line-height: 20px;
+  font-weight: 100;
+  border: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+button:active {
+  color: #ffffff;
+  background: #099d93;
+}
 .statusbar {
   position: fixed;
   top: 0;
@@ -168,58 +186,59 @@ p {
 }
 /* HISTORY
    ---------------------------------- */
-#history {
-  display: none;
+.history-list {
+  list-style: none;
+}
+.history-list button {
+  text-align: left;
+  border-top: 1px dashed #d9d9d9;
+  padding: 10px 12px;
+}
+.history-list .equ {
+  float: right;
+  color: #999999;
+  font-size: 13px;
+  line-height: 20px;
+  max-width: 100%;
+  padding: 3px 0 0 5px;
+  white-space: nowrap;
+  text-align: right;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.history-list .equ span {
+  margin: 0 3px;
 }
 .keypad {
   border-top: 6px solid #099d93;
   height: 68%;
 }
-button {
+.keypad button {
   float: left;
-  color: #111111;
-  background: none;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 22px;
-  font-weight: 100;
-  border: 1px solid #d9d9d9;
-  border-right: none;
-  border-bottom: none;
+  border-bottom: 1px solid #d9d9d9;
   width: 25%;
   height: 16.66666666%;
-  margin: 0;
-  padding: 0;
 }
-button:active {
-  color: #ffffff;
-  background: #099d93;
-}
-.btn-equals {
+button.btn-equals {
   color: #000000;
   background: #d9d9d9;
   width: 50%;
 }
-.btn-plus-minus {
+button.btn-plus-minus {
   letter-spacing: 2px;
 }
-.btn-backspace {
+button.btn-backspace {
   background-image: url("../assets/backspace.png");
   background-repeat: no-repeat;
   background-position: center 25px;
   background-size: 25px 64px;
 }
-.btn-backspace:active {
+button.btn-backspace:active {
   background-position-y: -24px;
 }
-.btn-history {
+button.btn-history {
   font-size: 18px;
   width: 50%;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-.flash {
-  color: #ffffff;
-  background: #099d93;
 }
 /* In-Call
    ---------------------------------- */
@@ -233,23 +252,25 @@ button:active {
    ---------------------------------- */
 /* INSTALL SCREEN
    ---------------------------------- */
-#install {
+.installation {
   display: none;
 }
-body.install {
+.install {
   background: #383838;
   background-attachment: fixed;
   height: 100%;
 }
-body.install .calculator {
+.install .calculator {
   display: none;
 }
-body.install .install {
+.install .installation {
   display: block;
+}
+.installation {
   margin: 0 auto;
   width: 175px;
 }
-body.install .instructions {
+.instructions {
   position: absolute;
   top: 50%;
   color: #d9d9d9;
@@ -261,19 +282,19 @@ body.install .instructions {
   height: 180px;
   margin-top: -90px;
 }
-body.install .instructions span {
+.instructions span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 800;
 }
-body.install .app-icon {
+.app-icon {
   background: url("../assets/app-icon-large.png") no-repeat;
   background-size: 125px 125px;
   width: 125px;
   height: 125px;
   margin: 0 auto 20px;
 }
-body.install .twitter {
+.twitter {
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -286,6 +307,6 @@ body.install .twitter {
   width: 130px;
   margin-left: -65px;
 }
-body.install .twitter:hover {
+.twitter:hover {
   color: #d9d9d9;
 }

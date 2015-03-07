@@ -86,6 +86,26 @@ p {
 	height: 100%;
 }
 
+button {
+	color: @keypadTextColor;
+	background: none;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 22px;
+	line-height: 20px;
+	font-weight: 100;
+	border: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	-webkit-transition: all 0.2s ease;
+	        transition: all 0.2s ease;
+	
+	&:active {
+		color: @keypadActiveTextColor;
+		background: @keypadActiveBgColor;
+	}
+}
+
 
 
 // DISPLAY
@@ -145,8 +165,35 @@ p {
 /* HISTORY
    ---------------------------------- */
 
-#history {
-	display: none;
+.history {
+	
+}
+
+.history-list {
+	list-style: none;
+	
+	button {
+		text-align: left;
+		border-top: @borderWidth dashed @keypadRuleColor;
+		padding: 10px 12px;
+	}
+	
+	.equ {
+		float: right;
+		color: @equationOperatorColor;
+		font-size: 13px;
+		line-height: 20px;
+		max-width: 100%;
+		padding: 3px 0 0 5px;
+		white-space: nowrap;
+		text-align: right;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		
+		span {
+			margin: 0 3px;
+		}
+	}
 }
 
 
@@ -157,40 +204,26 @@ p {
 .keypad {
 	border-top: 6px solid @displayThickRuleColor;
 	height: 68%;
-}
-
-button {
-	float: left;
-	color: @keypadTextColor;
-	background: none;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 22px;
-	font-weight: 100;
-	border: @borderWidth solid @keypadRuleColor;
-	border-right: none;
-	border-bottom: none;
-	width: 25%;
-	height: 16.66666666%;
-	margin: 0;
-	padding: 0;
 	
-	&:active {
-		color: @keypadActiveTextColor;
-		background: @keypadActiveBgColor;
+	button {
+		float: left;
+		border-bottom: @borderWidth solid @keypadRuleColor;
+		width: 25%;
+		height: 16.66666666%;
 	}
 }
 
-.btn-equals {
+button.btn-equals {
 	color: @equalsTextColor;
 	background: @equalsBgColor;
 	width: 50%;
 }
 
-.btn-plus-minus {
+button.btn-plus-minus {
 	letter-spacing: 2px;
 }
 
-.btn-backspace {
+button.btn-backspace {
 	background-image: url("../assets/backspace.png");
 	background-repeat: no-repeat;
 	background-position: center 25px;
@@ -201,16 +234,9 @@ button {
 	}
 }
 
-.btn-history {
+button.btn-history {
 	font-size: 18px;
 	width: 50%;
-	-webkit-transition: all 0.2s ease;
-	        transition: all 0.2s ease;
-}
-
-.flash {
-	color: @keypadActiveTextColor;
-	background: @keypadActiveBgColor;
 }
 
 
@@ -258,11 +284,11 @@ button {
 /* INSTALL SCREEN
    ---------------------------------- */
 
-#install {
+.installation {
 	display: none;
 }
 
-body.install {
+.install {
 	background: #383838;
 	background-attachment: fixed;
 	height: 100%;
@@ -271,54 +297,57 @@ body.install {
 		display: none;
 	}
 	
-	.install {
+	.installation {
 		display: block;
-		margin: 0 auto;
-		width: 175px;
 	}
+}
 	
-	.instructions {
-		position: absolute;
-		top: 50%;
+.installation {
+	margin: 0 auto;
+	width: 175px;
+}
+
+.instructions {
+	position: absolute;
+	top: 50%;
+	color: #d9d9d9;
+	text-align: center;
+	font-size: 14px;
+	line-height: 20px;
+	text-shadow: 0 1px 2px #000;
+	width: 175px;
+	height: 180px;
+	margin-top: -90px;
+	
+	span {
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-size: 16px;
+		font-weight: 800;
+	}
+}
+
+.app-icon {
+	background: url("../assets/app-icon-large.png") no-repeat;
+	background-size: 125px 125px;
+	width: 125px;
+	height: 125px;
+	margin: 0 auto 20px;
+}
+
+.twitter {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	color: @keypadActiveBgColor;
+	text-align: center;
+	font-size: 14px;
+	line-height: 20px;
+	text-decoration: none;
+	text-shadow: 0 1px 2px #000;
+	width: 130px;
+	margin-left: -65px;
+	
+	&:hover {
 		color: #d9d9d9;
-		text-align: center;
-		font-size: 14px;
-		line-height: 20px;
-		text-shadow: 0 1px 2px #000;
-		width: 175px;
-		height: 180px;
-		margin-top: -90px;
-		
-		span {
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			font-size: 16px;
-			font-weight: 800;
-		}
-	}
-	
-	.app-icon {
-		background: url("../assets/app-icon-large.png") no-repeat;
-		background-size: 125px 125px;
-		width: 125px;
-		height: 125px;
-		margin: 0 auto 20px;
-	}
-	
-	.twitter {
-		position: fixed;
-		bottom: 20px;
-		left: 50%;
-		color: @keypadActiveBgColor;
-		text-align: center;
-		font-size: 14px;
-		line-height: 20px;
-		text-decoration: none;
-		text-shadow: 0 1px 2px #000;
-		width: 130px;
-		margin-left: -65px;
-		
-		&:hover {
-			color: #d9d9d9;
-		}
 	}
 }
