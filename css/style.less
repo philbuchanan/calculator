@@ -56,6 +56,7 @@
 @borderWidth:                       0.5px;
 
 
+
 // RESET
 // ----------------------------------
  
@@ -79,6 +80,7 @@ blockquote, q {quotes: none;}
 hr {display: block; height: 1px; border: 0; border-top: 1px solid #000; margin: 1em 0; padding: 0;}
 input, select {vertical-align: middle;}
 button, input, select, textarea {margin: 0;}
+
 
 
 // LAYOUT
@@ -166,7 +168,7 @@ button {
 	
 	> span {
 		position: relative;
-		top: 50%;
+		top: 49%;
 		right: 12px;
 		margin-right: -12px;
 	}
@@ -178,7 +180,7 @@ button {
 	text-align: right;
 	width: 100%;
 	margin-bottom: 0;
-	padding: 13px 12px 0;
+	padding: 17px 12px 0;
 	white-space: nowrap;
 	overflow: hidden;
 	
@@ -200,6 +202,7 @@ button {
 		}
 	}
 }
+
 
 
 // HISTORY
@@ -299,6 +302,7 @@ button {
 	right: 0;
 	bottom: 0;
 	left: 0;
+	background: @keypadBgColor;
 	border-top: 6px solid @keypadSeparatorRuleColor;
 	height: 68.4%;
 	
@@ -370,44 +374,68 @@ button {
 
 
 
-/* In-Call
-   ---------------------------------- */
+// iPhone 4 and lower
+// ----------------------------------
 
-@media (max-height: 528px) and (min-height: 528px) {
-	
+@media (min-height: 480px) {
+	.keypad {
+		height: 68.5%;
+	}
 }
 
 
-/* iPhone 6+
-   ---------------------------------- */
 
-@media (min-height: 640px) {
-	
+// iPhone 5, 5s & 5c
+// ----------------------------------
+
+@media (min-height: 568px) {
+	.keypad {
+		height: 68.4%;
+	}
 }
 
 
-/* iPhone 6
-   ---------------------------------- */
+
+// iPhone 6
+// ----------------------------------
 
 @media (min-height: 667px) {
-	
+	.keypad {
+		height: 68.4%;
+	}
 }
 
 
-/* iPhone 4
-   ---------------------------------- */
 
-@media (max-height: 480px) {
-	
+// iPhone 6+
+// ----------------------------------
+
+@media (min-height: 736px) {
+	.keypad {
+		height: 68.5%;
+	}
 }
 
 
-/* LANDSCAPE
-   ---------------------------------- */
+
+// iPhone 6+
+// ----------------------------------
+
+@media (min-height: 768px) {
+	.keypad {
+		height: 68.6%;
+	}
+}
+
+
+
+// LANDSCAPE
+// ----------------------------------
 
 @media (max-height: 320px) {
 	
 }
+
 
 
 // INSTALL SCREEN

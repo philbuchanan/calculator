@@ -166,7 +166,7 @@ button:active {
 }
 .result > span {
   position: relative;
-  top: 50%;
+  top: 49%;
   right: 12px;
   margin-right: -12px;
 }
@@ -176,7 +176,7 @@ button:active {
   text-align: right;
   width: 100%;
   margin-bottom: 0;
-  padding: 13px 12px 0;
+  padding: 17px 12px 0;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -270,6 +270,7 @@ button:active {
   right: 0;
   bottom: 0;
   left: 0;
+  background: #333333;
   border-top: 6px solid #099d93;
   height: 68.4%;
 }
@@ -327,16 +328,31 @@ button:active {
   background-color: #333333;
   font-size: 26px;
 }
-/* In-Call
-   ---------------------------------- */
-/* iPhone 6+
-   ---------------------------------- */
-/* iPhone 6
-   ---------------------------------- */
-/* iPhone 4
-   ---------------------------------- */
-/* LANDSCAPE
-   ---------------------------------- */
+@media (min-height: 480px) {
+  .keypad {
+    height: 68.5%;
+  }
+}
+@media (min-height: 568px) {
+  .keypad {
+    height: 68.4%;
+  }
+}
+@media (min-height: 667px) {
+  .keypad {
+    height: 68.4%;
+  }
+}
+@media (min-height: 736px) {
+  .keypad {
+    height: 68.5%;
+  }
+}
+@media (min-height: 768px) {
+  .keypad {
+    height: 68.6%;
+  }
+}
 .installation {
   display: none;
 }
