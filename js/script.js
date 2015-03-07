@@ -9,6 +9,8 @@
 
 "use strict";
 
+var devmode = true;
+
 function Calculator() {
 	this.settings = {
 		version: '2.5',
@@ -25,6 +27,9 @@ function Calculator() {
 		brackets: 0,
 		last: null
 	};
+	
+	this.result = document.getElementById('result');
+	this.equation = document.getElementById('equation');
 	
 	this.addEventHandlers();
 	
@@ -66,14 +71,103 @@ Calculator.prototype.saveAppState = function() {
 
 
 
-Calculator.prototype.buttonPress = function(button) {
+/**
+ * Called when an input button is pressed
+ * This includes digits, decimal, operators and brackets.
+ *
+ * @param value string The value of the button pressed
+ */
+Calculator.prototype.buttonPress = function(value) {
+	var digit = this.appstate.last,
+		number = this.getLastNum();
 	
+	if (digit === null) {
+		if (/[\d(]/.test(value)) {
+			if (value === '(') {
+				this.appstate.brackets += 1;
+			}
+			
+			this.appendToEquation(value, true);
+		}
+		else {
+			if (value !== ')') {
+				this.appendToEquation(value);
+			}
+		}
+	}
+	else {
+		// Digits
+		if (/\d/.test(value)) {
+			if (/[\d.(+*\-\/]/.test(digit)) {
+				if (digit === '0' && this.appstate.input.length === 1) {
+					this.appendToEquation(value, true);
+				}
+				else if (this.isValidNum(number + value)) {
+					this.appendToEquation(value);
+				}
+			}
+		}
+		// Operators
+		else if (/[+*\-\/]/.test(value)) {
+			if (/[\d)]/.test(digit)) {
+				this.appendToEquation(value);
+			}
+			else if (/[+*\-\/]/.test(digit)) {
+				this.backspace();
+				this.appendToEquation(value);
+			}
+		}
+		// Decimal
+		else if (value === '.') {
+			if (/[\d(+*\-\/]/.test(digit)) {
+				if (this.isValidNum(number + value)) {
+					this.appendToEquation(value);
+				}
+			}
+		}
+		// Open bracket
+		else if (value === '(') {
+			if (digit === '0' && number.length === 1) {
+				this.appendToEquation(value, true);
+			}
+			else if (/[(+*\-\/]/.test(digit)) {
+				this.appstate.brackets += 1;
+				this.appendToEquation(value);
+			}
+		}
+		// Close bracket
+		else if (value === ')') {
+			if (digit === '(') {
+				this.backspace();
+			}
+			else if (/[\d)]/.test(digit) && this.appstate.brackets > 0) {
+				this.appstate.brackets -= 1;
+				this.appendToEquation(value);
+			}
+		}
+	}
 };
 
 
 
+/**
+ * Append an operator, operand or bracket to the equation string
+ * Whenever the equation is updated, the display should also be updated.
+ *
+ * @param value string The value to add to the equation
+ * @param clear bool Should the appstate input be cleared first
+ */
 Calculator.prototype.appendToEquation = function(value, clear) {
+	if (clear) {
+		this.appstate.input = value;
+	}
+	else {
+		this.appstate.input += value;	
+	}
 	
+	this.appstate.last = value;
+	
+	this.updateDisplay();
 };
 
 
@@ -96,12 +190,18 @@ Calculator.prototype.backspace = function() {
 
 
 
-Calculator.prototype.clear = function() {
+Calculator.prototype.clearAll = function() {
 	
 };
 
 
 
+/**
+ * Is the given number a valid number (e.g. -12.34)
+ *
+ * @param num double The number to test
+ * return bool True if valid, else false
+ */
 Calculator.prototype.isValidNum = function(num) {
 	if (num[0] === '-') {
 		num = num.substr(1, num.length);
@@ -148,32 +248,121 @@ Calculator.prototype.getLastNum = function() {
 
 
 
+/**
+ * Update the calculator display
+ */
 Calculator.prototype.updateDisplay = function() {
+	var eq = this.appstate.input.toString(),
+		result = this.compute(eq);
 	
+	if (result !== null && !isNaN(result)) {
+		if (result > 9E13) {
+			this.result.innerHTML = '<span>' + result.toExponential(this.settings.decimals) + '</span>';
+		}
+		else {
+			this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
+		}
+		this.resizeFont();
+	}
+	
+	this.updateDisplayEquation(eq);
+	
+	this.saveAppState();
 };
 
 
 
+/**
+ * Updates the displays equation string
+ * Directly manipulates the DOM.
+ *
+ * @param equation string The equation string
+ */
 Calculator.prototype.updateDisplayEquation = function(equation) {
+	var ele = document.getElementById('eq'),
+		i = equation.length,
+		width;
 	
+	ele.innerHTML = this.replaceOperators(equation);
+	width = ele.offsetWidth;
+	
+	while (width > this.equation.offsetWidth - 24) {
+		ele.innerHTML = '...' + this.replaceOperators(equation.substr(equation.length - i, i));
+		width = ele.offsetWidth;
+		i -= 1;
+	}
 };
 
 
 
-Calculator.prototype.replaceOperators= function(str) {
+/**
+ * Replace operators with display strings
+ *
+ * @param str string The equation string to replace the operators in
+ * return string The new display string
+ */
+Calculator.prototype.replaceOperators = function(str) {
+	str = str.replace(/\//g, '<span>&divide;</span>');
+	str = str.replace(/\*/g, '<span>&times;</span>');
+	str = str.replace(/\+/g, '<span>+</span>');
+	str = str.replace(/\-/g, '<span>&minus;</span>');
+	str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
+	str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
 	
+	return str;
 };
 
 
 
+/**
+ * Resize the result font to fit within the width of it's container
+ * Directly manipulates the DOM.
+ */
 Calculator.prototype.resizeFont = function() {
+	var size, displayWidth, textWidth;
 	
+	size = this.settings.fontsize;
+	this.result.style.fontSize = size + 'px';
+	displayWidth = window.innerWidth - 24;
+	textWidth = this.result.childNodes[0].offsetWidth;
+	
+	while (textWidth > displayWidth) {
+		size -= 1;
+		this.result.style.fontSize = size + 'px';
+		textWidth = this.result.childNodes[0].offsetWidth;
+		
+		if (size === 10) {
+			break;
+		}
+	}
 };
 
 
 
-Calculator.prototype.addCommas = function() {
+/**
+ * Add commas to a number string
+ *
+ * @param number double The number to add commas to
+ * return string The new number string
+ */
+Calculator.prototype.addCommas = function(number) {
+	var parts, x, y, regx;
 	
+	parts = number.toString().split('.');
+	x = parts[0];
+	if (parts.length > 1) {
+		y = '.' + parts[1];
+	}
+	else {
+		y = '';
+	}
+	regx = /(\d+)(\d{3})/;
+	
+	while (regx.test(x)) {
+		x = x.replace(regx, '$1' + ',' + '$2');
+	}
+	
+	return x + y;
 };
 
 
@@ -184,7 +373,7 @@ Calculator.prototype.addCommas = function() {
  * @param equation string The equation string to compute
  * return double The result of the computation, else null if it cannot be computed 
  */
-Calculator.prototye.compute = function(equation) {
+Calculator.prototype.compute = function(equation) {
 	var result,
 		round = Math.pow(10, this.settings.decimals);
 	
@@ -239,12 +428,45 @@ Calculator.prototype.addEventHandlers = function() {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
+	
+	buttons.addEventListener(buttonModeEnd, function(event) {
+		this.buttonEvent(event.target.value);
+	}.bind(this), false);
+};
+
+
+
+/**
+ * The main function called when a button is pressed
+ *
+ * @param value string The value of the button pressed
+ */
+Calculator.prototype.buttonEvent = function(value) {
+	switch (value) {
+		case '=':
+			this.equate();
+			break;
+		case 'b':
+			this.backspace();
+			break;
+		case 'c':
+			this.clearAll();
+			break;
+		case '+-':
+			this.invert();
+			break;
+		case 'h':
+			
+			break;
+		default:
+			this.buttonPress(value);
+	}
 };
 
 
 
 // Is app installed?
-if ((('standalone' in window.navigator) && window.navigator.standalone)) {
+if ((('standalone' in window.navigator) && window.navigator.standalone) || devmode) {
 
 	document.ontouchstart = function(e) {
 		return false;
