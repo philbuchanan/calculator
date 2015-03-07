@@ -30,9 +30,12 @@ function Calculator() {
 	
 	this.history = [];
 	
-	this.result      = document.getElementById('result');
-	this.equation    = document.getElementById('equation');
-	this.historyList = document.getElementById('history-list');
+	this.calculator   = document.getElementById('calculator');
+	this.result       = document.getElementById('result');
+	this.equation     = document.getElementById('equation');
+	this.keypad       = document.getElementById('keypad');
+	this.historyPanel = document.getElementById('history');
+	this.historyList  = document.getElementById('history-list');
 	
 	this.addEventHandlers();
 	
@@ -467,6 +470,45 @@ Calculator.prototype.compute = function(equation) {
 
 
 /**
+ * Open history panel
+ */
+Calculator.prototype.openHistoryPanel = function() {
+	this.calculator.classList.add('history--open');
+};
+
+
+
+/**
+ * Open history panel
+ */
+Calculator.prototype.closeHistoryPanel = function() {
+	this.calculator.classList.remove('history--open');
+};
+
+
+
+/**
+ * Append a saved history item to the equation string
+ *
+ * @param value string The history item string to add to the equation
+ */
+Calculator.prototype.appendHistoryItemToEquation = function(value) {
+	if (this.appstate.last === null) {
+		this.appstate.input = value;
+	}
+	else if (/[(+*\-\/]/.test(this.appstate.last)) {
+		this.appstate.input += value;
+	}
+	
+	this.appstate.last = value.charAt(value.length - 1);
+	
+	this.updateDisplay();
+	this.saveAppState();
+}
+
+
+
+/**
  * Add a history item to the history list
  *
  * @param item object The history item object to add
@@ -554,8 +596,7 @@ Calculator.prototype.loadHistory = function() {
  * Handles all events
  */
 Calculator.prototype.addEventHandlers = function() {
-	var buttons = document.getElementById('keypad'),
-		buttonModeStart = 'mousedown',
+	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
@@ -563,8 +604,13 @@ Calculator.prototype.addEventHandlers = function() {
 		buttonModeEnd = 'touchend';
 	}
 	
-	buttons.addEventListener(buttonModeEnd, function(event) {
+	this.keypad.addEventListener(buttonModeEnd, function(event) {
 		this.buttonEvent(event.target.value);
+	}.bind(this), false);
+	
+	this.historyList.addEventListener(buttonModeEnd, function(event) {
+		this.appendHistoryItemToEquation(event.target.value);
+		this.closeHistoryPanel();
 	}.bind(this), false);
 };
 
@@ -590,7 +636,7 @@ Calculator.prototype.buttonEvent = function(value) {
 			this.invertNumber();
 			break;
 		case 'h':
-			
+			this.openHistoryPanel();
 			break;
 		default:
 			this.buttonPress(value);
@@ -608,13 +654,6 @@ if ((('standalone' in window.navigator) && window.navigator.standalone) || devmo
 	
 	// Initialize app
 	var calculator = new Calculator();
-	
-	/*var history = new Slideout({
-		'panel': document.getElementById('application'),
-		'menu':  document.getElementById('history'),
-		'padding': 256,
-		'tolerance': 70
-	});*/
 }
 else {
 	document.body.setAttribute('class', 'install');

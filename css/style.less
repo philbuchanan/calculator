@@ -16,12 +16,11 @@
 @displayRuleColor:           #e8e8e8;
 
 // Keypad
-@keypadBgColor:              #333;
 @keypadTextColor:            #fff;
+@keypadBgColor:              #333;
 @keypadBorderColor:          #000;
-@keypadActiveBgColor:        #099d93;
 @keypadActiveTextColor:      #fff;
-
+@keypadActiveBgColor:        #099d93;
 @keypadSeparatorRuleColor:   #099d93;
 
 @clearTextColor:             #bbb;
@@ -44,10 +43,13 @@
 @equalsBgColor:              #333;
 
 // History
-@historyListTextColor:       #fff;
+@historyListTextColor:       #444;
 @historyListEquationColor:   #999;
-@historyListBgColor:         #333;
-@historyListBorderColor:     #000;
+@historyListBgColor:         #fff;
+@historyListBorderColor:     #d9d9d9;
+@historyActiveTextColor:     #fff;
+@historyActiveBgColor:       #099d93;
+@historySeparatorRuleColor:  #d9d9d9;
 
 @borderWidth:                0.5px;
 
@@ -120,8 +122,7 @@ button {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	-webkit-transition: all 0.2s ease;
-	        transition: all 0.2s ease;
+	transition: color 0.2s ease, background-color 0.2s ease;
 	
 	&:active {
 		color: @keypadActiveTextColor;
@@ -131,6 +132,16 @@ button {
 
 .calculator {
 	position: relative;
+	background: #fff;
+	overflow: hidden;
+}
+
+.application {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transition: top 0.4s ease-in-out;
 }
 
 
@@ -197,19 +208,22 @@ button {
 }
 
 
-/* HISTORY
-   ---------------------------------- */
+// HISTORY
+// ----------------------------------
 
 .history {
 	position: absolute;
-	top: 21px;
+	top: -100%;
 	left: 0;
 	background-color: @historyListBgColor;
+	border-bottom: 3px solid @historySeparatorRuleColor;
 	width: 100%;
-	height: 100%;
+	height: 68.4%;
+	padding-top: 21px;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 	z-index: 90;
+	transition: top 0.4s ease-in-out;
 }
 
 .history-list {
@@ -219,8 +233,13 @@ button {
 		color: @historyListTextColor;
 		background-color: @historyListBgColor;
 		text-align: left;
-		border-top: @borderWidth dashed @historyListBorderColor;
+		border-top: @borderWidth solid @historyListBorderColor;
 		padding: 10px 12px;
+		
+		&:active {
+			color: @historyActiveTextColor;
+			background-color: @historyActiveBgColor;
+		}
 	}
 	
 	.equ {
@@ -238,6 +257,16 @@ button {
 		span {
 			margin: 0 3px;
 		}
+	}
+}
+
+.history--open {
+	.history {
+		top: 0;
+	}
+	
+	.application {
+		top: 68.4%;
 	}
 }
 
@@ -283,12 +312,8 @@ button {
 	background-color: @backspaceBgColor;
 	background-image: url("../assets/backspace.png");
 	background-repeat: no-repeat;
-	background-position: center 25px;
-	background-size: 25px 64px;
-	
-	&:active {
-		background-position-y: -24px;
-	}
+	background-position: center center;
+	background-size: 25px 16px;
 }
 
 .btn-plus-minus {
@@ -364,8 +389,8 @@ button {
 }
 
 
-/* INSTALL SCREEN
-   ---------------------------------- */
+// INSTALL SCREEN
+// ----------------------------------
 
 .installation {
 	display: none;
