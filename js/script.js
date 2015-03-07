@@ -28,8 +28,11 @@ function Calculator() {
 		last: null
 	};
 	
-	this.result = document.getElementById('result');
-	this.equation = document.getElementById('equation');
+	this.history = [];
+	
+	this.result      = document.getElementById('result');
+	this.equation    = document.getElementById('equation');
+	this.historyList = document.getElementById('history-list');
 	
 	this.addEventHandlers();
 	
@@ -172,26 +175,100 @@ Calculator.prototype.appendToEquation = function(value, clear) {
 
 
 
+/**
+ * Invert last number (from positive to negative and vise versa)
+ */
 Calculator.prototype.invertNumber = function() {
+	var str = this.appstate.input,
+		lastNum = this.getLastNum(),
+		len,
+		before;
 	
+	if (lastNum) {
+		len = lastNum.length;
+		before = str.charAt(str.length - len - 1);
+		
+		if (/[+*\-\/()]/.test(before) || before === '') {
+		
+			if (lastNum[0] === '-') {
+				lastNum = lastNum.substr(1, len);
+			}
+			else {
+				lastNum = '-' + lastNum;
+			}
+		
+		}
+		
+		this.appstate.input = str.substr(0, str.length - len) + lastNum;
+		
+		this.updateDisplay();
+	}
 };
 
 
 
+/**
+ * Called when the equals button is pressed
+ * Evaluates the current equation string.
+ */
 Calculator.prototype.equate = function() {
+	var result = this.compute(this.appstate.input),
+		historyItem = {};
 	
+	if (result !== null) {
+		historyItem.result = result;
+		historyItem.equ = this.appstate.input;
+		this.addHistoryItem(historyItem);
+		this.clearAll(result.toString());
+	}
 };
 
 
 
+/**
+ * Remove the last input character
+ */
 Calculator.prototype.backspace = function() {
+	var input = this.appstate.input,
+		last = this.appstate.last;
 	
+	if (last === '(') {
+		this.appstate.brackets -= 1;
+	}
+	else if (last === ')') {
+		this.appstate.brackets += 1;
+	}
+	
+	if (input.length > 1 && last !== null) {
+		this.appstate.input = input.slice(0, input.length - 1);
+		this.appstate.last = input.charAt(input.length - 2);
+		
+		this.updateDisplay();
+	}
+	else {
+		this.clearAll();
+	}
 };
 
 
 
-Calculator.prototype.clearAll = function() {
+/**
+ * Clear the current state of the calculator
+ *
+ * @param result string The string to update the display with
+ */
+Calculator.prototype.clearAll = function(result) {
+	if (result) {
+		this.appstate.input = result;
+	}
+	else {
+		this.appstate.input = 0;
+	}
 	
+	this.appstate.brackets = 0;
+	this.appstate.last = null;
+	
+	this.updateDisplay();
 };
 
 
@@ -389,8 +466,65 @@ Calculator.prototype.compute = function(equation) {
 
 
 
-Calculator.addHistoryItem = function(item) {
+/**
+ * Add a history item to the history list
+ *
+ * @param item object The history item object to add
+ */
+Calculator.prototype.addHistoryItem = function(item) {
+	var i = this.history.length - 1,
+		ele;
 	
+	if (typeof this.history[i] !== 'object' || item.result !== this.history[i].result) {
+		while (this.history.length >= this.settings.history) {
+			this.history.shift();
+			ele = this.historyList.childNodes[i];
+			ele.parentNode.removeChild(ele);
+			i -= 1;
+		}
+		
+		this.history.push(item);
+		
+		this.appendToHistoryList(item);
+		this.saveHistory();
+	}
+};
+
+
+
+/**
+ * Updates the history listing
+ *
+ * @param item object The history item to add to the display
+ */
+Calculator.prototype.appendToHistoryList = function(item) {
+	var li     = document.createElement('li'),
+		button = document.createElement('button'),
+		span   = document.createElement('span'),
+		children = this.historyList.childNodes;
+	
+	button.value = item.result;
+	button.innerText = this.addCommas(item.result);
+	
+	span.className = 'equ';
+	span.innerHTML = this.replaceOperators(item.equ);
+	
+	button.appendChild(span);
+	li.appendChild(button);
+	
+	this.historyList.insertBefore(li, children[0]);
+};
+
+
+
+/**
+ * Save the calculator history into local storage
+ */
+Calculator.prototype.saveHistory = function() {
+	var json;
+	
+	json = JSON.stringify(this.history);
+	localStorage.setItem('history', json);
 };
 
 
@@ -410,7 +544,7 @@ Calculator.prototype.loadHistory = function() {
 	}
 	
 	for (i = 0; i < this.history.length; i += 1) {
-		this.appendItem(this.history[i]);
+		this.appendToHistoryList(this.history[i]);
 	}
 };
 
@@ -453,7 +587,7 @@ Calculator.prototype.buttonEvent = function(value) {
 			this.clearAll();
 			break;
 		case '+-':
-			this.invert();
+			this.invertNumber();
 			break;
 		case 'h':
 			
