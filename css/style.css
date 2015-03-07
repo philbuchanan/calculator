@@ -116,10 +116,16 @@ body {
   line-height: 24px;
   width: 100%;
   margin: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-p {
-  text-align: center;
-  padding: 24px 36px 0;
+.calculator {
+  position: relative;
+  overflow: hidden;
 }
 button {
   color: #ffffff;
@@ -137,18 +143,6 @@ button {
 button:active {
   color: #ffffff;
   background-color: #099d93;
-}
-.calculator {
-  position: relative;
-  background: #fff;
-  overflow: hidden;
-}
-.application {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  transition: top 0.4s ease-in-out;
 }
 .statusbar {
   position: fixed;
@@ -202,26 +196,51 @@ button:active {
 }
 .history {
   position: absolute;
-  top: -100%;
+  top: 100%;
   left: 0;
-  background-color: #ffffff;
-  border-bottom: 3px solid #d9d9d9;
+  background-color: #333333;
   width: 100%;
   height: 68.4%;
-  padding-top: 21px;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   z-index: 90;
   transition: top 0.4s ease-in-out;
+}
+.history-titlebar {
+  position: relative;
+  color: #ffffff;
+  background-color: #262626;
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: bold;
+  padding: 12px;
+}
+.history-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  font-size: 22px;
+  font-weight: 100;
+  width: 48px;
+  height: 46px;
+  padding: 9px 12px 0;
+}
+.history-list-scroll {
+  height: calc(100% - 52px);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .history-list {
   list-style: none;
 }
+.history-list li {
+  border-bottom: 0.5px solid #000000;
+}
 .history-list button {
-  color: #444444;
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #333333;
   text-align: left;
-  border-top: 0.5px solid #d9d9d9;
   padding: 10px 12px;
 }
 .history-list button:active {
@@ -230,7 +249,7 @@ button:active {
 }
 .history-list .equ {
   float: right;
-  color: #999999;
+  color: #aaaaaa;
   font-size: 13px;
   line-height: 20px;
   max-width: 100%;
@@ -244,10 +263,7 @@ button:active {
   margin: 0 3px;
 }
 .history--open .history {
-  top: 0;
-}
-.history--open .application {
-  top: 68.4%;
+  top: calc(31.6% + 6px);
 }
 .keypad {
   position: absolute;
@@ -268,7 +284,7 @@ button:active {
   width: 50%;
 }
 .btn-clear {
-  color: #bbbbbb;
+  color: #ff0f0f;
   background-color: #262626;
 }
 .btn-history {
@@ -279,7 +295,7 @@ button:active {
 .btn-backspace {
   color: #ffffff;
   background-color: #262626;
-  background-image: url("../assets/backspace.png");
+  background-image: url("../assets/backspace-icon.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 25px 16px;
@@ -296,6 +312,7 @@ button:active {
 .btn-operator {
   color: #099d93;
   background-color: #333333;
+  font-size: 26px;
 }
 .btn-digit {
   color: #ffffff;
@@ -308,6 +325,7 @@ button:active {
 .btn-equals {
   color: #099d93;
   background-color: #333333;
+  font-size: 26px;
 }
 /* In-Call
    ---------------------------------- */

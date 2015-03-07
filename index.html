@@ -22,8 +22,10 @@
 	<div id="calculator" class="calculator">
 		<div class="statusbar"></div>
 		<div id="history" class="history">
-			<div class="navbar">Your History<span id="history-close">&times;</span></div>
-			<ul id="history-list" class="history-list"></ul>
+			<div class="history-titlebar">History<span id="history-close" class="history-close">&times;</span></div>
+			<div class="history-list-scroll">
+				<ul id="history-list" class="history-list"></ul>
+			</div>
 		</div>
 		<div id="application" class="application">
 			<div id="result" class="result">0</div>
@@ -31,7 +33,7 @@
 			<div id="keypad" class="keypad">
 				<button value="c" class="btn-clear">c</button>
 				<button value="h" class="btn-history">History</button>
-				<button value="b" class="btn-backspace"></button>
+				<button value="b" class="btn-backspace" id="bs"></button>
 				<button value="+-" class="btn-plus-minus">+/&minus;</button>
 				<button value="(" class="btn-bracket">(</button>
 				<button value=")" class="btn-bracket">)</button>

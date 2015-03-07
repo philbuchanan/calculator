@@ -2,56 +2,58 @@
 // ------
 
 // Status Bar
-@statusBarBG:                #262626;
+@statusBarBG:                       #262626;
 
 // Display
-@resultTextColor:            #444;
-@resultBgColor:              #fff;
+@resultTextColor:                   #444;
+@resultBgColor:                     #fff;
 
-@equationTextColor:          #099d93;
-@equationOperatorColor:      #999;
-@equationBgColor:            #fff;
-@equationSeparatorRuleColor: #d9d9d9;
+@equationTextColor:                 #099d93;
+@equationOperatorColor:             #999;
+@equationBgColor:                   #fff;
+@equationSeparatorRuleColor:        #d9d9d9;
 
-@displayRuleColor:           #e8e8e8;
+@displayRuleColor:                  #e8e8e8;
 
 // Keypad
-@keypadTextColor:            #fff;
-@keypadBgColor:              #333;
-@keypadBorderColor:          #000;
-@keypadActiveTextColor:      #fff;
-@keypadActiveBgColor:        #099d93;
-@keypadSeparatorRuleColor:   #099d93;
+@keypadTextColor:                   #fff;
+@keypadBgColor:                     #333;
+@keypadBorderColor:                 #000;
+@keypadActiveTextColor:             #fff;
+@keypadActiveBgColor:               #099d93;
+@keypadSeparatorRuleColor:          #099d93;
 
-@clearTextColor:             #bbb;
-@clearBgColor:               #262626;
-@historyTextColor:           #bbb;
-@historyBgColor:             #262626;
-@backspaceTextColor:         #fff;
-@backspaceBgColor:           #262626;
-@bracketTextColor:           #bbb;
-@bracketBgColor:             #333;
-@plusminusTextColor:         #bbb;
-@plusminusBgColor:           #333;
-@operatorTextColor:          #099d93;
-@operatorBgColor:            #333;
-@digitTextColor:             #fff;
-@digitBgColor:               #333;
-@decimalTextColor:           #fff;
-@decimalBgColor:             #333;
-@equalsTextColor:            #099d93;
-@equalsBgColor:              #333;
+@clearTextColor:                    #ff0f0f;
+@clearBgColor:                      #262626;
+@historyTextColor:                  #bbb;
+@historyBgColor:                    #262626;
+@backspaceTextColor:                #fff;
+@backspaceBgColor:                  #262626;
+@bracketTextColor:                  #bbb;
+@bracketBgColor:                    #333;
+@plusminusTextColor:                #bbb;
+@plusminusBgColor:                  #333;
+@operatorTextColor:                 #099d93;
+@operatorBgColor:                   #333;
+@digitTextColor:                    #fff;
+@digitBgColor:                      #333;
+@decimalTextColor:                  #fff;
+@decimalBgColor:                    #333;
+@equalsTextColor:                   #099d93;
+@equalsBgColor:                     #333;
 
 // History
-@historyListTextColor:       #444;
-@historyListEquationColor:   #999;
-@historyListBgColor:         #fff;
-@historyListBorderColor:     #d9d9d9;
-@historyActiveTextColor:     #fff;
-@historyActiveBgColor:       #099d93;
-@historySeparatorRuleColor:  #d9d9d9;
+@historyTitlebarTextColor:          #fff;
+@historyTitlebarBgColor:            #262626;
 
-@borderWidth:                0.5px;
+@historyListTextColor:              #fff;
+@historyListEquationColor:          #aaa;
+@historyListBgColor:                #333;
+@historyListBorderColor:            #000;
+@historyActiveTextColor:            #fff;
+@historyActiveBgColor:              #099d93;
+
+@borderWidth:                       0.5px;
 
 
 // RESET
@@ -104,11 +106,17 @@ body {
 	line-height: 24px;
 	width: 100%;
 	margin: 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	 -khtml-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 }
 
-p {
-	text-align: center;
-	padding: 24px 36px 0;
+.calculator {
+	position: relative;
+	overflow: hidden;
 }
 
 button {
@@ -128,20 +136,6 @@ button {
 		color: @keypadActiveTextColor;
 		background-color: @keypadActiveBgColor;
 	}
-}
-
-.calculator {
-	position: relative;
-	background: #fff;
-	overflow: hidden;
-}
-
-.application {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	transition: top 0.4s ease-in-out;
 }
 
 
@@ -213,27 +207,56 @@ button {
 
 .history {
 	position: absolute;
-	top: -100%;
+	top: 100%;
 	left: 0;
 	background-color: @historyListBgColor;
-	border-bottom: 3px solid @historySeparatorRuleColor;
 	width: 100%;
 	height: 68.4%;
-	padding-top: 21px;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
 	z-index: 90;
 	transition: top 0.4s ease-in-out;
+}
+
+.history-titlebar {
+	position: relative;
+	color: @historyTitlebarTextColor;
+	background-color: @historyTitlebarBgColor;
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 17px;
+	line-height: 22px;
+	font-weight: bold;
+	padding: 12px;
+}
+
+.history-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: right;
+	font-size: 22px;
+	font-weight: 100;
+	width: 48px;
+	height: 46px;
+	padding: 9px 12px 0;
+}
+
+.history-list-scroll {
+	height: ~"calc(100% - 52px)";
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 
 .history-list {
 	list-style: none;
 	
+	li {
+		border-bottom: @borderWidth solid @historyListBorderColor;
+	}
+	
 	button {
 		color: @historyListTextColor;
 		background-color: @historyListBgColor;
 		text-align: left;
-		border-top: @borderWidth solid @historyListBorderColor;
 		padding: 10px 12px;
 		
 		&:active {
@@ -262,11 +285,7 @@ button {
 
 .history--open {
 	.history {
-		top: 0;
-	}
-	
-	.application {
-		top: 68.4%;
+		top: ~"calc(31.6% + 6px)";
 	}
 }
 
@@ -310,7 +329,7 @@ button {
 .btn-backspace {
 	color: @backspaceTextColor;
 	background-color: @backspaceBgColor;
-	background-image: url("../assets/backspace.png");
+	background-image: url("../assets/backspace-icon.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 25px 16px;
@@ -330,6 +349,7 @@ button {
 .btn-operator {
 	color: @operatorTextColor;
 	background-color: @operatorBgColor;
+	font-size: 26px;
 }
 
 .btn-digit {
@@ -345,6 +365,7 @@ button {
 .btn-equals {
 	color: @equalsTextColor;
 	background-color: @equalsBgColor;
+	font-size: 26px;
 }
 
 

@@ -30,13 +30,20 @@ function Calculator() {
 	
 	this.history = [];
 	
+	this.timer = {
+		timerlen: 750,
+		timer: null
+	};
+	
 	this.calculator   = document.getElementById('calculator');
 	this.result       = document.getElementById('result');
 	this.equation     = document.getElementById('equation');
 	this.keypad       = document.getElementById('keypad');
 	this.historyPanel = document.getElementById('history');
 	this.historyList  = document.getElementById('history-list');
+	this.historyClose = document.getElementById('history-close');
 	
+	this.dragging = false;
 	this.addEventHandlers();
 	
 	// Restore previous app state
@@ -593,6 +600,40 @@ Calculator.prototype.loadHistory = function() {
 
 
 /**
+ * Clear the entire history
+ */
+Calculator.prototype.clearHistory = function() {
+	while (this.historyList.hasChildNodes()) {
+		this.historyList.removeChild(this.historyList.lastChild);
+	}
+	
+	this.history = [];
+	this.saveHistory();
+};
+
+
+
+/**
+ * Add Timer
+ *
+ * @param callback function The function to call on timeout
+ */
+Calculator.prototype.addTimer = function(callback) {
+	this.timer.timer = setTimeout(callback, this.timer.timerlen);
+};
+
+
+
+/**
+ * Remove Timer
+ */
+Calculator.prototype.removeTimer = function() {
+	clearTimeout(this.timer.timer);
+};
+
+
+
+/**
  * Handles all events
  */
 Calculator.prototype.addEventHandlers = function() {
@@ -604,13 +645,40 @@ Calculator.prototype.addEventHandlers = function() {
 		buttonModeEnd = 'touchend';
 	}
 	
-	this.keypad.addEventListener(buttonModeEnd, function(event) {
-		this.buttonEvent(event.target.value);
+	// Touch move events
+	this.historyList.addEventListener('touchmove', function() {
+		this.dragging = true;
 	}.bind(this), false);
 	
-	this.historyList.addEventListener(buttonModeEnd, function(event) {
-		this.appendHistoryItemToEquation(event.target.value);
+	this.historyList.addEventListener('touchstart', function() {
+		this.dragging = false;
+	}.bind(this), false);
+	
+	// Keypad events
+	document.getElementById('bs').addEventListener(buttonModeStart, function() {
+		this.addTimer(this.clearAll.bind(this));
+	}.bind(this), false);
+	
+	this.keypad.addEventListener(buttonModeEnd, function(event) {
+		if (!this.dragging) {
+			this.removeTimer();
+			this.buttonEvent(event.target.value);
+		}
+	}.bind(this), false);
+	
+	// History events
+	this.historyList.addEventListener(buttonModeStart, function(event) {
+		this.addTimer(this.clearHistory.bind(this));
+	}.bind(this), false);
+	
+	this.historyClose.addEventListener(buttonModeStart, function() {
+		this.addTimer(this.clearHistory.bind(this));
+	}.bind(this), false);
+	
+	this.historyClose.addEventListener(buttonModeEnd, function() {
+		this.removeTimer();
 		this.closeHistoryPanel();
+		this.dragging = false;
 	}.bind(this), false);
 };
 
