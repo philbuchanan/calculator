@@ -602,7 +602,7 @@ Calculator.prototype.buttonEvent = function(value) {
 // Is app installed?
 if ((('standalone' in window.navigator) && window.navigator.standalone) || devmode) {
 
-	document.ontouchstart = function(e) {
+	document.getElementById('application').ontouchstart = function(e) {
 		return false;
 	};
 	

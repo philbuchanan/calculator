@@ -1,29 +1,55 @@
 // COLORS
 // ------
 
+// Status Bar
+@statusBarBG:                #262626;
+
 // Display
-@displayBgColor:        #fff;
-@displayTextColor:      #444;
-@equationTextColor:     #099d93;
-@equationOperatorColor: #999;
-@displayRuleColor:      #e8e8e8;
-@displayThickRuleColor: #099d93;
+@resultTextColor:            #444;
+@resultBgColor:              #fff;
+
+@equationTextColor:          #099d93;
+@equationOperatorColor:      #999;
+@equationBgColor:            #fff;
+@equationSeparatorRuleColor: #d9d9d9;
+
+@displayRuleColor:           #e8e8e8;
 
 // Keypad
-@keypadBgColor:         #ebedeb;
-@keypadTextColor:       #111;
-@keypadRuleColor:       #d9d9d9;
-@keypadActiveBgColor:   #099d93;
-@keypadActiveTextColor: #fff;
-@equalsBgColor:         #d9d9d9;
-@equalsTextColor:       #000;
+@keypadBgColor:              #333;
+@keypadTextColor:            #fff;
+@keypadBorderColor:          #000;
+@keypadActiveBgColor:        #099d93;
+@keypadActiveTextColor:      #fff;
 
-@borderWidth:           1px;//0.5px;
+@keypadSeparatorRuleColor:   #099d93;
+
+@clearTextColor:             #bbb;
+@clearBgColor:               #262626;
+@historyTextColor:           #bbb;
+@historyBgColor:             #262626;
+@backspaceTextColor:         #fff;
+@backspaceBgColor:           #262626;
+@bracketTextColor:           #bbb;
+@bracketBgColor:             #333;
+@plusminusTextColor:         #bbb;
+@plusminusBgColor:           #333;
+@operatorTextColor:          #099d93;
+@operatorBgColor:            #333;
+@digitTextColor:             #fff;
+@digitBgColor:               #333;
+@decimalTextColor:           #fff;
+@decimalBgColor:             #333;
+@equalsTextColor:            #099d93;
+@equalsBgColor:              #333;
 
 // History
-@historyBgColor:        rgba(250, 250, 250, 0.97);
-@historyNavBgColor:     #ebedeb;
-@historyRuleColor:      #ebedeb;
+@historyListTextColor:       #fff;
+@historyListEquationColor:   #999;
+@historyListBgColor:         #333;
+@historyListBorderColor:     #000;
+
+@borderWidth:                0.5px;
 
 
 // RESET
@@ -60,30 +86,27 @@ button, input, select, textarea {margin: 0;}
 	        box-sizing: border-box;
 }
 
-html {
+html,
+body,
+.calculator,
+.application {
 	height: 100%;
 }
 
 body {
-	color: @displayTextColor;
-	background: @keypadBgColor;
+	color: #000;
+	background: #fff;
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 20px;
 	font-weight: 100;
 	line-height: 24px;
 	width: 100%;
-	height: 100%;
 	margin: 0;
 }
 
 p {
 	text-align: center;
 	padding: 24px 36px 0;
-}
-
-.calculator,
-.application {
-	height: 100%;
 }
 
 button {
@@ -102,8 +125,12 @@ button {
 	
 	&:active {
 		color: @keypadActiveTextColor;
-		background: @keypadActiveBgColor;
+		background-color: @keypadActiveBgColor;
 	}
+}
+
+.calculator {
+	position: relative;
 }
 
 
@@ -115,28 +142,36 @@ button {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background: @displayThickRuleColor;
+	background: @statusBarBG;
 	width: 100%;
 	height: 21px;
+	z-index: 100;
 }
 
 .result {
-	background: @displayBgColor;
+	color: @resultTextColor;
+	background: @resultBgColor;
 	text-align: right;
 	font-size: 46px; // Must be updated in JS settings as well
-	border-bottom: @borderWidth solid @keypadRuleColor;
+	border-bottom: @borderWidth solid @equationSeparatorRuleColor;
 	width: 100%;
 	height: 23%;
 	margin: 0;
-	padding: 74px 12px 0;
+	padding: 0 12px;
+	
+	> span {
+		position: relative;
+		top: 50%;
+		right: 12px;
+		margin-right: -12px;
+	}
 }
 
 .equation {
 	color: @equationTextColor;
-	background: @displayBgColor;
+	background: @equationBgColor;
 	text-align: right;
 	width: 100%;
-	height: 9%;
 	margin-bottom: 0;
 	padding: 13px 12px 0;
 	white-space: nowrap;
@@ -166,21 +201,31 @@ button {
    ---------------------------------- */
 
 .history {
-	
+	position: absolute;
+	top: 21px;
+	left: 0;
+	background-color: @historyListBgColor;
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	z-index: 90;
 }
 
 .history-list {
 	list-style: none;
 	
 	button {
+		color: @historyListTextColor;
+		background-color: @historyListBgColor;
 		text-align: left;
-		border-top: @borderWidth dashed @keypadRuleColor;
+		border-top: @borderWidth dashed @historyListBorderColor;
 		padding: 10px 12px;
 	}
 	
 	.equ {
 		float: right;
-		color: @equationOperatorColor;
+		color: @historyListEquationColor;
 		font-size: 13px;
 		line-height: 20px;
 		max-width: 100%;
@@ -202,28 +247,40 @@ button {
 // ----------------------------------
 
 .keypad {
-	border-top: 6px solid @displayThickRuleColor;
-	height: 68%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border-top: 6px solid @keypadSeparatorRuleColor;
+	height: 68.4%;
 	
 	button {
 		float: left;
-		border-bottom: @borderWidth solid @keypadRuleColor;
+		border: @borderWidth solid @keypadBorderColor;
 		width: 25%;
 		height: 16.66666666%;
+		
+		&.btn-history,
+		&.btn-equals {
+			width: 50%;
+		}
 	}
 }
 
-button.btn-equals {
-	color: @equalsTextColor;
-	background: @equalsBgColor;
-	width: 50%;
+.btn-clear {
+	color: @clearTextColor;
+	background-color: @clearBgColor;
 }
 
-button.btn-plus-minus {
-	letter-spacing: 2px;
+.btn-history {
+	color: @historyTextColor;
+	background-color: @historyBgColor;
+	font-size: 18px;
 }
 
-button.btn-backspace {
+.btn-backspace {
+	color: @backspaceTextColor;
+	background-color: @backspaceBgColor;
 	background-image: url("../assets/backspace.png");
 	background-repeat: no-repeat;
 	background-position: center 25px;
@@ -234,9 +291,35 @@ button.btn-backspace {
 	}
 }
 
-button.btn-history {
-	font-size: 18px;
-	width: 50%;
+.btn-plus-minus {
+	color: @plusminusTextColor;
+	background-color: @plusminusBgColor;
+	letter-spacing: 2px;
+}
+
+.btn-bracket {
+	color: @bracketTextColor;
+	background-color: @bracketBgColor;
+}
+
+.btn-operator {
+	color: @operatorTextColor;
+	background-color: @operatorBgColor;
+}
+
+.btn-digit {
+	color: @digitTextColor;
+	background-color: @digitBgColor;
+}
+
+.btn-decimal {
+	color: @decimalTextColor;
+	background-color: @decimalBgColor;
+}
+
+.btn-equals {
+	color: @equalsTextColor;
+	background-color: @equalsBgColor;
 }
 
 
