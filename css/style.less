@@ -110,9 +110,6 @@ body {
 	margin: 0;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
-	 -khtml-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
 	        user-select: none;
 }
 
@@ -134,6 +131,7 @@ button {
 	padding: 0;
 	transition: color 0.2s ease, background-color 0.2s ease;
 	
+	&.flash,
 	&:active {
 		color: @keypadActiveTextColor;
 		background-color: @keypadActiveBgColor;
@@ -425,15 +423,6 @@ button {
 	.keypad {
 		height: 68.6%;
 	}
-}
-
-
-
-// LANDSCAPE
-// ----------------------------------
-
-@media (max-height: 320px) {
-	
 }
 
 

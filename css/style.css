@@ -118,9 +118,6 @@ body {
   margin: 0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 .calculator {
@@ -140,6 +137,7 @@ button {
   padding: 0;
   transition: color 0.2s ease, background-color 0.2s ease;
 }
+button.flash,
 button:active {
   color: #ffffff;
   background-color: #099d93;

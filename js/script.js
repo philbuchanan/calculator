@@ -263,6 +263,16 @@ Calculator.prototype.backspace = function() {
 
 
 /**
+ * Called when backspace is long pressed
+ */
+Calculator.prototype.backspaceLongPress = function() {
+	this.clearAll();
+	this.flashButton('btn-clear');
+};
+
+
+
+/**
  * Clear the current state of the calculator
  *
  * @param result string The string to update the display with
@@ -534,6 +544,7 @@ Calculator.prototype.addHistoryItem = function(item) {
 		
 		this.history.push(item);
 		
+		this.flashButton('btn-history');
 		this.appendToHistoryList(item);
 		this.saveHistory();
 	}
@@ -614,6 +625,23 @@ Calculator.prototype.clearHistory = function() {
 
 
 /**
+ * Flash button
+ *
+ * @param id string The DOM node to flash
+ */
+Calculator.prototype.flashButton = function(id) {
+	var btn = document.getElementById(id);
+	
+	btn.classList.add('flash');
+	
+	setTimeout(function() {
+		btn.classList.remove('flash');
+	}, 200);
+};
+
+
+
+/**
  * Add Timer
  *
  * @param callback function The function to call on timeout
@@ -647,7 +675,7 @@ Calculator.prototype.addEventHandlers = function() {
 	
 	// Keypad events
 	document.getElementById('bs').addEventListener(buttonModeStart, function() {
-		this.addTimer(this.clearAll.bind(this));
+		this.addTimer(this.backspaceLongPress.bind(this));
 	}.bind(this), false);
 	
 	this.keypad.addEventListener(buttonModeEnd, function(event) {
