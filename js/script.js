@@ -15,10 +15,7 @@ function Calculator() {
 	this.settings = {
 		version: '3.0.2',
 		history: 100,
-		timerlen: 750,
-		timer: null,
 		fontsize: 46,
-		url: 'http://ioscalc.com',
 		decimals: 2
 	};
 	
@@ -91,10 +88,10 @@ Calculator.prototype.saveAppState = function() {
  * @param value string The value of the button pressed
  */
 Calculator.prototype.buttonPress = function(value) {
-	var digit = this.appstate.last,
+	var last = this.appstate.last,
 		number = this.getLastNum();
 	
-	if (digit === null) {
+	if (last === null) {
 		if (/[\d(]/.test(value)) {
 			if (value === '(') {
 				this.appstate.brackets += 1;
@@ -111,8 +108,8 @@ Calculator.prototype.buttonPress = function(value) {
 	else {
 		// Digits
 		if (/\d/.test(value)) {
-			if (/[\d.(+*\-\/]/.test(digit)) {
-				if (digit === '0' && this.appstate.input.length === 1) {
+			if (/[\d.(+*\-\/]/.test(last)) {
+				if (last === '0' && this.appstate.input.length === 1) {
 					this.appendToEquation(value, true);
 				}
 				else if (this.isValidNum(number + value)) {
@@ -122,17 +119,17 @@ Calculator.prototype.buttonPress = function(value) {
 		}
 		// Operators
 		else if (/[+*\-\/]/.test(value)) {
-			if (/[\d)]/.test(digit)) {
+			if (/[\d)]/.test(last)) {
 				this.appendToEquation(value);
 			}
-			else if (/[+*\-\/]/.test(digit)) {
+			else if (/[+*\-\/]/.test(last)) {
 				this.backspace();
 				this.appendToEquation(value);
 			}
 		}
 		// Decimal
 		else if (value === '.') {
-			if (/[\d(+*\-\/]/.test(digit)) {
+			if (/[\d(+*\-\/]/.test(last)) {
 				if (this.isValidNum(number + value)) {
 					this.appendToEquation(value);
 				}
@@ -140,20 +137,20 @@ Calculator.prototype.buttonPress = function(value) {
 		}
 		// Open bracket
 		else if (value === '(') {
-			if (digit === '0' && number.length === 1) {
+			if (last === '0' && number.length === 1) {
 				this.appendToEquation(value, true);
 			}
-			else if (/[(+*\-\/]/.test(digit)) {
+			else if (/[(+*\-\/]/.test(last)) {
 				this.appstate.brackets += 1;
 				this.appendToEquation(value);
 			}
 		}
 		// Close bracket
 		else if (value === ')') {
-			if (digit === '(') {
+			if (last === '(') {
 				this.backspace();
 			}
-			else if (/[\d)]/.test(digit) && this.appstate.brackets > 0) {
+			else if (/[\d)]/.test(last) && this.appstate.brackets > 0) {
 				this.appstate.brackets -= 1;
 				this.appendToEquation(value);
 			}
@@ -668,6 +665,10 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
+	document.getElementById('application').ontouchstart = function(e) {
+		return false;
+	};
+	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
@@ -746,12 +747,6 @@ Calculator.prototype.buttonEvent = function(value) {
 
 // Is app installed?
 if ((('standalone' in window.navigator) && window.navigator.standalone) || devmode) {
-
-	document.getElementById('application').ontouchstart = function(e) {
-		return false;
-	};
-	
-	// Initialize app
 	var calculator = new Calculator();
 }
 else {
