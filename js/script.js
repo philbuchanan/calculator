@@ -680,12 +680,18 @@ Calculator.prototype.addEventHandlers = function() {
 	document.getElementById('history-list-scroll').addEventListener('touchstart', function(e) {
 		var startTopScroll = this.scrollTop;
 		
-		if (startTopScroll <= 0) {
-			this.scrollTop = 1;
+		if (document.getElementById('history-list').offsetHeight <= this.offsetHeight) {
+			e.preventDefault();
+			e.stopPropagation();
 		}
-		
-		if (startTopScroll + this.offsetHeight >= this.scrollHeight) {
-			this.scrollTop = this.scrollHeight - this.offsetHeight - 1;
+		else {
+			if (startTopScroll <= 0) {
+				this.scrollTop = 1;
+			}
+			
+			if (startTopScroll + this.offsetHeight >= this.scrollHeight) {
+				this.scrollTop = this.scrollHeight - this.offsetHeight - 1;
+			}
 		}
 	}, false);
 	
