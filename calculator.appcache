@@ -1,9 +1,9 @@
 CACHE MANIFEST
-# v3.0.2: 2015-03-08
+# v3.0.2: 2015-03-09
 index.html
 js/script.js
 css/style.css
-assets/backspace-icon.png
+assets/backspace-icon.svg
 assets/touch-icon-iphone-114.png
 assets/touch-icon-iphone-120.png
 assets/app-icon-large.png
