@@ -665,14 +665,29 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
-	document.getElementById('application').ontouchstart = function(e) {
-		return false;
-	};
-	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
+	
+	// Disable bounce scrolling on main application
+	document.getElementById('application').addEventListener(buttonModeStart, function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	}, false);
+	
+	// Fix bounce scrolling of whole page at top and bottom of content
+	document.getElementById('history-list-scroll').addEventListener('touchstart', function(e) {
+		var startTopScroll = this.scrollTop;
+		
+		if (startTopScroll <= 0) {
+			this.scrollTop = 1;
+		}
+		
+		if (startTopScroll + this.offsetHeight >= this.scrollHeight) {
+			this.scrollTop = this.scrollHeight - this.offsetHeight - 1;
+		}
+	}, false);
 	
 	// Keypad events
 	document.getElementById('btn-backspace').addEventListener(buttonModeStart, function() {
