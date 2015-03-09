@@ -665,8 +665,8 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
-	document.ontouchmove = function(e) {
-		e.preventDefault()
+	document.getElementById('application').ontouchstart = function(e) {
+		return false;
 	};
 	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
