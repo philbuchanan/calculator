@@ -665,8 +665,8 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
-	document.getElementById('application').ontouchstart = function(e) {
-		return false;
+	document.ontouchmove = function(e) {
+		e.preventDefault()
 	};
 	
 	if (('standalone' in window.navigator) && window.navigator.standalone) {
@@ -675,7 +675,7 @@ Calculator.prototype.addEventHandlers = function() {
 	}
 	
 	// Keypad events
-	document.getElementById('bs').addEventListener(buttonModeStart, function() {
+	document.getElementById('btn-backspace').addEventListener(buttonModeStart, function() {
 		this.addTimer(this.backspaceLongPress.bind(this));
 	}.bind(this), false);
 	
