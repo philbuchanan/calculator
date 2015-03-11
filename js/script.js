@@ -301,21 +301,20 @@ Calculator.prototype.isValidNum = function(num) {
 		num = num.substr(1, num.length);
 	}
 	
-	if (num[0] === '0') {
-		if (num.length === 1) { // if number is a sinlge digit it's valid
-			return true;
-		}
-		else if (/^0{2,}/.test(num) || // test multiple leading 0s
-			!/^0(?=\.)/.test(num)) {   // ensure leading 0 is followed by a decimal point
-				return false;
-		}
+	if (num.length === 1) {
+		return true;
 	}
 	
-	if (!/^\d*\.?\d*$/.test(num)) { // ensure only one decimal point
+	// Test leading zeros
+	if (num[0] === '0' && /^0(?!\.)/.test(num)) {
 		return false;
 	}
 	
-	return true;
+	if (/^\d*(\.\d+){0,1}$/.test(num)) {
+		return true;
+	}
+	
+	return false;
 };
 
 
