@@ -91,7 +91,7 @@ Calculator.prototype.appendDigitToEquation = function(digit) {
 		currentNumber = this.getLastNum();
 	
 	switch (lastInput) {
-		case: null:
+		case null:
 			this.appendToEquation(digit, true);
 			break;
 		case '0':
@@ -112,10 +112,10 @@ Calculator.prototype.appendDigitToEquation = function(digit) {
 		case '-':
 			if (lastInput === '0' && this.appstate.input.length === 1) {
 				this.backspace();
-				this.appendToEquation(value);
+				this.appendToEquation(digit);
 			}
-			else if (this.isValidNum(currentNumber + value)) {
-				this.appendToEquation(value);
+			else if (this.isValidNum(currentNumber + digit)) {
+				this.appendToEquation(digit);
 			}
 			break;
 	}
@@ -170,7 +170,7 @@ Calculator.prototype.appendOperatorToEquation = function(operator) {
 	
 	switch (lastInput) {
 		case null:
-			this.appendToEquation(value);
+			this.appendToEquation(operator);
 			break;
 		case '0':
 		case '1':
@@ -183,14 +183,14 @@ Calculator.prototype.appendOperatorToEquation = function(operator) {
 		case '8':
 		case '9':
 		case ')':
-			this.appendToEquation(value);
+			this.appendToEquation(operator);
 			break;
 		case '*':
 		case '/':
 		case '+':
 		case '-':
 			this.backspace();
-			this.appendToEquation(value);
+			this.appendToEquation(operator);
 			break;
 	}
 };
@@ -215,6 +215,7 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
 			case '/':
 			case '+':
 			case '-':
+			case '(':
 				this.appendToEquation('(');
 				this.appstate.brackets += 1;
 				break;
@@ -225,7 +226,6 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
 			case '(':
 				this.backspace();
 				break;
-			}
 			case ')':
 			case '0':
 			case '1':
@@ -242,7 +242,6 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
 					this.appstate.brackets -= 1;
 				}
 				break;
-			}
 		}
 	}
 };
@@ -264,7 +263,12 @@ Calculator.prototype.appendToEquation = function(value, clear) {
 		this.appstate.input += value;	
 	}
 	
-	this.appstate.last = value;
+	if (value === '0.') {
+		this.appstate.last = '.';
+	}
+	else {
+		this.appstate.last = value;
+	}
 	
 	this.updateDisplay();
 };
@@ -846,14 +850,14 @@ Calculator.prototype.buttonEvent = function(value) {
 		case '*':
 		case '-':
 		case '/':
-			appendOperatorToEquation(value);
+			this.appendOperatorToEquation(value);
 			break;
 		case '.':
-			appendDecimalToEquation();
+			this.appendDecimalToEquation();
 			break;
 		case '(':
 		case ')':
-			appendBracketToEquation(value);
+			this.appendBracketToEquation(value);
 			break;
 		case '=':
 			this.equate();
