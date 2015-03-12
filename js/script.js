@@ -398,10 +398,10 @@ Calculator.prototype.updateDisplayEquation = function(equation) {
  * return string The new display string
  */
 Calculator.prototype.replaceOperators = function(str) {
-	str = str.replace(/\//g, '<span>&divide;</span>');
-	str = str.replace(/\*/g, '<span>&times;</span>');
-	str = str.replace(/\+/g, '<span>+</span>');
-	str = str.replace(/\-/g, '<span>&minus;</span>');
+	str = str.replace(/\//g, '<span class="operator">&divide;</span>');
+	str = str.replace(/\*/g, '<span class="operator">&times;</span>');
+	str = str.replace(/\+/g, '<span class="operator">+</span>');
+	str = str.replace(/\-/g, '<span class="operator">&minus;</span>');
 	str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
 	str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
 	
