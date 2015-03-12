@@ -297,20 +297,18 @@ Calculator.prototype.clearAll = function(result) {
  * return bool True if valid, else false
  */
 Calculator.prototype.isValidNum = function(num) {
-	if (num[0] === '-') {
-		num = num.substr(1, num.length);
-	}
-	
-	if (num.length === 1) {
-		return true;
-	}
-	
-	// Test leading zeros
-	if (num[0] === '0' && /^0(?!\.)/.test(num)) {
-		return false;
-	}
-	
-	if (/^\d*(\.\d+){0,1}$/.test(num)) {
+	/**
+	 * Regex eplainaition:
+	 * ^             Match at start of string
+	 * \-?           Optional negative
+	 * 0             Zero, or
+	 * 0(?!\.)       Zero if followed by decimal, or
+	 * ([1-9]{1}\d*) Exactly one 1-9 and zero or more digits, or
+	 * \.(?!\.)\d*   A decimal only if not followed by another decimal plus zero or more digits
+	 * (\.\d*){0,1}  Only one grouping of a decimal and zero or more digits
+	 * $             Match end of string
+	 */
+	if (/^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)) {
 		return true;
 	}
 	
