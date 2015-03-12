@@ -129,9 +129,14 @@ Calculator.prototype.buttonPress = function(value) {
 		}
 		// Decimal
 		else if (value === '.') {
-			if (/[\d(+*\-\/]/.test(last)) {
+			if (/[\d]/.test(last)) {
 				if (this.isValidNum(number + value)) {
 					this.appendToEquation(value);
+				}
+			}
+			else if (/[\(+*\-\/]/.test(last)) {
+				if (this.isValidNum(number + value)) {
+					this.appendToEquation('0.');
 				}
 			}
 		}
@@ -662,7 +667,7 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
-	if (('standalone' in window.navigator) && window.navigator.standalone) {
+	if (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
@@ -705,7 +710,7 @@ Calculator.prototype.addEventHandlers = function() {
 	}.bind(this), false);
 	
 	// History list events
-	this.historyList.addEventListener(buttonModeStart, function(event) {
+	this.historyList.addEventListener(buttonModeStart, function() {
 		this.dragging = false;
 	}.bind(this), false);
 	
@@ -764,7 +769,7 @@ Calculator.prototype.buttonEvent = function(value) {
 
 
 // Is app installed?
-if ((('standalone' in window.navigator) && window.navigator.standalone) || devmode) {
+if ((window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) || devmode) {
 	var calculator = new Calculator();
 }
 else {
