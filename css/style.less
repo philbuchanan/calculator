@@ -60,15 +60,7 @@
 // RESET
 // ----------------------------------
  
-html, body, div, span, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
-small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section, summary,
-time, mark, audio, video {
+html, body, div, span, ul, li {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -76,10 +68,9 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
-blockquote, q {quotes: none;}
-hr {display: block; height: 1px; border: 0; border-top: 1px solid #000; margin: 1em 0; padding: 0;}
-input, select {vertical-align: middle;}
-button, input, select, textarea {margin: 0;}
+button {
+	margin: 0;
+}
 
 
 
@@ -185,18 +176,20 @@ button {
 	.eq {
 		display: inline;
 		
-		span {
+		.operator,
+		.left-bracket,
+		.right-bracket {
 			color: @equationOperatorColor;
 			font-weight: 300;
 			margin: 0 5px;
-			
-			&.left-bracket {
-				margin-left: 0;
-			}
-			
-			&.right-bracket {
-				margin-right: 0;
-			}
+		}
+		
+		.left-bracket {
+			margin-left: 0;
+		}
+		
+		.right-bracket {
+			margin-right: 0;
 		}
 	}
 }
@@ -242,7 +235,7 @@ button {
 }
 
 .history-list-scroll {
-	height: ~"calc(100% - 52px)";
+	height: ~"calc(100% - 52px)"; // 100% subtract titlebar and border thickness
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
@@ -331,7 +324,7 @@ button {
 .btn-backspace {
 	color: @backspaceTextColor;
 	background-color: @backspaceBgColor;
-	background-image: url("../assets/backspace-icon.png");
+	background-image: url("../assets/backspace-icon.svg");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 25px 16px;

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!--html lang="en" manifest="calculator.appcache"-->
-<html lang="en">
+<!--html lang="en-CA" manifest="calculator.appcache"-->
+<html lang="en-CA">
 <head>
 	<meta charset="utf-8">
 	<title>Calculator - A calculator web app for iPhone</title>
 	
 	<meta name="author" content="Phil Buchanan">
-	<meta name="description" content="A minimal calculator for iPhone with support for backspace, brackets and history.">
+	<meta name="description" content="A minimal calculator for iPhone and iPad with support for backspace, brackets and history.">
 	
 	<meta name="viewport" content="initial-scale=1, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,15 +15,19 @@
 	<meta name="format-detection" content="telephone=no">
 	
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png">
+	
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png">
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/touch-icon-iphone-152.png">
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="assets/touch-icon-iphone-180.png">
+	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
 	<div id="calculator" class="calculator">
 		<div class="statusbar"></div>
 		<div id="history" class="history">
 			<div class="history-titlebar">History<span id="history-close" class="history-close">&times;</span></div>
-			<div class="history-list-scroll">
+			<div id="history-list-scroll" class="history-list-scroll">
 				<ul id="history-list" class="history-list"></ul>
 			</div>
 		</div>
@@ -33,7 +37,7 @@
 			<div id="keypad" class="keypad">
 				<button value="c" class="btn-clear" id="btn-clear">c</button>
 				<button value="h" class="btn-history" id="btn-history">History</button>
-				<button value="b" class="btn-backspace" id="bs"></button>
+				<button value="b" class="btn-backspace" id="btn-backspace"></button>
 				<button value="+-" class="btn-plus-minus">+/&minus;</button>
 				<button value="(" class="btn-bracket">(</button>
 				<button value=")" class="btn-bracket">)</button>

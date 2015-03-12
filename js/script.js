@@ -4,7 +4,7 @@
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.0
+ * @version 3.0.2
  */
 
 "use strict";
@@ -13,12 +13,9 @@ var devmode = true;
 
 function Calculator() {
 	this.settings = {
-		version: '3.0',
+		version: '3.0.2',
 		history: 100,
-		timerlen: 750,
-		timer: null,
 		fontsize: 46,
-		url: 'http://ioscalc.com',
 		decimals: 2
 	};
 	
@@ -91,10 +88,10 @@ Calculator.prototype.saveAppState = function() {
  * @param value string The value of the button pressed
  */
 Calculator.prototype.buttonPress = function(value) {
-	var digit = this.appstate.last,
+	var last = this.appstate.last,
 		number = this.getLastNum();
 	
-	if (digit === null) {
+	if (last === null) {
 		if (/[\d(]/.test(value)) {
 			if (value === '(') {
 				this.appstate.brackets += 1;
@@ -111,8 +108,8 @@ Calculator.prototype.buttonPress = function(value) {
 	else {
 		// Digits
 		if (/\d/.test(value)) {
-			if (/[\d.(+*\-\/]/.test(digit)) {
-				if (digit === '0' && this.appstate.input.length === 1) {
+			if (/[\d.(+*\-\/]/.test(last)) {
+				if (last === '0' && this.appstate.input.length === 1) {
 					this.appendToEquation(value, true);
 				}
 				else if (this.isValidNum(number + value)) {
@@ -122,38 +119,43 @@ Calculator.prototype.buttonPress = function(value) {
 		}
 		// Operators
 		else if (/[+*\-\/]/.test(value)) {
-			if (/[\d)]/.test(digit)) {
+			if (/[\d)]/.test(last)) {
 				this.appendToEquation(value);
 			}
-			else if (/[+*\-\/]/.test(digit)) {
+			else if (/[+*\-\/]/.test(last)) {
 				this.backspace();
 				this.appendToEquation(value);
 			}
 		}
 		// Decimal
 		else if (value === '.') {
-			if (/[\d(+*\-\/]/.test(digit)) {
+			if (/[\d]/.test(last)) {
 				if (this.isValidNum(number + value)) {
 					this.appendToEquation(value);
+				}
+			}
+			else if (/[\(+*\-\/]/.test(last)) {
+				if (this.isValidNum(number + value)) {
+					this.appendToEquation('0.');
 				}
 			}
 		}
 		// Open bracket
 		else if (value === '(') {
-			if (digit === '0' && number.length === 1) {
+			if (last === '0' && number.length === 1) {
 				this.appendToEquation(value, true);
 			}
-			else if (/[(+*\-\/]/.test(digit)) {
+			else if (/[(+*\-\/]/.test(last)) {
 				this.appstate.brackets += 1;
 				this.appendToEquation(value);
 			}
 		}
 		// Close bracket
 		else if (value === ')') {
-			if (digit === '(') {
+			if (last === '(') {
 				this.backspace();
 			}
-			else if (/[\d)]/.test(digit) && this.appstate.brackets > 0) {
+			else if (/[\d)]/.test(last) && this.appstate.brackets > 0) {
 				this.appstate.brackets -= 1;
 				this.appendToEquation(value);
 			}
@@ -300,25 +302,22 @@ Calculator.prototype.clearAll = function(result) {
  * return bool True if valid, else false
  */
 Calculator.prototype.isValidNum = function(num) {
-	if (num[0] === '-') {
-		num = num.substr(1, num.length);
+	/**
+	 * Regex eplainaition:
+	 * ^             Match at start of string
+	 * \-?           Optional negative
+	 * 0             Zero, or
+	 * 0(?!\.)       Zero if followed by decimal, or
+	 * ([1-9]{1}\d*) Exactly one 1-9 and zero or more digits, or
+	 * \.(?!\.)\d*   A decimal only if not followed by another decimal plus zero or more digits
+	 * (\.\d*){0,1}  Only one grouping of a decimal and zero or more digits
+	 * $             Match end of string
+	 */
+	if (/^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)) {
+		return true;
 	}
 	
-	if (num[0] === '0') {
-		if (num.length === 1) { // if number is a sinlge digit it's valid
-			return true;
-		}
-		else if (/^0{2,}/.test(num) || // test multiple leading 0s
-			!/^0(?=\.)/.test(num)) {   // ensure leading 0 is followed by a decimal point
-				return false;
-		}
-	}
-	
-	if (!/^\d*\.?\d*$/.test(num)) { // ensure only one decimal point
-		return false;
-	}
-	
-	return true;
+	return false;
 };
 
 
@@ -399,10 +398,10 @@ Calculator.prototype.updateDisplayEquation = function(equation) {
  * return string The new display string
  */
 Calculator.prototype.replaceOperators = function(str) {
-	str = str.replace(/\//g, '<span>&divide;</span>');
-	str = str.replace(/\*/g, '<span>&times;</span>');
-	str = str.replace(/\+/g, '<span>+</span>');
-	str = str.replace(/\-/g, '<span>&minus;</span>');
+	str = str.replace(/\//g, '<span class="operator">&divide;</span>');
+	str = str.replace(/\*/g, '<span class="operator">&times;</span>');
+	str = str.replace(/\+/g, '<span class="operator">+</span>');
+	str = str.replace(/\-/g, '<span class="operator">&minus;</span>');
 	str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
 	str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
 	
@@ -668,13 +667,38 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd =   'mouseup';
 	
-	if (('standalone' in window.navigator) && window.navigator.standalone) {
+	if (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
 	
+	// Disable bounce scrolling on main application
+	document.getElementById('application').addEventListener(buttonModeStart, function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+	}, false);
+	
+	// Fix bounce scrolling of whole page at top and bottom of content
+	document.getElementById('history-list-scroll').addEventListener('touchstart', function(e) {
+		var startTopScroll = this.scrollTop;
+		
+		if (document.getElementById('history-list').offsetHeight <= this.offsetHeight) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		else {
+			if (startTopScroll <= 0) {
+				this.scrollTop = 1;
+			}
+			
+			if (startTopScroll + this.offsetHeight >= this.scrollHeight) {
+				this.scrollTop = this.scrollHeight - this.offsetHeight - 1;
+			}
+		}
+	}, false);
+	
 	// Keypad events
-	document.getElementById('bs').addEventListener(buttonModeStart, function() {
+	document.getElementById('btn-backspace').addEventListener(buttonModeStart, function() {
 		this.addTimer(this.backspaceLongPress.bind(this));
 	}.bind(this), false);
 	
@@ -686,7 +710,7 @@ Calculator.prototype.addEventHandlers = function() {
 	}.bind(this), false);
 	
 	// History list events
-	this.historyList.addEventListener(buttonModeStart, function(event) {
+	this.historyList.addEventListener(buttonModeStart, function() {
 		this.dragging = false;
 	}.bind(this), false);
 	
@@ -745,13 +769,7 @@ Calculator.prototype.buttonEvent = function(value) {
 
 
 // Is app installed?
-if ((('standalone' in window.navigator) && window.navigator.standalone) || devmode) {
-
-	document.getElementById('application').ontouchstart = function(e) {
-		return false;
-	};
-	
-	// Initialize app
+if ((window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) || devmode) {
 	var calculator = new Calculator();
 }
 else {

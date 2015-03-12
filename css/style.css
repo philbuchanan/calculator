@@ -2,71 +2,8 @@ html,
 body,
 div,
 span,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-abbr,
-address,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-samp,
-small,
-strong,
-sub,
-sup,
-var,
-b,
-i,
-dl,
-dt,
-dd,
-ol,
 ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+li {
   margin: 0;
   padding: 0;
   border: 0;
@@ -74,26 +11,7 @@ video {
   font: inherit;
   vertical-align: baseline;
 }
-blockquote,
-q {
-  quotes: none;
-}
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #000;
-  margin: 1em 0;
-  padding: 0;
-}
-input,
-select {
-  vertical-align: middle;
-}
-button,
-input,
-select,
-textarea {
+button {
   margin: 0;
 }
 * {
@@ -181,15 +99,17 @@ button:active {
 .equation .eq {
   display: inline;
 }
-.equation .eq span {
+.equation .eq .operator,
+.equation .eq .left-bracket,
+.equation .eq .right-bracket {
   color: #999999;
   font-weight: 300;
   margin: 0 5px;
 }
-.equation .eq span.left-bracket {
+.equation .eq .left-bracket {
   margin-left: 0;
 }
-.equation .eq span.right-bracket {
+.equation .eq .right-bracket {
   margin-right: 0;
 }
 .history {
@@ -294,7 +214,7 @@ button:active {
 .btn-backspace {
   color: #ffffff;
   background-color: #262626;
-  background-image: url("../assets/backspace-icon.png");
+  background-image: url("../assets/backspace-icon.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 25px 16px;
