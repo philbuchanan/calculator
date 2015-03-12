@@ -106,59 +106,68 @@ Calculator.prototype.buttonPress = function(value) {
 		}
 	}
 	else {
-		// Digits
-		if (/\d/.test(value)) {
-			if (/[\d.(+*\-\/]/.test(last)) {
-				if (last === '0' && this.appstate.input.length === 1) {
+		switch(value) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if (/[\d.(+*\-\/]/.test(last)) {
+					if (last === '0' && this.appstate.input.length === 1) {
+						this.appendToEquation(value, true);
+					}
+					else if (this.isValidNum(number + value)) {
+						this.appendToEquation(value);
+					}
+				}
+				break;
+			case '+':
+			case '*':
+			case '-':
+			case '/':
+				if (/[\d)]/.test(last)) {
+					this.appendToEquation(value);
+				}
+				else if (/[+*\-\/]/.test(last)) {
+					this.backspace();
+					this.appendToEquation(value);
+				}
+				break;
+			case '.':
+				if (/[\d]/.test(last)) {
+					if (this.isValidNum(number + value)) {
+						this.appendToEquation(value);
+					}
+				}
+				else if (/[\(+*\-\/]/.test(last)) {
+					if (this.isValidNum(number + value)) {
+						this.appendToEquation('0.');
+					}
+				}
+				break;
+			case '(':
+				if (last === '0' && number.length === 1) {
 					this.appendToEquation(value, true);
 				}
-				else if (this.isValidNum(number + value)) {
+				else if (/[(+*\-\/]/.test(last)) {
+					this.appstate.brackets += 1;
 					this.appendToEquation(value);
 				}
-			}
-		}
-		// Operators
-		else if (/[+*\-\/]/.test(value)) {
-			if (/[\d)]/.test(last)) {
-				this.appendToEquation(value);
-			}
-			else if (/[+*\-\/]/.test(last)) {
-				this.backspace();
-				this.appendToEquation(value);
-			}
-		}
-		// Decimal
-		else if (value === '.') {
-			if (/[\d]/.test(last)) {
-				if (this.isValidNum(number + value)) {
+				break;
+			case ')':
+				if (last === '(') {
+					this.backspace();
+				}
+				else if (/[\d)]/.test(last) && this.appstate.brackets > 0) {
+					this.appstate.brackets -= 1;
 					this.appendToEquation(value);
 				}
-			}
-			else if (/[\(+*\-\/]/.test(last)) {
-				if (this.isValidNum(number + value)) {
-					this.appendToEquation('0.');
-				}
-			}
-		}
-		// Open bracket
-		else if (value === '(') {
-			if (last === '0' && number.length === 1) {
-				this.appendToEquation(value, true);
-			}
-			else if (/[(+*\-\/]/.test(last)) {
-				this.appstate.brackets += 1;
-				this.appendToEquation(value);
-			}
-		}
-		// Close bracket
-		else if (value === ')') {
-			if (last === '(') {
-				this.backspace();
-			}
-			else if (/[\d)]/.test(last) && this.appstate.brackets > 0) {
-				this.appstate.brackets -= 1;
-				this.appendToEquation(value);
-			}
+				break;
 		}
 	}
 };
