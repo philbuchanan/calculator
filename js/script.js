@@ -284,6 +284,31 @@ Calculator.prototype.backspaceLongPress = function() {
 
 
 /**
+ * Activate button
+ * Show which operator is currently activated on the keyboard.
+ *
+ * @param id string The DOM node ID to activate
+ */
+Calculator.prototype.activateButton = function(id) {
+	var btn = document.getElementById(id);
+	
+	btn.classList.add('active');
+};
+
+
+
+/**
+ * Deactivate button
+ *
+ * @param btn string The DOM node ID to deactivate
+ */
+Calculator.prototype.deactivateButton = function(btn) {
+	btn.classList.remove('active');
+};
+
+
+
+/**
  * Clear the current state of the calculator
  *
  * @param result string The string to update the display with
@@ -358,8 +383,10 @@ Calculator.prototype.getLastNum = function() {
  */
 Calculator.prototype.updateDisplay = function() {
 	var eq = this.appstate.input.toString(),
-		result = this.compute(eq);
+		result = this.compute(eq),
+		activeBtn = document.querySelector('.active');
 	
+	// Update the result
 	if (result !== null && !isNaN(result)) {
 		if (result > 9E13) {
 			this.result.innerHTML = '<span>' + result.toExponential(this.settings.decimals) + '</span>';
@@ -368,6 +395,26 @@ Calculator.prototype.updateDisplay = function() {
 			this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
 		}
 		this.resizeFont();
+	}
+	
+	// Show active operator
+	if (activeBtn) {
+		this.deactivateButton(activeBtn);
+	}
+	
+	switch (this.appstate.last) {
+		case '*':
+			this.activateButton('btn-multiply');
+			break;
+		case '/':
+			this.activateButton('btn-divide');
+			break;
+		case '+':
+			this.activateButton('btn-add');
+			break;
+		case '-':
+			this.activateButton('btn-subtract');
+			break;
 	}
 	
 	this.updateDisplayEquation(eq);

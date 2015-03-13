@@ -23,6 +23,9 @@
 @keypadActiveBgColor:               #099d93;
 @keypadSeparatorRuleColor:          #099d93;
 
+@activeTextColor:                   #099d93;
+@activeBgColor:                     #000;
+
 @clearTextColor:                    #ff0f0f;
 @clearBgColor:                      #262626;
 @historyTextColor:                  #bbb;
@@ -306,6 +309,11 @@ button {
 		&.btn-history,
 		&.btn-equals {
 			width: 50%;
+		}
+		
+		&.active {
+			color: @activeTextColor;
+			border: 1.5px solid @activeBgColor;
 		}
 	}
 }

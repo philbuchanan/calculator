@@ -202,6 +202,10 @@ button:active {
 .keypad button.btn-equals {
   width: 50%;
 }
+.keypad button.active {
+  color: #099d93;
+  border: 1.5px solid #000000;
+}
 .btn-clear {
   color: #ff0f0f;
   background-color: #262626;
