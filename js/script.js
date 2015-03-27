@@ -82,31 +82,151 @@ Calculator.prototype.saveAppState = function() {
 
 
 /**
- * Called when an input button is pressed
- * This includes digits, decimal, operators and brackets.
+ * Append digit to equation
  *
- * @param value string The value of the button pressed
+ * @param digit int The digit to append
  */
-Calculator.prototype.buttonPress = function(value) {
-	var last = this.appstate.last,
-		number = this.getLastNum();
+Calculator.prototype.appendDigitToEquation = function(digit) {
+	var lastInput = this.appstate.last,
+		currentNumber = this.getLastNum();
 	
-	if (last === null) {
-		if (/[\d(]/.test(value)) {
-			if (value === '(') {
+	switch (lastInput) {
+		case null:
+			this.appendToEquation(digit, true);
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '.':
+		case '(':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			if (lastInput === '0' && this.appstate.input.length === 1) {
+				this.backspace();
+				this.appendToEquation(digit);
+			}
+			else if (this.isValidNum(currentNumber + digit)) {
+				this.appendToEquation(digit);
+			}
+			break;
+	}
+};
+
+
+
+/**
+ * Append decimal to equation
+ */
+Calculator.prototype.appendDecimalToEquation = function() {
+	var lastInput = this.appstate.last,
+		currentNumber = this.getLastNum();
+	
+	switch (lastInput) {
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			if (this.isValidNum(currentNumber + '.')) {
+				this.appendToEquation('.');
+			}
+			break;
+		case null:
+			this.appendToEquation('0.', true);
+			break;
+		case '(':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			this.appendToEquation('0.');
+			break;
+	}
+};
+
+
+
+/**
+ * Append operator to equation
+ *
+ * @param operator string The value of the operator
+ */
+Calculator.prototype.appendOperatorToEquation = function(operator) {
+	var lastInput = this.appstate.last;
+	
+	switch (lastInput) {
+		case null:
+			this.appendToEquation(operator);
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case ')':
+			this.appendToEquation(operator);
+			break;
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			this.backspace();
+			this.appendToEquation(operator);
+			break;
+	}
+};
+
+
+
+/**
+ * Append bracket to equation
+ *
+ * @param bracket string Left of right bracker
+ */
+Calculator.prototype.appendBracketToEquation = function(bracket) {
+	var lastInput = this.appstate.last;
+	
+	if (bracket === '(') {
+		switch (lastInput) {
+			case null:
+				this.appendToEquation('(', true);
 				this.appstate.brackets += 1;
-			}
-			
-			this.appendToEquation(value, true);
-		}
-		else {
-			if (value !== ')') {
-				this.appendToEquation(value);
-			}
+				break;
+			case '*':
+			case '/':
+			case '+':
+			case '-':
+			case '(':
+				this.appendToEquation('(');
+				this.appstate.brackets += 1;
+				break;
 		}
 	}
-	else {
-		switch(value) {
+	else if (bracket === ')') {
+		switch (lastInput) {
+			case '(':
+				this.backspace();
+				break;
+			case ')':
 			case '0':
 			case '1':
 			case '2':
@@ -117,55 +237,9 @@ Calculator.prototype.buttonPress = function(value) {
 			case '7':
 			case '8':
 			case '9':
-				if (/[\d.(+*\-\/]/.test(last)) {
-					if (last === '0' && this.appstate.input.length === 1) {
-						this.appendToEquation(value, true);
-					}
-					else if (this.isValidNum(number + value)) {
-						this.appendToEquation(value);
-					}
-				}
-				break;
-			case '+':
-			case '*':
-			case '-':
-			case '/':
-				if (/[\d)]/.test(last)) {
-					this.appendToEquation(value);
-				}
-				else if (/[+*\-\/]/.test(last)) {
-					this.backspace();
-					this.appendToEquation(value);
-				}
-				break;
-			case '.':
-				if (/[\d]/.test(last)) {
-					if (this.isValidNum(number + value)) {
-						this.appendToEquation(value);
-					}
-				}
-				else if (/[\(+*\-\/]/.test(last)) {
-					if (this.isValidNum(number + value)) {
-						this.appendToEquation('0.');
-					}
-				}
-				break;
-			case '(':
-				if (last === '0' && number.length === 1) {
-					this.appendToEquation(value, true);
-				}
-				else if (/[(+*\-\/]/.test(last)) {
-					this.appstate.brackets += 1;
-					this.appendToEquation(value);
-				}
-				break;
-			case ')':
-				if (last === '(') {
-					this.backspace();
-				}
-				else if (/[\d)]/.test(last) && this.appstate.brackets > 0) {
+				if (this.appstate.brackets > 0) {
+					this.appendToEquation(')');
 					this.appstate.brackets -= 1;
-					this.appendToEquation(value);
 				}
 				break;
 		}
@@ -189,7 +263,12 @@ Calculator.prototype.appendToEquation = function(value, clear) {
 		this.appstate.input += value;	
 	}
 	
-	this.appstate.last = value;
+	if (value === '0.') {
+		this.appstate.last = '.';
+	}
+	else {
+		this.appstate.last = value;
+	}
 	
 	this.updateDisplay();
 };
@@ -802,6 +881,31 @@ Calculator.prototype.addEventHandlers = function() {
  */
 Calculator.prototype.buttonEvent = function(value) {
 	switch (value) {
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			this.appendDigitToEquation(value);
+			break;
+		case '+':
+		case '*':
+		case '-':
+		case '/':
+			this.appendOperatorToEquation(value);
+			break;
+		case '.':
+			this.appendDecimalToEquation();
+			break;
+		case '(':
+		case ')':
+			this.appendBracketToEquation(value);
+			break;
 		case '=':
 			this.equate();
 			break;
@@ -817,8 +921,6 @@ Calculator.prototype.buttonEvent = function(value) {
 		case 'h':
 			this.openHistoryPanel();
 			break;
-		default:
-			this.buttonPress(value);
 	}
 };
 
