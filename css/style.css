@@ -19,19 +19,13 @@ button {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-html,
-body,
-.calculator,
-.application {
-  height: 100%;
-}
 body {
   color: #000;
   background: #fff;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
-  font-weight: 100;
   line-height: 24px;
+  font-weight: 200;
   width: 100%;
   margin: 0;
   -webkit-touch-callout: none;
@@ -45,10 +39,10 @@ body {
 button {
   color: #ffffff;
   background: none;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 22px;
   line-height: 20px;
-  font-weight: 100;
+  font-weight: 300;
   border: none;
   width: 100%;
   margin: 0;
@@ -60,23 +54,14 @@ button:active {
   color: #ffffff;
   background-color: #099d93;
 }
-.statusbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: #262626;
-  width: 100%;
-  height: 21px;
-  z-index: 100;
-}
 .result {
   color: #444444;
   background: #ffffff;
   text-align: right;
-  font-size: 46px;
+  font-size: 60px;
+  font-weight: 200;
   border-bottom: 0.5px solid #d9d9d9;
   width: 100%;
-  height: 23%;
   margin: 0;
   padding: 0 12px;
 }
@@ -103,7 +88,7 @@ button:active {
 .equation .eq .left-bracket,
 .equation .eq .right-bracket {
   color: #999999;
-  font-weight: 300;
+  font-weight: 100;
   margin: 0 5px;
 }
 .equation .eq .left-bracket {
@@ -114,20 +99,24 @@ button:active {
 }
 .history {
   position: absolute;
-  top: 100%;
+  bottom: 0;
   left: 0;
-  background-color: #333333;
+  background-color: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   width: 100%;
-  height: 68.4%;
   z-index: 90;
-  transition: top 0.4s ease-in-out;
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
+  transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 .history-titlebar {
   position: relative;
   color: #ffffff;
-  background-color: #262626;
+  background-color: rgba(9, 157, 147, 0.3);
   text-align: center;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 17px;
   line-height: 22px;
   font-weight: bold;
@@ -157,7 +146,7 @@ button:active {
 }
 .history-list button {
   color: #ffffff;
-  background-color: #333333;
+  background-color: transparent;
   text-align: left;
   padding: 10px 12px;
 }
@@ -181,22 +170,20 @@ button:active {
   margin: 0 3px;
 }
 .history--open .history {
-  top: calc(31.6% + 6px);
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
 }
 .keypad {
   position: absolute;
-  right: 0;
   bottom: 0;
-  left: 0;
+  width: 100%;
   background: #333333;
   border-top: 6px solid #099d93;
-  height: 68.4%;
 }
 .keypad button {
   float: left;
   border: 0.5px solid #000000;
   width: 25%;
-  height: 16.66666666%;
 }
 .keypad button.btn-history,
 .keypad button.btn-equals {
@@ -250,29 +237,60 @@ button:active {
   background-color: #333333;
   font-size: 26px;
 }
-@media (min-height: 480px) {
-  .keypad {
-    height: 68.5%;
+@media (min-height: 460px) {
+  .calculator {
+    height: 460px;
+  }
+  .result {
+    height: 100px;
+  }
+  .keypad button {
+    height: 50px;
+  }
+  .history {
+    height: 300px;
   }
 }
-@media (min-height: 568px) {
-  .keypad {
-    height: 68.4%;
+@media (min-height: 548px) {
+  .calculator {
+    height: 548px;
+  }
+  .result {
+    height: 140px;
+  }
+  .keypad button {
+    height: 58px;
+  }
+  .history {
+    height: 348px;
   }
 }
-@media (min-height: 667px) {
-  .keypad {
-    height: 68.4%;
+@media (min-height: 647px) {
+  .calculator {
+    height: 647px;
+  }
+  .result {
+    height: 140px;
+  }
+  .keypad button {
+    height: 74px;
+  }
+  .history {
+    height: 444px;
   }
 }
-@media (min-height: 736px) {
-  .keypad {
-    height: 68.5%;
+@media (min-height: 716px) {
+  .calculator {
+    height: 716px;
   }
-}
-@media (min-height: 768px) {
-  .keypad {
-    height: 68.6%;
+  .result {
+    height: 145px;
+  }
+  .keypad button {
+    height: 85px;
+  }
+  .history {
+    height: 510px;
   }
 }
 .installation {
@@ -306,7 +324,7 @@ button:active {
   margin-top: -90px;
 }
 .instructions span {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 800;
 }
