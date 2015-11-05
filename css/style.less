@@ -47,11 +47,11 @@
 
 // History
 @historyTitlebarTextColor:          #fff;
-@historyTitlebarBgColor:            #262626;
+@historyTitlebarBgColor:            rgba(9, 157, 147, 0.3);
 
 @historyListTextColor:              #fff;
 @historyListEquationColor:          #aaa;
-@historyListBgColor:                #333;
+@historyListBgColor:                rgba(0, 0, 0, 0.6);
 @historyListBorderColor:            #000;
 @historyActiveTextColor:            #fff;
 @historyActiveBgColor:              #099d93;
@@ -71,6 +71,7 @@ html, body, div, span, ul, li {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 button {
 	margin: 0;
 }
@@ -86,20 +87,13 @@ button {
 	        box-sizing: border-box;
 }
 
-html,
-body,
-.calculator,
-.application {
-	height: 100%;
-}
-
 body {
 	color: #000;
 	background: #fff;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 20px;
-	font-weight: 100;
 	line-height: 24px;
+	font-weight: 200;
 	width: 100%;
 	margin: 0;
 	-webkit-touch-callout: none;
@@ -115,10 +109,10 @@ body {
 button {
 	color: @keypadTextColor;
 	background: none;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 22px;
 	line-height: 20px;
-	font-weight: 100;
+	font-weight: 300;
 	border: none;
 	width: 100%;
 	margin: 0;
@@ -137,24 +131,14 @@ button {
 // DISPLAY
 // ----------------------------------
 
-.statusbar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	background: @statusBarBG;
-	width: 100%;
-	height: 21px;
-	z-index: 100;
-}
-
 .result {
 	color: @resultTextColor;
 	background: @resultBgColor;
 	text-align: right;
-	font-size: 46px; // Must be updated in JS settings as well
+	font-size: 60px; // Must be updated in JS settings as well
+	font-weight: 200;
 	border-bottom: @borderWidth solid @equationSeparatorRuleColor;
 	width: 100%;
-	height: 23%;
 	margin: 0;
 	padding: 0 12px;
 	
@@ -183,7 +167,7 @@ button {
 		.left-bracket,
 		.right-bracket {
 			color: @equationOperatorColor;
-			font-weight: 300;
+			font-weight: 100;
 			margin: 0 5px;
 		}
 		
@@ -204,13 +188,17 @@ button {
 
 .history {
 	position: absolute;
-	top: 100%;
+	bottom: 0;
 	left: 0;
 	background-color: @historyListBgColor;
+	-webkit-backdrop-filter: blur(10px);
+	        backdrop-filter: blur(10px);
 	width: 100%;
-	height: 68.4%;
 	z-index: 90;
-	transition: top 0.4s ease-in-out;
+	-webkit-transform: translateY(100%);
+	        transform: translateY(100%);
+	-webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
+	        transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 
 .history-titlebar {
@@ -218,7 +206,7 @@ button {
 	color: @historyTitlebarTextColor;
 	background-color: @historyTitlebarBgColor;
 	text-align: center;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 17px;
 	line-height: 22px;
 	font-weight: bold;
@@ -252,7 +240,7 @@ button {
 	
 	button {
 		color: @historyListTextColor;
-		background-color: @historyListBgColor;
+		background-color: transparent;
 		text-align: left;
 		padding: 10px 12px;
 		
@@ -282,7 +270,8 @@ button {
 
 .history--open {
 	.history {
-		top: ~"calc(31.6% + 6px)";
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
 	}
 }
 
@@ -293,18 +282,15 @@ button {
 
 .keypad {
 	position: absolute;
-	right: 0;
 	bottom: 0;
-	left: 0;
+	width: 100%;
 	background: @keypadBgColor;
 	border-top: 6px solid @keypadSeparatorRuleColor;
-	height: 68.4%;
 	
 	button {
 		float: left;
 		border: @borderWidth solid @keypadBorderColor;
 		width: 25%;
-		height: 16.66666666%;
 		
 		&.btn-history,
 		&.btn-equals {
@@ -376,9 +362,21 @@ button {
 // iPhone 4 and lower
 // ----------------------------------
 
-@media (min-height: 480px) {
-	.keypad {
-		height: 68.5%;
+@media (min-height: 460px) {
+	.calculator {
+		height: 460px;
+	}
+	
+	.result {
+		height: 100px;
+	}
+	
+	.keypad button {
+		height: 50px;
+	}
+	
+	.history {
+		height: 300px;
 	}
 }
 
@@ -387,9 +385,21 @@ button {
 // iPhone 5, 5s & 5c
 // ----------------------------------
 
-@media (min-height: 568px) {
-	.keypad {
-		height: 68.4%;
+@media (min-height: 548px) {
+	.calculator {
+		height: 548px;
+	}
+	
+	.result {
+		height: 140px;
+	}
+	
+	.keypad button {
+		height: 58px;
+	}
+	
+	.history {
+		height: 348px;
 	}
 }
 
@@ -398,9 +408,21 @@ button {
 // iPhone 6
 // ----------------------------------
 
-@media (min-height: 667px) {
-	.keypad {
-		height: 68.4%;
+@media (min-height: 647px) {
+	.calculator {
+		height: 647px;
+	}
+	
+	.result {
+		height: 140px;
+	}
+	
+	.keypad button {
+		height: 74px;
+	}
+	
+	.history {
+		height: 444px;
 	}
 }
 
@@ -409,20 +431,21 @@ button {
 // iPhone 6+
 // ----------------------------------
 
-@media (min-height: 736px) {
-	.keypad {
-		height: 68.5%;
+@media (min-height: 716px) {
+	.calculator {
+		height: 716px;
 	}
-}
-
-
-
-// iPhone 6+
-// ----------------------------------
-
-@media (min-height: 768px) {
-	.keypad {
-		height: 68.6%;
+	
+	.result {
+		height: 145px;
+	}
+	
+	.keypad button {
+		height: 85px;
+	}
+	
+	.history {
+		height: 510px;
 	}
 }
 
@@ -467,7 +490,7 @@ button {
 	margin-top: -90px;
 	
 	span {
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-size: 16px;
 		font-weight: 800;
 	}
