@@ -65,7 +65,7 @@ if (!Array.prototype.appendToLast) {
 function Calculator() {
 	this.settings = {
 		version: '3.2',
-		history: 100,
+		history: 50,
 		fontsize: 60,
 		decimals: 2
 	};
@@ -413,6 +413,19 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
 				this.appstate.brackets += 1;
 				this.appstate.last = '(';
 				break;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				this.appstate.input.splice(this.appstate.input.length - 1, 0, '(');
+				this.appstate.brackets += 1;
+				break;
 		}
 	}
 	else if (bracket === ')') {
@@ -480,7 +493,7 @@ Calculator.prototype.equate = function() {
 	if (result !== null) {
 		this.addHistoryItem({
 			'result': result,
-			'equ': this.appstate.input.join('')
+			'equ': this.appstate.input
 		});
 		this.clearAll(result.toString());
 	}
@@ -681,11 +694,33 @@ Calculator.prototype.updateDisplay = function() {
  * @param equation string The equation string
  */
 Calculator.prototype.updateDisplayEquation = function() {
-	var output = '',
-		i;
+	var ele = document.getElementById('eq'),
+		equ = this.appstate.input.slice(),
+		width;
 	
-	for (i = 0; i < this.appstate.input.length; i += 1) {
-		switch(this.appstate.input[i]) {
+	ele.innerHTML = this.replaceOperators(equ);
+	width = ele.offsetWidth;
+	
+	while (width > this.equation.offsetWidth - 24) {
+		equ.splice(0, 1);
+		ele.innerHTML = '...' + this.replaceOperators(equ);
+		width = ele.offsetWidth;
+	}
+};
+
+
+
+/**
+ * Replace operators with display strings
+ *
+ * @param equ array The equation array to replace the operators in
+ * return string The new display HTML string
+ */
+Calculator.prototype.replaceOperators = function(equ) {
+	var output = '', i;
+	
+	for (i = 0; i < equ.length; i += 1) {
+		switch(equ[i]) {
 			case '*':
 				output += '<span class="operator">&times;</span>';
 				break;
@@ -705,12 +740,12 @@ Calculator.prototype.updateDisplayEquation = function() {
 				output += '<span class="right-bracket">)</span>';
 				break;
 			default:
-				output += this.appstate.input[i];
+				output += equ[i];
 		}
 	}
 	
-	this.equation.innerHTML = output;
-};
+	return output;
+}
 
 
 
@@ -831,11 +866,11 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
  * @param item object The history item object to add
  */
 Calculator.prototype.addHistoryItem = function(item) {
-	var last = this.history.first() || {result: null, equ: null},
+	var last = this.history.first() || {result: null, equ: []},
 		currentLen = this.history.length,
 		newLen = 0;
 	
-	if (item.equ !== last.equ) {
+	if (this.replaceOperators(item.equ) !== this.replaceOperators(last.equ)) {
 		newLen = this.history.unshift(item);
 		
 		if (newLen > this.settings.history) {
@@ -866,7 +901,7 @@ Calculator.prototype.createHistoryElement = function(item) {
 	button.innerText = this.addCommas(item.result);
 	
 	span.className = 'equ';
-	span.innerHTML = item.equ.toString();
+	span.innerHTML = this.replaceOperators(item.equ);
 	
 	button.appendChild(span);
 	li.appendChild(button);
@@ -910,7 +945,7 @@ Calculator.prototype.appendToHistoryList = function(item) {
 	button.innerText = this.addCommas(item.result);
 	
 	span.className = 'equ';
-	span.innerHTML = item.equ.toString();
+	span.innerHTML = this.replaceOperators(item.equ);
 	
 	button.appendChild(span);
 	li.appendChild(button);
