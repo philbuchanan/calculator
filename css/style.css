@@ -141,9 +141,6 @@ button:active {
 .history-list {
   list-style: none;
 }
-.history-list li {
-  border-bottom: 0.5px solid #000000;
-}
 .history-list button {
   color: #ffffff;
   background-color: transparent;
