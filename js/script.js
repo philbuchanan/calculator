@@ -4,7 +4,7 @@
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.2
+ * @version 3.2.1
  */
 
 "use strict";
@@ -64,7 +64,7 @@ if (!Array.prototype.appendToLast) {
  */
 function Calculator() {
 	this.settings = {
-		version: '3.2',
+		version: '3.2.1',
 		history: 50,
 		fontsize: 60,
 		decimals: 2
@@ -843,7 +843,7 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
 	switch(this.appstate.last) {
 		case null:
 			this.appstate.input = [value];
-			this.appstate.last = 1;
+			this.appstate.last = '1';
 			break;
 		case '*':
 		case '/':
@@ -851,7 +851,7 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
 		case '-':
 		case '(':
 			this.appstate.input.push(value);
-			this.appstate.last = 1;
+			this.appstate.last = '1';
 			break;
 	}
 	
