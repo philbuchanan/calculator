@@ -2,11 +2,11 @@
 
 **A calculator iOS web app.**
 
-[Install the app](http://ioscalc.com).
+[Install the app](http://philbuchanan.com/calculator/).
 
 ## Support
 
-The current version has been fully tested on iOS 8 running on iPhone 5, iPhone 5s, iPhone 6 and iPhone 6+. It should *work* on iOS 7 but the app uses iOS 8 specific features. iOS 8 is highly recommended.
+The current version has been fully tested on iOS 9 running on iPhone 5s, iPhone 6 and iPhone 6+. It should *work* on iOS 7 and 8, but iOS 9 is highly recommended.
 
 ## Features
 
@@ -14,7 +14,7 @@ The current version has been fully tested on iOS 8 running on iPhone 5, iPhone 5
 - brackets
 - invert individual numbers (+/-)
 - backspace
-- 100 item calculation history
+- 50 item calculation history
 - HTML5 app caching (so it'll work offline)
 
 ### History

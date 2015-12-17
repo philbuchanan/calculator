@@ -4,23 +4,74 @@
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.1.2
+ * @version 3.2
  */
 
 "use strict";
 
 var devmode = true;
 
+/**
+ * Returns the contents of the first item of an array
+ */
+if (!Array.prototype.first) {
+	Array.prototype.first = function() {
+		return this[0];
+	}
+}
+
+
+
+/**
+ * Returns the contents of the last item of an array
+ */
+if (!Array.prototype.last) {
+	Array.prototype.last = function() {
+		return this[this.length - 1];
+	}
+}
+
+
+
+/**
+ * Replace the contents of the last item in an array
+ *
+ * @param value string The new string for the last array item
+ */
+if (!Array.prototype.replaceLast) {
+	Array.prototype.replaceLast = function(value) {
+		this[this.length - 1] = value;
+	}
+}
+
+
+
+/**
+ * Append a string to the string of the last item in an array
+ *
+ * @param value string The string to append
+ */
+if (!Array.prototype.appendToLast) {
+	Array.prototype.appendToLast = function(value) {
+		this[this.length - 1] += value;
+	}
+}
+
+
+
+/**
+ * The Calcualtor constructor function
+ */
 function Calculator() {
 	this.settings = {
-		version: '3.1.2',
-		history: 100,
+		version: '3.2',
+		history: 50,
 		fontsize: 60,
 		decimals: 2
 	};
 	
 	this.appstate = {
-		input: 0,
+		input: ['0'],
 		brackets: 0,
 		last: null
 	};
@@ -44,7 +95,7 @@ function Calculator() {
 	this.addEventHandlers();
 	
 	// Restore previous app state
-	this.loadAppState();
+	this.restoreAppState();
 	this.loadHistory();
 	
 	this.updateDisplay();
@@ -53,9 +104,9 @@ function Calculator() {
 
 
 /**
- * Retrieve the application state from local storage
+ * Retrieve and restore the application state from local storage
  */
-Calculator.prototype.loadAppState = function() {
+Calculator.prototype.restoreAppState = function() {
 	var json = localStorage.getItem('appState'),
 		savedAppState;
 	
@@ -82,725 +133,11 @@ Calculator.prototype.saveAppState = function() {
 
 
 /**
- * Append digit to equation
- *
- * @param digit int The digit to append
- */
-Calculator.prototype.appendDigitToEquation = function(digit) {
-	var lastInput = this.appstate.last,
-		currentNumber = this.getLastNum();
-	
-	switch (lastInput) {
-		case null:
-			this.appendToEquation(digit, true);
-			break;
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-		case '.':
-		case '(':
-		case '*':
-		case '/':
-		case '+':
-		case '-':
-			if (lastInput === '0' && this.appstate.input.length === 1) {
-				this.backspace();
-				this.appendToEquation(digit);
-			}
-			else if (this.isValidNum(currentNumber + digit)) {
-				this.appendToEquation(digit);
-			}
-			break;
-	}
-};
-
-
-
-/**
- * Append decimal to equation
- */
-Calculator.prototype.appendDecimalToEquation = function() {
-	var lastInput = this.appstate.last,
-		currentNumber = this.getLastNum();
-	
-	switch (lastInput) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-			if (this.isValidNum(currentNumber + '.')) {
-				this.appendToEquation('.');
-			}
-			break;
-		case null:
-			this.appendToEquation('0.', true);
-			break;
-		case '(':
-		case '*':
-		case '/':
-		case '+':
-		case '-':
-			this.appendToEquation('0.');
-			break;
-	}
-};
-
-
-
-/**
- * Append operator to equation
- *
- * @param operator string The value of the operator
- */
-Calculator.prototype.appendOperatorToEquation = function(operator) {
-	var lastInput = this.appstate.last;
-	
-	switch (lastInput) {
-		case null:
-			this.appendToEquation(operator);
-			break;
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-		case ')':
-			this.appendToEquation(operator);
-			break;
-		case '*':
-		case '/':
-		case '+':
-		case '-':
-			this.backspace();
-			this.appendToEquation(operator);
-			break;
-	}
-};
-
-
-
-/**
- * Append bracket to equation
- *
- * @param bracket string Left of right bracker
- */
-Calculator.prototype.appendBracketToEquation = function(bracket) {
-	var lastInput = this.appstate.last;
-	
-	if (bracket === '(') {
-		switch (lastInput) {
-			case null:
-				this.appendToEquation('(', true);
-				this.appstate.brackets += 1;
-				break;
-			case '*':
-			case '/':
-			case '+':
-			case '-':
-			case '(':
-				this.appendToEquation('(');
-				this.appstate.brackets += 1;
-				break;
-		}
-	}
-	else if (bracket === ')') {
-		switch (lastInput) {
-			case '(':
-				this.backspace();
-				break;
-			case ')':
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				if (this.appstate.brackets > 0) {
-					this.appendToEquation(')');
-					this.appstate.brackets -= 1;
-				}
-				break;
-		}
-	}
-};
-
-
-
-/**
- * Append an operator, operand or bracket to the equation string
- * Whenever the equation is updated, the display should also be updated.
- *
- * @param value string The value to add to the equation
- * @param clear bool Should the appstate input be cleared first
- */
-Calculator.prototype.appendToEquation = function(value, clear) {
-	if (clear) {
-		this.appstate.input = value;
-	}
-	else {
-		this.appstate.input += value;	
-	}
-	
-	if (value === '0.') {
-		this.appstate.last = '.';
-	}
-	else {
-		this.appstate.last = value;
-	}
-	
-	this.updateDisplay();
-};
-
-
-
-/**
- * Invert last number (from positive to negative and vise versa)
- */
-Calculator.prototype.invertNumber = function() {
-	var str = this.appstate.input,
-		lastNum = this.getLastNum(),
-		len,
-		before;
-	
-	if (lastNum) {
-		len = lastNum.length;
-		before = str.charAt(str.length - len - 1);
-		
-		if (/[+*\-\/()]/.test(before) || before === '') {
-		
-			if (lastNum[0] === '-') {
-				lastNum = lastNum.substr(1, len);
-			}
-			else {
-				lastNum = '-' + lastNum;
-			}
-		
-		}
-		
-		this.appstate.input = str.substr(0, str.length - len) + lastNum;
-		
-		this.updateDisplay();
-	}
-};
-
-
-
-/**
- * Called when the equals button is pressed
- * Evaluates the current equation string.
- */
-Calculator.prototype.equate = function() {
-	var result = this.compute(this.appstate.input),
-		historyItem = {};
-	
-	if (result !== null) {
-		historyItem.result = result;
-		historyItem.equ = this.appstate.input;
-		this.addHistoryItem(historyItem);
-		this.clearAll(result.toString());
-	}
-};
-
-
-
-/**
- * Remove the last input character
- */
-Calculator.prototype.backspace = function() {
-	var input = this.appstate.input,
-		last = this.appstate.last;
-	
-	if (last === '(') {
-		this.appstate.brackets -= 1;
-	}
-	else if (last === ')') {
-		this.appstate.brackets += 1;
-	}
-	
-	if (input.length > 1 && last !== null) {
-		this.appstate.input = input.slice(0, input.length - 1);
-		this.appstate.last = input.charAt(input.length - 2);
-		
-		this.updateDisplay();
-	}
-	else {
-		this.clearAll();
-	}
-};
-
-
-
-/**
- * Called when backspace is long pressed
- */
-Calculator.prototype.backspaceLongPress = function() {
-	this.clearAll();
-	this.flashButton('btn-clear');
-};
-
-
-
-/**
- * Activate button
- * Show which operator is currently activated on the keyboard.
- *
- * @param id string The DOM node ID to activate
- */
-Calculator.prototype.activateButton = function(id) {
-	var btn = document.getElementById(id);
-	
-	btn.classList.add('active');
-};
-
-
-
-/**
- * Deactivate button
- *
- * @param btn string The DOM node ID to deactivate
- */
-Calculator.prototype.deactivateButton = function(btn) {
-	btn.classList.remove('active');
-};
-
-
-
-/**
- * Clear the current state of the calculator
- *
- * @param result string The string to update the display with
- */
-Calculator.prototype.clearAll = function(result) {
-	if (result) {
-		this.appstate.input = result;
-	}
-	else {
-		this.appstate.input = 0;
-	}
-	
-	this.appstate.brackets = 0;
-	this.appstate.last = null;
-	
-	this.updateDisplay();
-};
-
-
-
-/**
- * Is the given number a valid number (e.g. -12.34)
- *
- * @param num double The number to test
- * return bool True if valid, else false
- */
-Calculator.prototype.isValidNum = function(num) {
-	/**
-	 * Regex eplainaition:
-	 * ^             Match at start of string
-	 * \-?           Optional negative
-	 * 0             Zero, or
-	 * 0(?!\.)       Zero if followed by decimal, or
-	 * ([1-9]{1}\d*) Exactly one 1-9 and zero or more digits, or
-	 * \.(?!\.)\d*   A decimal only if not followed by another decimal plus zero or more digits
-	 * (\.\d*){0,1}  Only one grouping of a decimal and zero or more digits
-	 * $             Match end of string
-	 */
-	if (/^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)) {
-		return true;
-	}
-	
-	return false;
-};
-
-
-
-/**
- * Parses the last full number from the input string (eg. -42.63)
- *
- * return A full number
- */
-Calculator.prototype.getLastNum = function() {
-	var str = this.appstate.input,
-		arr;
-	
-	if (str.length > 0) {
-		arr = str.match(/-?\d*\.?\d*$/);
-		
-		if (arr !== null) {
-			return arr[0];
-		}
-	}
-	
-	return false;
-};
-
-
-
-/**
- * Update the calculator display
- */
-Calculator.prototype.updateDisplay = function() {
-	var eq = this.appstate.input.toString(),
-		result = this.compute(eq),
-		activeBtn = document.querySelector('.active');
-	
-	// Update the result
-	if (result !== null && !isNaN(result)) {
-		if (result > 9E13) {
-			this.result.innerHTML = '<span>' + result.toExponential(this.settings.decimals) + '</span>';
-		}
-		else {
-			this.result.innerHTML = '<span>' + this.addCommas(result) + '<span>';
-		}
-		this.resizeFont();
-	}
-	
-	// Show active operator
-	if (activeBtn) {
-		this.deactivateButton(activeBtn);
-	}
-	
-	switch (this.appstate.last) {
-		case '*':
-			this.activateButton('btn-multiply');
-			break;
-		case '/':
-			this.activateButton('btn-divide');
-			break;
-		case '+':
-			this.activateButton('btn-add');
-			break;
-		case '-':
-			this.activateButton('btn-subtract');
-			break;
-	}
-	
-	this.updateDisplayEquation(eq);
-	
-	this.saveAppState();
-};
-
-
-
-/**
- * Updates the displays equation string
- * Directly manipulates the DOM.
- *
- * @param equation string The equation string
- */
-Calculator.prototype.updateDisplayEquation = function(equation) {
-	var ele = document.getElementById('eq'),
-		i = equation.length,
-		width;
-	
-	ele.innerHTML = this.replaceOperators(equation);
-	width = ele.offsetWidth;
-	
-	while (width > this.equation.offsetWidth - 24) {
-		ele.innerHTML = '...' + this.replaceOperators(equation.substr(equation.length - i, i));
-		width = ele.offsetWidth;
-		i -= 1;
-	}
-};
-
-
-
-/**
- * Replace operators with display strings
- *
- * @param str string The equation string to replace the operators in
- * return string The new display string
- */
-Calculator.prototype.replaceOperators = function(str) {
-	str = str.replace(/\//g, '<span class="operator">&divide;</span>');
-	str = str.replace(/\*/g, '<span class="operator">&times;</span>');
-	str = str.replace(/\+/g, '<span class="operator">+</span>');
-	str = str.replace(/\-/g, '<span class="operator">&minus;</span>');
-	str = str.replace(/\(/g, '<span class="left-bracket">(</span>');
-	str = str.replace(/\)/g, '<span class="right-bracket">)</span>');
-	
-	return str;
-};
-
-
-
-/**
- * Resize the result font to fit within the width of it's container
- * Directly manipulates the DOM.
- */
-Calculator.prototype.resizeFont = function() {
-	var size, displayWidth, textWidth;
-	
-	size = this.settings.fontsize;
-	this.result.style.fontSize = size + 'px';
-	displayWidth = window.innerWidth - 24;
-	textWidth = this.result.childNodes[0].offsetWidth;
-	
-	while (textWidth > displayWidth) {
-		size -= 1;
-		this.result.style.fontSize = size + 'px';
-		textWidth = this.result.childNodes[0].offsetWidth;
-		
-		if (size === 10) {
-			break;
-		}
-	}
-};
-
-
-
-/**
- * Add commas to a number string
- *
- * @param number double The number to add commas to
- * return string The new number string
- */
-Calculator.prototype.addCommas = function(number) {
-	var parts, x, y, regx;
-	
-	parts = number.toString().split('.');
-	x = parts[0];
-	if (parts.length > 1) {
-		y = '.' + parts[1];
-	}
-	else {
-		y = '';
-	}
-	regx = /(\d+)(\d{3})/;
-	
-	while (regx.test(x)) {
-		x = x.replace(regx, '$1' + ',' + '$2');
-	}
-	
-	return x + y;
-};
-
-
-
-/**
- * Compute an equation string
- *
- * @param equation string The equation string to compute
- * return double The result of the computation, else null if it cannot be computed 
- */
-Calculator.prototype.compute = function(equation) {
-	var result,
-		round = Math.pow(10, this.settings.decimals);
-	
-	try {
-		result = eval(equation);
-	}
-	catch(err) {
-		return null;
-	}
-	
-	return Math.round(result * round) / round;
-};
-
-
-
-/**
- * Open history panel
- */
-Calculator.prototype.openHistoryPanel = function() {
-	this.calculator.classList.add('history--open');
-};
-
-
-
-/**
- * Open history panel
- */
-Calculator.prototype.closeHistoryPanel = function() {
-	this.calculator.classList.remove('history--open');
-};
-
-
-
-/**
- * Append a saved history item to the equation string
- *
- * @param value string The history item string to add to the equation
- */
-Calculator.prototype.appendHistoryItemToEquation = function(value) {
-	if (this.appstate.last === null) {
-		this.appstate.input = value;
-	}
-	else if (/[(+*\-\/]/.test(this.appstate.last)) {
-		this.appstate.input += value;
-	}
-	
-	this.appstate.last = value.charAt(value.length - 1);
-	
-	this.updateDisplay();
-	this.saveAppState();
-};
-
-
-
-/**
- * Add a history item to the history list
- *
- * @param item object The history item object to add
- */
-Calculator.prototype.addHistoryItem = function(item) {
-	var i = this.history.length - 1,
-		ele;
-	
-	if (typeof this.history[i] !== 'object' || item.result !== this.history[i].result) {
-		while (this.history.length >= this.settings.history) {
-			this.history.shift();
-			ele = this.historyList.childNodes[i];
-			ele.parentNode.removeChild(ele);
-			i -= 1;
-		}
-		
-		this.history.push(item);
-		
-		this.flashButton('btn-history');
-		this.appendToHistoryList(item);
-		this.saveHistory();
-	}
-};
-
-
-
-/**
- * Updates the history listing
- *
- * @param item object The history item to add to the display
- */
-Calculator.prototype.appendToHistoryList = function(item) {
-	var li     = document.createElement('li'),
-		button = document.createElement('button'),
-		span   = document.createElement('span'),
-		children = this.historyList.childNodes;
-	
-	button.value = item.result;
-	button.innerText = this.addCommas(item.result);
-	
-	span.className = 'equ';
-	span.innerHTML = this.replaceOperators(item.equ.toString());
-	
-	button.appendChild(span);
-	li.appendChild(button);
-	
-	this.historyList.insertBefore(li, children[0]);
-};
-
-
-
-/**
- * Save the calculator history into local storage
- */
-Calculator.prototype.saveHistory = function() {
-	var json;
-	
-	json = JSON.stringify(this.history);
-	localStorage.setItem('history', json);
-};
-
-
-
-/**
- * Load the calculator history from local storage
- */
-Calculator.prototype.loadHistory = function() {
-	var json = localStorage.getItem('history'),
-		i;
-	
-	if (json !== null && json !== '') {
-		this.history = JSON.parse(json);
-	}
-	else {
-		this.history = [];
-	}
-	
-	for (i = 0; i < this.history.length; i += 1) {
-		this.appendToHistoryList(this.history[i]);
-	}
-};
-
-
-
-/**
- * Clear the entire history
- */
-Calculator.prototype.clearHistory = function() {
-	while (this.historyList.hasChildNodes()) {
-		this.historyList.removeChild(this.historyList.lastChild);
-	}
-	
-	this.history = [];
-	this.saveHistory();
-};
-
-
-
-/**
- * Flash button
- *
- * @param id string The DOM node to flash
- */
-Calculator.prototype.flashButton = function(id) {
-	var btn = document.getElementById(id);
-	
-	btn.classList.add('flash');
-	
-	setTimeout(function() {
-		btn.classList.remove('flash');
-	}, 200);
-};
-
-
-
-/**
- * Add Timer
- *
- * @param callback function The function to call on timeout
- */
-Calculator.prototype.addTimer = function(callback) {
-	this.timer.timer = setTimeout(callback, this.timer.timerlen);
-};
-
-
-
-/**
- * Remove Timer
- */
-Calculator.prototype.removeTimer = function() {
-	clearTimeout(this.timer.timer);
-};
-
-
-
-/**
  * Handles all events
  */
 Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
-		buttonModeEnd =   'mouseup';
+		buttonModeEnd = 'mouseup';
 	
 	if (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
@@ -922,6 +259,782 @@ Calculator.prototype.buttonEvent = function(value) {
 			this.openHistoryPanel();
 			break;
 	}
+};
+
+
+
+/**
+ * Append digit to equation
+ *
+ * @param digit int The digit to append
+ */
+Calculator.prototype.appendDigitToEquation = function(digit) {
+	var lastInput = this.appstate.last;
+	
+	switch (lastInput) {
+		case null:
+			this.appstate.input = [digit];
+			this.appstate.last = digit;
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '.':
+			if (this.appstate.input.last() === '0') {
+				this.appstate.input.replaceLast(digit);
+			}
+			else {
+				this.appstate.input.appendToLast(digit);
+			}
+			this.appstate.last = digit;
+			break;
+		case '(':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			this.appstate.input.push(digit);
+			this.appstate.last = digit;
+			break;
+	}
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Append decimal to equation
+ */
+Calculator.prototype.appendDecimalToEquation = function() {
+	var lastInput = this.appstate.last;
+	
+	switch (lastInput) {
+		case null:
+			this.appstate.input = ['0.'];
+			this.appstate.last = '.';
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			if (this.isValidNum(this.appstate.input.last() + '.')) {
+				this.appstate.input.appendToLast('.');
+				this.appstate.last = '.';
+			}
+			break;
+		case '(':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			this.appstate.input.push('0.');
+			this.appstate.last = '.';
+			break;
+	}
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Append operator to equation
+ *
+ * @param operator string The value of the operator
+ */
+Calculator.prototype.appendOperatorToEquation = function(operator) {
+	var lastInput = this.appstate.last;
+	
+	switch (lastInput) {
+		case null:
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case ')':
+			this.appstate.input.push(operator);
+			this.appstate.last = operator;
+			break;
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			this.appstate.input.replaceLast(operator);
+			this.appstate.last = operator;
+			break;
+	}
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Append bracket to equation
+ *
+ * @param bracket string Left of right bracker
+ */
+Calculator.prototype.appendBracketToEquation = function(bracket) {
+	var lastInput = this.appstate.last;
+	
+	if (bracket === '(') {
+		switch (lastInput) {
+			case null:
+				this.appstate.input = ['('];
+				this.appstate.brackets += 1;
+				this.appstate.last = '(';
+				break;
+			case '*':
+			case '/':
+			case '+':
+			case '-':
+			case '(':
+				this.appstate.input.push('(');
+				this.appstate.brackets += 1;
+				this.appstate.last = '(';
+				break;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				this.appstate.input.splice(this.appstate.input.length - 1, 0, '(');
+				this.appstate.brackets += 1;
+				break;
+		}
+	}
+	else if (bracket === ')') {
+		switch (lastInput) {
+			case '(':
+				this.backspace();
+				break;
+			case ')':
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if (this.appstate.brackets > 0) {
+					this.appstate.input.push(')');
+					this.appstate.brackets -= 1;
+					this.appstate.last = ')';
+				}
+				break;
+		}
+	}
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Invert last number (from positive to negative and vise versa)
+ */
+Calculator.prototype.invertNumber = function() {
+	var num;
+	
+	if (/[\d\.]/.test(this.appstate.last)) {
+		num = this.appstate.input.last();
+		
+		if (num.substr(0, 1) === '-') {
+			this.appstate.input.replaceLast(num.substr(1, num.length));
+		}
+		else if (this.appstate.input[this.appstate.input.length - 2] === '-') {
+			this.appstate.input[this.appstate.input.length - 2] = '+';
+		}
+		else if (this.isValidNum('-' + num)) {
+			this.appstate.input.replaceLast('-' + num);
+		}
+		
+		this.updateDisplay();
+	}
+};
+
+
+
+/**
+ * Called when the equals button is pressed
+ * Evaluates the current equation string.
+ */
+Calculator.prototype.equate = function() {
+	var result = this.compute();
+	
+	if (result !== null) {
+		this.addHistoryItem({
+			'result': result,
+			'equ': this.appstate.input
+		});
+		this.clearAll(result.toString());
+	}
+};
+
+
+
+/**
+ * Remove the last input character
+ */
+Calculator.prototype.backspace = function() {
+	var string;
+	
+	if (this.appstate.input.length <= 1 && this.appstate.input.last().length <= 1) {
+		this.clearAll();
+	}
+	else if (this.appstate.last === null) {
+		this.clearAll();
+	}
+	else {
+		switch(this.appstate.last) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '.':
+				if (this.appstate.input.last().length <= 1) {
+					this.appstate.input.pop();
+				}
+				else {
+					string = this.appstate.input.last();
+					this.appstate.input.replaceLast(string.slice(0, string.length - 1));
+				}
+				break;
+			case '(':
+				this.appstate.brackets -= 1;
+				this.appstate.input.pop();
+				break;
+			case ')':
+				this.appstate.brackets += 1;
+				this.appstate.input.pop();
+				break;
+			case '*':
+			case '/':
+			case '+':
+			case '-':
+				this.appstate.input.pop();
+				break;
+		}
+		
+		string = this.appstate.input.join('');
+		this.appstate.last = string.charAt(string.length - 1);
+		
+		this.updateDisplay();
+	}
+};
+
+
+
+/**
+ * Called when backspace is long pressed
+ */
+Calculator.prototype.backspaceLongPress = function() {
+	this.clearAll();
+	this.flashButton('btn-clear');
+};
+
+
+
+/**
+ * Activate button
+ * Show which operator is currently activated on the keyboard.
+ *
+ * @param id string The DOM node ID to activate
+ */
+Calculator.prototype.activateButton = function(id) {
+	var btn = document.getElementById(id);
+	
+	btn.classList.add('active');
+};
+
+
+
+/**
+ * Deactivate button
+ *
+ * @param btn string The DOM node to deactivate
+ */
+Calculator.prototype.deactivateButton = function(btn) {
+	btn.classList.remove('active');
+};
+
+
+
+/**
+ * Clear the current state of the calculator
+ *
+ * @param result string The string to update the display with
+ */
+Calculator.prototype.clearAll = function(result) {
+	if (result) {
+		this.appstate.input = [result];
+	}
+	else {
+		this.appstate.input = ['0'];
+	}
+	
+	this.appstate.brackets = 0;
+	this.appstate.last = null;
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Is the given number a valid number (e.g. -12.34)
+ *
+ * @param num double The number to test
+ * return bool True if valid, else false
+ */
+Calculator.prototype.isValidNum = function(num) {
+	/**
+	 * Regex eplainaition:
+	 * ^              Match at start of string
+	 * \-?            Optional negative
+	 * 0|             Zero, or
+	 * 0(?!\.)|       Zero if followed by decimal, or
+	 * ([1-9]{1}\d*)| Exactly one 1-9 and zero or more digits, or
+	 * \.(?!\.)\d*    A decimal only if not followed by another decimal plus zero or more digits
+	 * (\.\d*){0,1}   Only one grouping of a decimal and zero or more digits
+	 * $              Match end of string
+	 */
+	if (/^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)) {
+		return true;
+	}
+	
+	return false;
+};
+
+
+
+/**
+ * Update the calculator display
+ */
+Calculator.prototype.updateDisplay = function() {
+	var result = this.compute(),
+		activeBtn = document.querySelector('.active');
+	
+	// Update the result
+	if (result !== null && !isNaN(result)) {
+		if (result > 9E13) {
+			this.result.innerHTML = '<span>' + result.toExponential(this.settings.decimals) + '</span>';
+		}
+		else {
+			this.result.innerHTML = '<span>' + this.addCommas(result) + '</span>';
+		}
+		this.resizeFont();
+	}
+	
+	// Show active operator
+	if (activeBtn) {
+		this.deactivateButton(activeBtn);
+	}
+	
+	switch (this.appstate.last) {
+		case '*':
+			this.activateButton('btn-multiply');
+			break;
+		case '/':
+			this.activateButton('btn-divide');
+			break;
+		case '+':
+			this.activateButton('btn-add');
+			break;
+		case '-':
+			this.activateButton('btn-subtract');
+			break;
+	}
+	
+	this.updateDisplayEquation();
+	
+	this.saveAppState();
+};
+
+
+
+/**
+ * Updates the displays equation string
+ * Directly manipulates the DOM.
+ *
+ * @param equation string The equation string
+ */
+Calculator.prototype.updateDisplayEquation = function() {
+	var ele = document.getElementById('eq'),
+		equ = this.appstate.input.slice(),
+		width;
+	
+	ele.innerHTML = this.replaceOperators(equ);
+	width = ele.offsetWidth;
+	
+	while (width > this.equation.offsetWidth - 24) {
+		equ.splice(0, 1);
+		ele.innerHTML = '...' + this.replaceOperators(equ);
+		width = ele.offsetWidth;
+	}
+};
+
+
+
+/**
+ * Replace operators with display strings
+ *
+ * @param equ array The equation array to replace the operators in
+ * return string The new display HTML string
+ */
+Calculator.prototype.replaceOperators = function(equ) {
+	var output = '', i;
+	
+	for (i = 0; i < equ.length; i += 1) {
+		switch(equ[i]) {
+			case '*':
+				output += '<span class="operator">&times;</span>';
+				break;
+			case '/':
+				output += '<span class="operator">&divide;</span>';
+				break;
+			case '+':
+				output += '<span class="operator">+</span>';
+				break;
+			case '-':
+				output += '<span class="operator">&minus;</span>';
+				break;
+			case '(':
+				output += '<span class="left-bracket">(</span>';
+				break;
+			case ')':
+				output += '<span class="right-bracket">)</span>';
+				break;
+			default:
+				output += equ[i];
+		}
+	}
+	
+	return output;
+}
+
+
+
+/**
+ * Resize the result font to fit within the width of it's container
+ * Directly manipulates the DOM.
+ */
+Calculator.prototype.resizeFont = function() {
+	var size = this.settings.fontsize;
+	
+	this.result.style.fontSize = size + 'px';
+	
+	while (this.result.childNodes[0].offsetWidth > window.innerWidth - 24) {
+		size -= 1;
+		this.result.style.fontSize = size + 'px';
+	}
+};
+
+
+
+/**
+ * Add commas to a number string
+ *
+ * @param number double The number to add commas to
+ * return string The new number string
+ */
+Calculator.prototype.addCommas = function(number) {
+	var parts = number.toString().split('.'),
+		regx = /(\d+)(\d{3})/,
+		integer = parts[0],
+		fraction = '';
+	
+	// Add commas to integer part
+	while (regx.test(integer)) {
+		integer = integer.replace(regx, '$1' + ',' + '$2');
+	}
+	
+	// Add fractional part
+	if (parts.length > 1) {
+		fraction = '.' + parts[1];
+	}
+	
+	return integer + fraction;
+};
+
+
+
+/**
+ * Compute an equation string
+ *
+ * @param equation string The equation string to compute
+ * return double The result of the computation, else null if it cannot be computed 
+ */
+Calculator.prototype.compute = function() {
+	var equation = this.appstate.input.join(''),
+		result,
+		round = Math.pow(10, this.settings.decimals);
+	
+	try {
+		result = eval(equation);
+	}
+	catch(err) {
+		return null;
+	}
+	
+	return Math.round(result * round) / round;
+};
+
+
+
+/**
+ * Open history panel
+ */
+Calculator.prototype.openHistoryPanel = function() {
+	this.calculator.classList.add('history--open');
+};
+
+
+
+/**
+ * Open history panel
+ */
+Calculator.prototype.closeHistoryPanel = function() {
+	this.calculator.classList.remove('history--open');
+};
+
+
+
+/**
+ * Append a saved history item to the equation string
+ *
+ * @param value string The history item string to add to the equation
+ */
+Calculator.prototype.appendHistoryItemToEquation = function(value) {
+	switch(this.appstate.last) {
+		case null:
+			this.appstate.input = [value];
+			this.appstate.last = 1;
+			break;
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+		case '(':
+			this.appstate.input.push(value);
+			this.appstate.last = 1;
+			break;
+	}
+	
+	this.updateDisplay();
+};
+
+
+
+/**
+ * Add a history item to the history list
+ *
+ * @param item object The history item object to add
+ */
+Calculator.prototype.addHistoryItem = function(item) {
+	var last = this.history.first() || {result: null, equ: []},
+		currentLen = this.history.length,
+		newLen = 0;
+	
+	if (this.replaceOperators(item.equ) !== this.replaceOperators(last.equ)) {
+		newLen = this.history.unshift(item);
+		
+		if (newLen > this.settings.history) {
+			this.history.splice(this.settings.history, newLen - currentLen);
+		}
+		
+		this.flashButton('btn-history');
+		this.appendToHistoryList(item);
+		this.saveHistory();
+	}
+};
+
+
+
+/**
+ * Create history button item element
+ * Includes <li>, <button> and <span> tags for result and equation display.
+ *
+ * @param item object The history item object to add to the display
+ * return object The new history button item DOM element
+ */
+Calculator.prototype.createHistoryElement = function(item) {
+	var li     = document.createElement('li'),
+		button = document.createElement('button'),
+		span   = document.createElement('span');
+	
+	button.value = item.result;
+	button.innerText = this.addCommas(item.result);
+	
+	span.className = 'equ';
+	span.innerHTML = this.replaceOperators(item.equ);
+	
+	button.appendChild(span);
+	li.appendChild(button);
+	
+	return li;
+};
+
+
+
+/**
+ * Create history button item element
+ * Includes <button> and <span> tags for result and equation display.
+ *
+ * @param item object The history item object to add to the display
+ * return object The new history button item DOM element
+ */
+Calculator.prototype.loadHistoryList = function() {
+	var farg = document.createDocumentFragment(), i;
+	
+	for (i = 0; i < this.history.length; i += 1) {
+		frag.appendChild(this.createHistoryElement(this.history[i]));
+	}
+	
+	this.historyList.appendChild(frag);
+};
+
+
+
+/**
+ * Updates the history listing
+ *
+ * @param item object The history item to add to the display
+ */
+Calculator.prototype.appendToHistoryList = function(item) {
+	var li     = document.createElement('li'),
+		button = document.createElement('button'),
+		span   = document.createElement('span'),
+		children = this.historyList.childNodes;
+	
+	button.value = item.result;
+	button.innerText = this.addCommas(item.result);
+	
+	span.className = 'equ';
+	span.innerHTML = this.replaceOperators(item.equ);
+	
+	button.appendChild(span);
+	li.appendChild(button);
+	
+	this.historyList.insertBefore(li, children[0]);
+};
+
+
+
+/**
+ * Save the calculator history into local storage
+ */
+Calculator.prototype.saveHistory = function() {
+	var json;
+	
+	json = JSON.stringify(this.history);
+	localStorage.setItem('history', json);
+};
+
+
+
+/**
+ * Load the calculator history from local storage
+ */
+Calculator.prototype.loadHistory = function() {
+	var json = localStorage.getItem('history'),
+		i;
+	
+	if (json !== null && json !== '') {
+		this.history = JSON.parse(json);
+	}
+	else {
+		this.history = [];
+	}
+	
+	for (i = 0; i < this.history.length; i += 1) {
+		this.appendToHistoryList(this.history[i]);
+	}
+};
+
+
+
+/**
+ * Clear the entire history
+ */
+Calculator.prototype.clearHistory = function() {
+	while (this.historyList.hasChildNodes()) {
+		this.historyList.removeChild(this.historyList.lastChild);
+	}
+	
+	this.history = [];
+	this.saveHistory();
+};
+
+
+
+/**
+ * Flash button
+ *
+ * @param id string The DOM node to flash
+ */
+Calculator.prototype.flashButton = function(id) {
+	var btn = document.getElementById(id);
+	
+	btn.classList.add('flash');
+	
+	setTimeout(function() {
+		btn.classList.remove('flash');
+	}, 200);
+};
+
+
+
+/**
+ * Add Timer
+ *
+ * @param callback function The function to call on timeout
+ */
+Calculator.prototype.addTimer = function(callback) {
+	this.timer.timer = setTimeout(callback, this.timer.timerlen);
+};
+
+
+
+/**
+ * Remove Timer
+ */
+Calculator.prototype.removeTimer = function() {
+	clearTimeout(this.timer.timer);
 };
 
 
