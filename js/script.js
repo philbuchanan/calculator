@@ -4,7 +4,7 @@
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.2.1
+ * @version 3.2.2
  */
 
 "use strict";
@@ -64,7 +64,7 @@ if (!Array.prototype.appendToLast) {
  */
 function Calculator() {
 	this.settings = {
-		version: '3.2.1',
+		version: '3.2.2',
 		history: 50,
 		fontsize: 60,
 		decimals: 2
@@ -491,7 +491,7 @@ Calculator.prototype.equate = function() {
 	var result = this.compute();
 	
 	if (result !== null) {
-		this.addHistoryItem({
+		this.addHistoryObj({
 			'result': result,
 			'equ': this.appstate.input
 		});
@@ -861,24 +861,24 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
 
 
 /**
- * Add a history item to the history list
+ * Add a history object to the history array
  *
- * @param item object The history item object to add
+ * @param obj object The history object to add
  */
-Calculator.prototype.addHistoryItem = function(item) {
+Calculator.prototype.addHistoryObj = function(obj) {
 	var last = this.history.first() || {result: null, equ: []},
 		currentLen = this.history.length,
 		newLen = 0;
 	
-	if (this.replaceOperators(item.equ) !== this.replaceOperators(last.equ)) {
-		newLen = this.history.unshift(item);
+	if (this.replaceOperators(obj.equ) !== this.replaceOperators(last.equ)) {
+		newLen = this.history.unshift(obj);
 		
 		if (newLen > this.settings.history) {
 			this.history.splice(this.settings.history, newLen - currentLen);
 		}
 		
 		this.flashButton('btn-history');
-		this.appendToHistoryList(item);
+		this.prependToHistoryList(obj);
 		this.saveHistory();
 	}
 };
@@ -886,22 +886,22 @@ Calculator.prototype.addHistoryItem = function(item) {
 
 
 /**
- * Create history button item element
+ * Create history button DOM element
  * Includes <li>, <button> and <span> tags for result and equation display.
  *
- * @param item object The history item object to add to the display
- * return object The new history button item DOM element
+ * @param obj object The history item object to add to the display
+ * return DOM element The new history button item DOM element
  */
-Calculator.prototype.createHistoryElement = function(item) {
+Calculator.prototype.createHistoryElement = function(obj) {
 	var li     = document.createElement('li'),
 		button = document.createElement('button'),
 		span   = document.createElement('span');
 	
-	button.value = item.result;
-	button.innerText = this.addCommas(item.result);
+	button.value = obj.result;
+	button.innerText = this.addCommas(obj.result);
 	
 	span.className = 'equ';
-	span.innerHTML = this.replaceOperators(item.equ);
+	span.innerHTML = this.replaceOperators(obj.equ);
 	
 	button.appendChild(span);
 	li.appendChild(button);
@@ -912,45 +912,28 @@ Calculator.prototype.createHistoryElement = function(item) {
 
 
 /**
- * Create history button item element
- * Includes <button> and <span> tags for result and equation display.
+ * Adds a history list item to the TOP of the history list in the UI
  *
- * @param item object The history item object to add to the display
- * return object The new history button item DOM element
+ * @param obj object The history item to add to the bottom of the list
  */
-Calculator.prototype.loadHistoryList = function() {
-	var farg = document.createDocumentFragment(), i;
+Calculator.prototype.prependToHistoryList = function(obj) {
+	var children = this.historyList.childNodes,
+		ele = this.createHistoryElement(obj);
 	
-	for (i = 0; i < this.history.length; i += 1) {
-		frag.appendChild(this.createHistoryElement(this.history[i]));
-	}
-	
-	this.historyList.appendChild(frag);
+	this.historyList.insertBefore(ele, children[0]);
 };
 
 
 
 /**
- * Updates the history listing
+ * Adds a history list item to the BOTTOM of the history list in the UI
  *
- * @param item object The history item to add to the display
+ * @param obj object The history item to add to the bottom of the list
  */
-Calculator.prototype.appendToHistoryList = function(item) {
-	var li     = document.createElement('li'),
-		button = document.createElement('button'),
-		span   = document.createElement('span'),
-		children = this.historyList.childNodes;
+Calculator.prototype.appendToHistoryList = function(obj) {
+	var ele = this.createHistoryElement(obj);
 	
-	button.value = item.result;
-	button.innerText = this.addCommas(item.result);
-	
-	span.className = 'equ';
-	span.innerHTML = this.replaceOperators(item.equ);
-	
-	button.appendChild(span);
-	li.appendChild(button);
-	
-	this.historyList.insertBefore(li, children[0]);
+	this.historyList.appendChild(ele);
 };
 
 
@@ -968,7 +951,8 @@ Calculator.prototype.saveHistory = function() {
 
 
 /**
- * Load the calculator history from local storage
+ * Load the calculator history from local storage and create the initial history
+ * DOM list.
  */
 Calculator.prototype.loadHistory = function() {
 	var json = localStorage.getItem('history'),
@@ -992,10 +976,7 @@ Calculator.prototype.loadHistory = function() {
  * Clear the entire history
  */
 Calculator.prototype.clearHistory = function() {
-	while (this.historyList.hasChildNodes()) {
-		this.historyList.removeChild(this.historyList.lastChild);
-	}
-	
+	this.historyList.innerHTML = '';
 	this.history = [];
 	this.saveHistory();
 };
