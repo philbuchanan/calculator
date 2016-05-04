@@ -23,17 +23,39 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
-	<div id="app">
-		<div>{{ result }}</div>
-		<template v-for="n in 10">
-			<button v-on:click="appendDigit(n)">{{ n }}</button>
-		</template>
-		<button v-on:click="appendOperator('/', $event)">&divide;</button>
-		<button v-on:click="appendOperator('*', $event)">&times;</button>
-		<button v-on:click="appendOperator('-', $event)">&minus;</button>
-		<button v-on:click="appendOperator('+', $event)">+</button>
-		<button v-on:click="appendBracket('(')">(</button>
-		<button v-on:click="appendBracket(')')">)</button>
+	<div class="app" id="app">
+		<div class="display">
+			<div class="result">{{ result }}</div>
+			<div class="equation">123<span class="equation-operator">&times;</span><span class="left-bracket">(</span>3.14<span class="equation-operator">+</span>8<span class="right-bracket">)</span></div>
+		</div>
+
+		<button class="keypad-button keypad-button--clear">c</button>
+		<button class="keypad-button keypad-button--history keypad-button--wide">History</button>
+		<button class="keypad-button keypad-button--backspace"></button>
+
+		<button class="keypad-button keypad-button--plus-minus">+/&minus;</button>
+		<button class="keypad-button keypad-button--bracket" v-on:click="appendBracket('(')">(</button>
+		<button class="keypad-button keypad-button--bracket" v-on:click="appendBracket(')')">)</button>
+		<button class="keypad-button keypad-button--operator" v-on:click="appendOperator('/', $event)">&divide;</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(7)">7</button>
+		<button class="keypad-button" v-on:click="appendDigit(8)">8</button>
+		<button class="keypad-button" v-on:click="appendDigit(9)">9</button>
+		<button class="keypad-button keypad-button--operator" v-on:click="appendOperator('*', $event)">&times;</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(4)">4</button>
+		<button class="keypad-button" v-on:click="appendDigit(5)">5</button>
+		<button class="keypad-button" v-on:click="appendDigit(6)">6</button>
+		<button class="keypad-button keypad-button--operator" v-on:click="appendOperator('-', $event)">&minus;</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(1)">1</button>
+		<button class="keypad-button" v-on:click="appendDigit(2)">2</button>
+		<button class="keypad-button" v-on:click="appendDigit(3)">3</button>
+		<button class="keypad-button keypad-button--operator" v-on:click="appendOperator('+', $event)">+</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(0)">0</button>
+		<button class="keypad-button">.</button>
+		<button class="keypad-button keypad-button--equals keypad-button--wide">=</button>
 	</div>
 	<script src="js/vue.min.js"></script>
 	<script src="js/app.js"></script>
