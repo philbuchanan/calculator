@@ -39,9 +39,9 @@
 			<div class="equation">123<span class="equation-operator">&times;</span><span class="left-bracket">(</span>3.14<span class="equation-operator">+</span>8<span class="right-bracket">)</span></div>
 		</div>
 
-		<button class="keypad-button keypad-button--clear">c</button>
+		<button class="keypad-button keypad-button--clear" v-on:click="reset(null)">c</button>
 		<button class="keypad-button keypad-button--history keypad-button--wide" v-on:click="openHistory">History</button>
-		<button class="keypad-button keypad-button--backspace"></button>
+		<button class="keypad-button keypad-button--backspace" v-on:click="backspace"></button>
 
 		<button class="keypad-button keypad-button--plus-minus">+/&minus;</button>
 		<button class="keypad-button keypad-button--bracket" v-on:click="appendBracket('(')">(</button>

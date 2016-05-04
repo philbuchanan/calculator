@@ -151,6 +151,7 @@ var app = new Vue({
 		appendBracket: function(bracket) {
 			if (bracket === '(') {
 				switch (this.last) {
+					case '(':
 					case 'operator':
 						this.input.push('(')
 						this.brackets += 1
@@ -206,6 +207,25 @@ var app = new Vue({
 			})
 
 			this.reset(this.result)
+		},
+
+
+
+		/**
+		 * Backspace
+		 */
+		backspace: function() {
+			var last = this.input[this.lastInputIndex].toString()
+
+			if (this.input.length <= 1 && last.length <= 1) {
+				this.reset(null)
+			}
+			else if (last.length <= 1) {
+				this.input.pop()
+			}
+			else {
+				this.input.$set(this.lastInputIndex, parseInt(last.slice(0, last.length - 1)))
+			}
 		},
 
 
