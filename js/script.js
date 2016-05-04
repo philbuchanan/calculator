@@ -69,20 +69,20 @@ function Calculator() {
 		fontsize: 60,
 		decimals: 2
 	};
-	
+
 	this.appstate = {
 		input: ['0'],
 		brackets: 0,
 		last: null
 	};
-	
+
 	this.history = [];
-	
+
 	this.timer = {
 		timerlen: 750,
 		timer: null
 	};
-	
+
 	this.calculator   = document.getElementById('calculator');
 	this.result       = document.getElementById('result');
 	this.equation     = document.getElementById('equation');
@@ -90,14 +90,14 @@ function Calculator() {
 	this.historyPanel = document.getElementById('history');
 	this.historyList  = document.getElementById('history-list');
 	this.historyClose = document.getElementById('history-close');
-	
+
 	this.dragging = false;
 	this.addEventHandlers();
-	
+
 	// Restore previous app state
 	this.restoreAppState();
 	this.loadHistory();
-	
+
 	this.updateDisplay();
 }
 
@@ -109,10 +109,10 @@ function Calculator() {
 Calculator.prototype.restoreAppState = function() {
 	var json = localStorage.getItem('appState'),
 		savedAppState;
-	
+
 	if (json !== null && json !== '') {
 		savedAppState = JSON.parse(json);
-		
+
 		this.appstate.input = savedAppState.input;
 		this.appstate.last = savedAppState.last;
 		this.appstate.brackets = savedAppState.brackets;
@@ -126,7 +126,7 @@ Calculator.prototype.restoreAppState = function() {
  */
 Calculator.prototype.saveAppState = function() {
 	var json = JSON.stringify(this.appstate);
-	
+
 	localStorage.setItem('appState', json);
 };
 
@@ -138,22 +138,22 @@ Calculator.prototype.saveAppState = function() {
 Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd = 'mouseup';
-	
+
 	if (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
-	
+
 	// Disable bounce scrolling on main application
 	document.getElementById('application').addEventListener(buttonModeStart, function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 	}, false);
-	
+
 	// Fix bounce scrolling of whole page at top and bottom of content
 	document.getElementById('history-list-scroll').addEventListener('touchstart', function(e) {
 		var startTopScroll = this.scrollTop;
-		
+
 		if (document.getElementById('history-list').offsetHeight <= this.offsetHeight) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -162,46 +162,46 @@ Calculator.prototype.addEventHandlers = function() {
 			if (startTopScroll <= 0) {
 				this.scrollTop = 1;
 			}
-			
+
 			if (startTopScroll + this.offsetHeight >= this.scrollHeight) {
 				this.scrollTop = this.scrollHeight - this.offsetHeight - 1;
 			}
 		}
 	}, false);
-	
+
 	// Keypad events
 	document.getElementById('btn-backspace').addEventListener(buttonModeStart, function() {
 		this.addTimer(this.backspaceLongPress.bind(this));
 	}.bind(this), false);
-	
+
 	this.keypad.addEventListener(buttonModeEnd, function(event) {
 		if (!this.dragging) {
 			this.removeTimer();
 			this.buttonEvent(event.target.value);
 		}
 	}.bind(this), false);
-	
+
 	// History list events
 	this.historyList.addEventListener(buttonModeStart, function() {
 		this.dragging = false;
 	}.bind(this), false);
-	
+
 	this.historyList.addEventListener('touchmove', function() {
 		this.dragging = true;
 	}.bind(this), false);
-	
+
 	this.historyList.addEventListener(buttonModeEnd, function(event) {
 		if (!this.dragging) {
 			this.appendHistoryItemToEquation(event.target.value);
 			this.closeHistoryPanel();
 		}
 	}.bind(this), false);
-	
+
 	// History close events
 	this.historyClose.addEventListener(buttonModeStart, function() {
 		this.addTimer(this.clearHistory.bind(this));
 	}.bind(this), false);
-	
+
 	this.historyClose.addEventListener(buttonModeEnd, function() {
 		this.removeTimer();
 		this.closeHistoryPanel();
@@ -270,7 +270,7 @@ Calculator.prototype.buttonEvent = function(value) {
  */
 Calculator.prototype.appendDigitToEquation = function(digit) {
 	var lastInput = this.appstate.last;
-	
+
 	switch (lastInput) {
 		case null:
 			this.appstate.input = [digit];
@@ -304,7 +304,7 @@ Calculator.prototype.appendDigitToEquation = function(digit) {
 			this.appstate.last = digit;
 			break;
 	}
-	
+
 	this.updateDisplay();
 };
 
@@ -315,7 +315,7 @@ Calculator.prototype.appendDigitToEquation = function(digit) {
  */
 Calculator.prototype.appendDecimalToEquation = function() {
 	var lastInput = this.appstate.last;
-	
+
 	switch (lastInput) {
 		case null:
 			this.appstate.input = ['0.'];
@@ -345,7 +345,7 @@ Calculator.prototype.appendDecimalToEquation = function() {
 			this.appstate.last = '.';
 			break;
 	}
-	
+
 	this.updateDisplay();
 };
 
@@ -358,7 +358,7 @@ Calculator.prototype.appendDecimalToEquation = function() {
  */
 Calculator.prototype.appendOperatorToEquation = function(operator) {
 	var lastInput = this.appstate.last;
-	
+
 	switch (lastInput) {
 		case null:
 		case '0':
@@ -383,7 +383,7 @@ Calculator.prototype.appendOperatorToEquation = function(operator) {
 			this.appstate.last = operator;
 			break;
 	}
-	
+
 	this.updateDisplay();
 };
 
@@ -396,7 +396,7 @@ Calculator.prototype.appendOperatorToEquation = function(operator) {
  */
 Calculator.prototype.appendBracketToEquation = function(bracket) {
 	var lastInput = this.appstate.last;
-	
+
 	if (bracket === '(') {
 		switch (lastInput) {
 			case null:
@@ -452,7 +452,7 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
 				break;
 		}
 	}
-	
+
 	this.updateDisplay();
 };
 
@@ -463,10 +463,10 @@ Calculator.prototype.appendBracketToEquation = function(bracket) {
  */
 Calculator.prototype.invertNumber = function() {
 	var num;
-	
+
 	if (/[\d\.]/.test(this.appstate.last)) {
 		num = this.appstate.input.last();
-		
+
 		if (num.substr(0, 1) === '-') {
 			this.appstate.input.replaceLast(num.substr(1, num.length));
 		}
@@ -476,7 +476,7 @@ Calculator.prototype.invertNumber = function() {
 		else if (this.isValidNum('-' + num)) {
 			this.appstate.input.replaceLast('-' + num);
 		}
-		
+
 		this.updateDisplay();
 	}
 };
@@ -489,7 +489,7 @@ Calculator.prototype.invertNumber = function() {
  */
 Calculator.prototype.equate = function() {
 	var result = this.compute();
-	
+
 	if (result !== null) {
 		this.addHistoryObj({
 			'result': result,
@@ -506,7 +506,7 @@ Calculator.prototype.equate = function() {
  */
 Calculator.prototype.backspace = function() {
 	var string;
-	
+
 	if (this.appstate.input.length <= 1 && this.appstate.input.last().length <= 1) {
 		this.clearAll();
 	}
@@ -549,10 +549,10 @@ Calculator.prototype.backspace = function() {
 				this.appstate.input.pop();
 				break;
 		}
-		
+
 		string = this.appstate.input.join('');
 		this.appstate.last = string.charAt(string.length - 1);
-		
+
 		this.updateDisplay();
 	}
 };
@@ -577,8 +577,8 @@ Calculator.prototype.backspaceLongPress = function() {
  */
 Calculator.prototype.activateButton = function(id) {
 	var btn = document.getElementById(id);
-	
-	btn.classList.add('active');
+
+	btn.classList.add('keypad-button--active');
 };
 
 
@@ -589,7 +589,7 @@ Calculator.prototype.activateButton = function(id) {
  * @param btn string The DOM node to deactivate
  */
 Calculator.prototype.deactivateButton = function(btn) {
-	btn.classList.remove('active');
+	btn.classList.remove('keypad-button--active');
 };
 
 
@@ -606,10 +606,10 @@ Calculator.prototype.clearAll = function(result) {
 	else {
 		this.appstate.input = ['0'];
 	}
-	
+
 	this.appstate.brackets = 0;
 	this.appstate.last = null;
-	
+
 	this.updateDisplay();
 };
 
@@ -636,7 +636,7 @@ Calculator.prototype.isValidNum = function(num) {
 	if (/^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)) {
 		return true;
 	}
-	
+
 	return false;
 };
 
@@ -648,7 +648,7 @@ Calculator.prototype.isValidNum = function(num) {
 Calculator.prototype.updateDisplay = function() {
 	var result = this.compute(),
 		activeBtn = document.querySelector('.active');
-	
+
 	// Update the result
 	if (result !== null && !isNaN(result)) {
 		if (result > 9E13) {
@@ -659,12 +659,12 @@ Calculator.prototype.updateDisplay = function() {
 		}
 		this.resizeFont();
 	}
-	
+
 	// Show active operator
 	if (activeBtn) {
 		this.deactivateButton(activeBtn);
 	}
-	
+
 	switch (this.appstate.last) {
 		case '*':
 			this.activateButton('btn-multiply');
@@ -679,9 +679,9 @@ Calculator.prototype.updateDisplay = function() {
 			this.activateButton('btn-subtract');
 			break;
 	}
-	
+
 	this.updateDisplayEquation();
-	
+
 	this.saveAppState();
 };
 
@@ -697,10 +697,10 @@ Calculator.prototype.updateDisplayEquation = function() {
 	var ele = document.getElementById('eq'),
 		equ = this.appstate.input.slice(),
 		width;
-	
+
 	ele.innerHTML = this.replaceOperators(equ);
 	width = ele.offsetWidth;
-	
+
 	while (width > this.equation.offsetWidth - 24) {
 		equ.splice(0, 1);
 		ele.innerHTML = '...' + this.replaceOperators(equ);
@@ -718,20 +718,20 @@ Calculator.prototype.updateDisplayEquation = function() {
  */
 Calculator.prototype.replaceOperators = function(equ) {
 	var output = '', i;
-	
+
 	for (i = 0; i < equ.length; i += 1) {
 		switch(equ[i]) {
 			case '*':
-				output += '<span class="operator">&times;</span>';
+				output += '<span class="equation-operator">&times;</span>';
 				break;
 			case '/':
-				output += '<span class="operator">&divide;</span>';
+				output += '<span class="equation-operator">&divide;</span>';
 				break;
 			case '+':
-				output += '<span class="operator">+</span>';
+				output += '<span class="equation-operator">+</span>';
 				break;
 			case '-':
-				output += '<span class="operator">&minus;</span>';
+				output += '<span class="equation-operator">&minus;</span>';
 				break;
 			case '(':
 				output += '<span class="left-bracket">(</span>';
@@ -743,7 +743,7 @@ Calculator.prototype.replaceOperators = function(equ) {
 				output += equ[i];
 		}
 	}
-	
+
 	return output;
 }
 
@@ -755,9 +755,9 @@ Calculator.prototype.replaceOperators = function(equ) {
  */
 Calculator.prototype.resizeFont = function() {
 	var size = this.settings.fontsize;
-	
+
 	this.result.style.fontSize = size + 'px';
-	
+
 	while (this.result.childNodes[0].offsetWidth > window.innerWidth - 24) {
 		size -= 1;
 		this.result.style.fontSize = size + 'px';
@@ -777,17 +777,17 @@ Calculator.prototype.addCommas = function(number) {
 		regx = /(\d+)(\d{3})/,
 		integer = parts[0],
 		fraction = '';
-	
+
 	// Add commas to integer part
 	while (regx.test(integer)) {
 		integer = integer.replace(regx, '$1' + ',' + '$2');
 	}
-	
+
 	// Add fractional part
 	if (parts.length > 1) {
 		fraction = '.' + parts[1];
 	}
-	
+
 	return integer + fraction;
 };
 
@@ -797,20 +797,20 @@ Calculator.prototype.addCommas = function(number) {
  * Compute an equation string
  *
  * @param equation string The equation string to compute
- * return double The result of the computation, else null if it cannot be computed 
+ * return double The result of the computation, else null if it cannot be computed
  */
 Calculator.prototype.compute = function() {
 	var equation = this.appstate.input.join(''),
 		result,
 		round = Math.pow(10, this.settings.decimals);
-	
+
 	try {
 		result = eval(equation);
 	}
 	catch(err) {
 		return null;
 	}
-	
+
 	return Math.round(result * round) / round;
 };
 
@@ -854,7 +854,7 @@ Calculator.prototype.appendHistoryItemToEquation = function(value) {
 			this.appstate.last = '1';
 			break;
 	}
-	
+
 	this.updateDisplay();
 };
 
@@ -869,14 +869,14 @@ Calculator.prototype.addHistoryObj = function(obj) {
 	var last = this.history.first() || {result: null, equ: []},
 		currentLen = this.history.length,
 		newLen = 0;
-	
+
 	if (this.replaceOperators(obj.equ) !== this.replaceOperators(last.equ)) {
 		newLen = this.history.unshift(obj);
-		
+
 		if (newLen > this.settings.history) {
 			this.history.splice(this.settings.history, newLen - currentLen);
 		}
-		
+
 		this.flashButton('btn-history');
 		this.prependToHistoryList(obj);
 		this.saveHistory();
@@ -896,16 +896,17 @@ Calculator.prototype.createHistoryElement = function(obj) {
 	var li     = document.createElement('li'),
 		button = document.createElement('button'),
 		span   = document.createElement('span');
-	
+
 	button.value = obj.result;
+	button.className = 'history-button';
 	button.innerText = this.addCommas(obj.result);
-	
-	span.className = 'equ';
+
+	span.className = 'history-button-equation';
 	span.innerHTML = this.replaceOperators(obj.equ);
-	
+
 	button.appendChild(span);
 	li.appendChild(button);
-	
+
 	return li;
 };
 
@@ -919,7 +920,7 @@ Calculator.prototype.createHistoryElement = function(obj) {
 Calculator.prototype.prependToHistoryList = function(obj) {
 	var children = this.historyList.childNodes,
 		ele = this.createHistoryElement(obj);
-	
+
 	this.historyList.insertBefore(ele, children[0]);
 };
 
@@ -932,7 +933,7 @@ Calculator.prototype.prependToHistoryList = function(obj) {
  */
 Calculator.prototype.appendToHistoryList = function(obj) {
 	var ele = this.createHistoryElement(obj);
-	
+
 	this.historyList.appendChild(ele);
 };
 
@@ -943,7 +944,7 @@ Calculator.prototype.appendToHistoryList = function(obj) {
  */
 Calculator.prototype.saveHistory = function() {
 	var json;
-	
+
 	json = JSON.stringify(this.history);
 	localStorage.setItem('history', json);
 };
@@ -957,14 +958,14 @@ Calculator.prototype.saveHistory = function() {
 Calculator.prototype.loadHistory = function() {
 	var json = localStorage.getItem('history'),
 		i;
-	
+
 	if (json !== null && json !== '') {
 		this.history = JSON.parse(json);
 	}
 	else {
 		this.history = [];
 	}
-	
+
 	for (i = 0; i < this.history.length; i += 1) {
 		this.appendToHistoryList(this.history[i]);
 	}
@@ -990,9 +991,9 @@ Calculator.prototype.clearHistory = function() {
  */
 Calculator.prototype.flashButton = function(id) {
 	var btn = document.getElementById(id);
-	
+
 	btn.classList.add('flash');
-	
+
 	setTimeout(function() {
 		btn.classList.remove('flash');
 	}, 200);

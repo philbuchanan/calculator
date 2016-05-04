@@ -1,0 +1,395 @@
+// Screen Sizes
+// ----------------------------------
+
+$screenHeights: (
+	// iPhones
+	"iPhone4":            480px,
+	"iPhone5":            568px,
+	"iPhone6":            667px,
+	"iPhone6 Plus":       736px,
+	// iPads
+	"iPad Portrait":      768px,
+	"iPad Landscape":     1024px,
+	"iPad Pro Landscape": 1366px
+);
+
+
+
+// Global Variables
+// ----------------------------------
+
+$color-primary:       #099d93;
+$color-danger:        #ff0f0f;
+
+$color-grey100:       #fff;
+$color-grey85:        #d9d9d9;
+$color-grey70:        #b3b3b3;
+$color-grey60:        #999;
+$color-grey20:        #333;
+$color-grey15:        #262626;
+$color-grey0:         #000;
+
+$display-borderWidth: 6px;
+
+$fontStack: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+
+
+// Reset
+// ----------------------------------
+
+html, body, div, span, ul, li {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+html {
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+
+
+// Layout
+// ----------------------------------
+
+body {
+	color: $color-grey20;
+	background: $color-grey20;
+	font-family: $fontStack;
+	font-size: 20px;
+	line-height: 1.2;
+	font-weight: 200;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	        user-select: none;
+}
+
+button {
+	font: inherit;
+	font-weight: 300;
+	border: none;
+	margin: 0;
+	padding: 0;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+}
+
+.app {
+	position: relative;
+}
+
+
+
+// Installation Screen
+// ----------------------------------
+
+.installation {
+	display: none;
+}
+
+.install {
+	background: $color-grey20;
+	background-attachment: fixed;
+	height: 100%;
+
+	.app {
+		display: none;
+	}
+
+	.installation {
+		display: block;
+	}
+}
+
+.installation {
+	margin: 0 auto;
+	width: 175px;
+}
+
+.instructions {
+	position: absolute;
+	top: 50%;
+	color: $color-grey85;
+	text-align: center;
+	font-size: 0.7em;
+	line-height: 20px;
+	text-shadow: 0 1px 2px $color-grey0;
+	width: 175px;
+	height: 180px;
+	margin-top: -90px;
+}
+
+.add-to-home-screen {
+	font-size: 1.1em;
+	font-weight: 800;
+}
+
+.app-icon {
+	display: block;
+	margin: 0 auto 20px;
+}
+
+.twitter-link {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	color: $color-primary;
+	font-size: 0.7em;
+	line-height: 20px;
+	text-decoration: none;
+	text-shadow: 0 1px 2px $color-grey0;
+	width: 130px;
+	margin-left: -65px;
+
+	&:hover {
+		color: $color-grey85;
+	}
+}
+
+
+
+// Display
+// ----------------------------------
+
+.display {
+	background-color: $color-grey100;
+	border-bottom: $display-borderWidth solid $color-primary;
+}
+
+.result,
+.equation {
+	text-align: right;
+	white-space: nowrap;
+	padding-left: 12px;
+	padding-right: 12px;
+	overflow: hidden;
+}
+
+.result {
+	font-size: 3em;
+	font-weight: 200;
+}
+
+.equation {
+	color: $color-primary;
+	border-top: 1px solid $color-grey85;
+
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		border-width: 0.5px;
+	}
+}
+
+.eq {
+	display: inline;
+}
+
+.left-bracket,
+.right-bracket,
+.equation-operator {
+	color: $color-grey60;
+	font-weight: 100;
+	margin: 0 0.2em;
+}
+
+.left-bracket {
+	margin-left: 0;
+}
+
+.right-bracket {
+	margin-right: 0;
+}
+
+
+
+// Kaypad
+// ----------------------------------
+
+// Keypad buttons
+.keypad-button {
+	float: left;
+	color: $color-grey100;
+	background: $color-grey20;
+	font-family: $fontStack;
+	font-size: 1.1em;
+	border: 1px solid $color-grey0;
+	width: 25%;
+	transition: color 0.2s ease, background-color 0.2s ease;
+
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		border-width: 0.5px;
+	}
+
+	&:active {
+		background-color: $color-primary;
+	}
+}
+
+// Keypad button modifiers
+.keypad-button--active {
+	color: $color-primary;
+	border: 1.5px solid $color-grey0;
+}
+
+.keypad-button--wide {
+	width: 50%;
+}
+
+.keypad-button--equals,
+.keypad-button--operator {
+	color: $color-primary;
+}
+
+.keypad-button--bracket,
+.keypad-button--plus-minus {
+	color: $color-grey70;
+}
+
+.keypad-button--clear,
+.keypad-button--history,
+.keypad-button--backspace {
+	color: $color-grey70;
+	background-color: $color-grey15;
+}
+
+.keypad-button--backspace {
+	background-image: url("../assets/backspace-icon.svg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 25px 16px;
+}
+
+.keypad-button--clear {
+	color: $color-danger;
+}
+
+
+
+// History
+// ----------------------------------
+
+.history-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	-webkit-backdrop-filter: blur(10px);
+	        backdrop-filter: blur(10px);
+	width: 100%;
+	z-index: 90;
+	-webkit-transform: translateY(100%);
+	        transform: translateY(100%);
+	-webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
+	        transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
+}
+
+.history-title-bar {
+	position: relative;
+	color: $color-grey100;
+	background-color: rgba($color-primary, 0.3);
+	text-align: center;
+	font-size: 0.85em;
+	font-weight: bold;
+	line-height: 52px;
+	height: 52px;
+}
+
+.history-close-button {
+	position: absolute;
+	right: 0;
+	color: $color-grey85;
+	background-color: transparent;
+	text-align: right;
+	font-weight: 100;
+	width: 52px;
+	height: 52px;
+	margin: 0;
+	padding-right: 12px;
+}
+
+.history-list-scroll {
+	height: calc(100% - 52px);
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.history-button {
+	color: $color-grey85;
+	background-color: transparent;
+	text-align: left;
+	width: 100%;
+	padding: 10px 12px;
+
+	&:active {
+		background-color: $color-primary;
+	}
+}
+
+.history-button-equation {
+	float: right;
+	color: $color-grey70;
+	font-size: 0.7em;
+	line-height: 20px;
+	max-width: 100%;
+	padding: 3px 0 0 5px;
+	white-space: nowrap;
+	text-align: right;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.history--open {
+	.history-container {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
+}
+
+
+
+// Responsive Styles for Screen Sizes
+// ----------------------------------
+
+@each $phone, $screenHeight in $screenHeights {
+	$appHeights: (
+		"in-call": $screenHeight - 40,
+		"default": $screenHeight - 20
+	);
+
+	@each $status, $appHeight in $appHeights {
+		$buttonHeight:   ceil(($appHeight * 0.65) / 6);
+		$resultHeight:   ceil($appHeight * 0.25);
+		$equationHeight: ($appHeight - $resultHeight - $display-borderWidth - ($buttonHeight * 6));
+
+		/* #{$phone} - #{$status} */
+		@media (min-height: $appHeight) {
+			.app {
+				height: $appHeight;
+			}
+
+			.result {
+				height: $resultHeight;
+				line-height: ($resultHeight - 2);
+			}
+
+			.equation {
+				height: $equationHeight;
+				line-height: ($equationHeight - 2);
+			}
+
+			.keypad-button {
+				height: $buttonHeight;
+			}
+
+			.history-container {
+				height: ($buttonHeight * 6);
+			}
+		}
+	}
+}
