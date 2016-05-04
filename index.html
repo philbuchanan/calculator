@@ -4,18 +4,18 @@
 <head>
 	<meta charset="utf-8">
 	<title>Calculator - A calculator web app for iPhone</title>
-	
+
 	<meta name="author" content="Phil Buchanan">
 	<meta name="description" content="A minimal calculator for iPhone and iPad with support for backspace, brackets and history.">
-	
+
 	<meta name="viewport" content="initial-scale=1, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<meta name="apple-mobile-web-app-title" content="Calculator">
 	<meta name="format-detection" content="telephone=no">
-	
+
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	
+
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/touch-icon-iphone-114.png">
 	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/touch-icon-iphone-120.png">
 	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/touch-icon-iphone-152.png">
@@ -23,49 +23,51 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
-	<div id="calculator" class="calculator">
-		<div id="history" class="history">
-			<div class="history-titlebar">History<span id="history-close" class="history-close">&times;</span></div>
+	<div id="calculator" class="app">
+		<div id="history" class="history-container">
+			<div class="history-title-bar">History<span id="history-close" class="history-close-button">&times;</span></div>
 			<div id="history-list-scroll" class="history-list-scroll">
 				<ul id="history-list" class="history-list"></ul>
 			</div>
 		</div>
 		<div id="application" class="application">
-			<div id="result" class="result">0</div>
-			<div id="equation" class="equation"><div id="eq" class="eq"></div></div>
+			<div class="display">
+				<div id="result" class="result">0</div>
+				<div id="equation" class="equation"><div id="eq" class="eq"></div></div>
+			</div>
 			<div id="keypad" class="keypad">
-				<button value="c" class="btn-clear" id="btn-clear">c</button>
-				<button value="h" class="btn-history" id="btn-history">History</button>
-				<button value="b" class="btn-backspace" id="btn-backspace"></button>
-				<button value="+-" class="btn-plus-minus">+/&minus;</button>
-				<button value="(" class="btn-bracket">(</button>
-				<button value=")" class="btn-bracket">)</button>
-				<button value="/" class="btn-operator" id="btn-divide">&divide;</button>
-				<button value="7" class="btn-digit">7</button>
-				<button value="8" class="btn-digit">8</button>
-				<button value="9" class="btn-digit">9</button>
-				<button value="*" class="btn-operator" id="btn-multiply">&times;</button>
-				<button value="4" class="btn-digit">4</button>
-				<button value="5" class="btn-digit">5</button>
-				<button value="6" class="btn-digit">6</button>
-				<button value="-" class="btn-operator" id="btn-subtract">&minus;</button>
-				<button value="1" class="btn-digit">1</button>
-				<button value="2" class="btn-digit">2</button>
-				<button value="3" class="btn-digit">3</button>
-				<button value="+" class="btn-operator" id="btn-add">+</button>
-				<button value="0" class="btn-digit">0</button>
-				<button value="." class="btn-decimal">.</button>
-				<button value="=" class="btn-equals">=</button>
+				<button value="c" class="keypad-button keypad-button--clear" id="btn-clear">c</button>
+				<button value="h" class="keypad-button keypad-button--wide keypad-button--history" id="btn-history">History</button>
+				<button value="b" class="keypad-button keypad-button--backspace" id="btn-backspace"></button>
+				<button value="+-" class="keypad-button keypad-button--plus-minus">+/&minus;</button>
+				<button value="(" class="keypad-button keypad-button--bracket">(</button>
+				<button value=")" class="keypad-button keypad-button--bracket">)</button>
+				<button value="/" class="keypad-button keypad-button--operator" id="btn-divide">&divide;</button>
+				<button value="7" class="keypad-button">7</button>
+				<button value="8" class="keypad-button">8</button>
+				<button value="9" class="keypad-button">9</button>
+				<button value="*" class="keypad-button keypad-button--operator" id="btn-multiply">&times;</button>
+				<button value="4" class="keypad-button">4</button>
+				<button value="5" class="keypad-button">5</button>
+				<button value="6" class="keypad-button">6</button>
+				<button value="-" class="keypad-button keypad-button--operator" id="btn-subtract">&minus;</button>
+				<button value="1" class="keypad-button">1</button>
+				<button value="2" class="keypad-button">2</button>
+				<button value="3" class="keypad-button">3</button>
+				<button value="+" class="keypad-button keypad-button--operator" id="btn-add">+</button>
+				<button value="0" class="keypad-button">0</button>
+				<button value="." class="keypad-button keypad-button--decimal">.</button>
+				<button value="=" class="keypad-button keypad-button--wide keypad-button--equals">=</button>
 			</div>
 		</div>
 	</div>
 	<div class="installation">
 		<div class="instructions">
-			<div class="app-icon"></div>
-			<span>Add to Home Screen</span><br/>
+			<img src="assets/app-icon-large.png" alt="Calculator icon" width="125" height="125" class="app-icon">
+			<span class="add-to-home-screen">Add to Home Screen</span><br/>
 			to install on the iPhone
 		</div>
-		<a href="https://twitter.com/philbuchanan" target="_blank" class="twitter">@philbuchanan</a>
+		<a href="https://twitter.com/philbuchanan" target="_blank" class="twitter-link">@philbuchanan</a>
 	</div>
 	<script src="js/script.js" type="text/javascript"></script>
 </body>
