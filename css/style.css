@@ -68,11 +68,11 @@ button { font: inherit; font-weight: 300; border: none; margin: 0; padding: 0; -
 
 .keypad-button--clear { color: #ff0f0f; }
 
-.history-container { position: absolute; bottom: 0; left: 0; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); width: 100%; z-index: 90; -webkit-transform: translateY(100%); transform: translateY(100%); -webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1); transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1); }
+.history-container { position: absolute; bottom: 0; left: 0; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); width: 100%; z-index: 90; }
 
 .history-title-bar { position: relative; color: #fff; background-color: rgba(9, 157, 147, 0.3); text-align: center; font-size: 0.85em; font-weight: bold; line-height: 52px; height: 52px; }
 
-.history-close-button { position: absolute; right: 0; color: #d9d9d9; background-color: transparent; text-align: right; font-weight: 100; width: 52px; height: 52px; margin: 0; padding-right: 12px; }
+.history-close-button { position: absolute; right: 0; color: #d9d9d9; background-color: transparent; text-align: right; font-size: 1.1em; font-weight: 100; width: 52px; height: 52px; margin: 0; padding-right: 12px; }
 
 .history-list-scroll { height: calc(100% - 52px); overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 
@@ -82,7 +82,9 @@ button { font: inherit; font-weight: 300; border: none; margin: 0; padding: 0; -
 
 .history-button-equation { float: right; color: #b3b3b3; font-size: 0.7em; line-height: 20px; max-width: 100%; padding: 3px 0 0 5px; white-space: nowrap; text-align: right; text-overflow: ellipsis; overflow: hidden; }
 
-.history--open .history-container { -webkit-transform: translateY(0); transform: translateY(0); }
+.slide-transition { -webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1); transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1); }
+
+.slide-enter, .slide-leave { -webkit-transform: translateY(100%); transform: translateY(100%); }
 
 /* iPhone4 - in-call */
 @media (min-height: 440px) { .app { height: 440px; }

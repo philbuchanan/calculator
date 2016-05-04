@@ -7,6 +7,78 @@
  * @version 4.0
  */
 
+/**
+ * History Component
+ *
+ * Handles all aspects of the history list including adding items to it and
+ * triggering events to push a history item into the equation.
+ */
+Vue.component('history', {
+	template: '#history',
+	data: function() {
+		return {
+			history: [],
+			isVisible: false
+		}
+	},
+	events: {
+		/**
+		 * Listen for event to open the history panel
+		 */
+		'open-history': function() {
+			this.openHistoryPanel()
+		},
+
+
+
+		/**
+		 * Listen for event to append a history item to the history list
+		 *
+		 * @param object item The result and equation item object
+		 */
+		'append-to-history': function(item) {
+			this.history.unshift(item)
+		}
+	},
+	methods: {
+		/**
+		 * Append a history item to the main equation
+		 *
+		 * @param int result The calculated result to append to the equation
+		 */
+		appendHistoryItemToEquation: function(result) {
+			this.$dispatch('append-result', result)
+			this.closeHistoryPanel()
+		},
+
+
+
+		/**
+		 * Open the history panel
+		 */
+		openHistoryPanel: function() {
+			this.isVisible = true
+		},
+
+
+
+		/**
+		 * Close the history panel
+		 */
+		closeHistoryPanel: function() {
+			this.isVisible = false
+		}
+	}
+})
+
+
+
+/**
+ * App Vue
+ *
+ * The main calculator application view. Handles all aspects of the calculator
+ * including keypad, display result and display equation.
+ */
 var app = new Vue({
 	el: '#app',
 	data: {
@@ -16,8 +88,6 @@ var app = new Vue({
 	},
 	computed: {
 		result: function() {
-			console.log(this.input)
-
 			return eval(this.input.join(''))
 		},
 		lastInputIndex: function() {
@@ -26,6 +96,15 @@ var app = new Vue({
 	},
 	methods: {
 		/**
+		 * Show the history panel
+		 */
+		openHistory: function() {
+			this.$broadcast('open-history')
+		},
+
+
+
+		/**
 		 * Append digit to equation
 		 *
 		 * @param digit int The digit to append
@@ -33,7 +112,9 @@ var app = new Vue({
 		appendDigit: function(digit) {
 			switch(this.last) {
 				case 'digit':
-					this.input.$set(this.lastInputIndex, parseInt(this.input[this.lastInputIndex].toString() + digit, 10))
+					var newDigit = parseInt(this.input[this.lastInputIndex].toString() + digit, 10)
+
+					this.input.$set(this.lastInputIndex, newDigit)
 					break
 				default:
 					this.input.push(digit)
@@ -93,6 +174,51 @@ var app = new Vue({
 						break
 				}
 			}
+		},
+
+
+
+		/**
+		 * Append a fully equated result item to the current equation
+		 *
+		 * @param int value The result value to append
+		 */
+		appendResult: function(value) {
+			switch(this.last) {
+				case 'operator':
+				case '(':
+					this.input.push(value)
+					this.last = 'digit'
+					break
+			}
+		},
+
+
+
+		/**
+		 * Complete an equation. Adds the current equation and result to the
+		 * history and resets the display.
+		 */
+		equate: function() {
+			this.$broadcast('append-to-history', {
+				result: this.result,
+				equation: this.input
+			})
+
+			this.reset(this.result)
+		},
+
+
+
+		/**
+		 * Reset current equation and result
+		 *
+		 * @param [result] int Set as the starting value for the equation
+		 */
+		reset: function(result) {
+			this.input = result ? [this.result] : [0]
+			this.last = 'digit'
+			this.brackets = 0
 		}
 	}
 })

@@ -8,7 +8,7 @@
 	<meta name="author" content="Phil Buchanan">
 	<meta name="description" content="A minimal calculator for iPhone and iPad with support for backspace, brackets and history.">
 
-	<meta name="viewport" content="initial-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<meta name="apple-mobile-web-app-title" content="Calculator">
@@ -23,6 +23,16 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
+	<template id="history">
+		<div class="history-container" v-show="isVisible" transition="slide">
+			<div class="history-title-bar">Calculation History<button class="history-close-button" v-on:click="closeHistoryPanel">&times;</button></div>
+			<div id="history-list-scroll" class="history-list-scroll">
+				<ul id="history-list" class="history-list">
+					<li v-for="item in history" class="history-list-item"><button v-on:click="appendHistoryItemToEquation(item.result)" class="history-button">{{ item.result }}</button></li>
+				</ul>
+			</div>
+		</div>
+	</template>
 	<div class="app" id="app">
 		<div class="display">
 			<div class="result">{{ result }}</div>
@@ -30,7 +40,7 @@
 		</div>
 
 		<button class="keypad-button keypad-button--clear">c</button>
-		<button class="keypad-button keypad-button--history keypad-button--wide">History</button>
+		<button class="keypad-button keypad-button--history keypad-button--wide" v-on:click="openHistory">History</button>
 		<button class="keypad-button keypad-button--backspace"></button>
 
 		<button class="keypad-button keypad-button--plus-minus">+/&minus;</button>
@@ -55,7 +65,9 @@
 
 		<button class="keypad-button" v-on:click="appendDigit(0)">0</button>
 		<button class="keypad-button">.</button>
-		<button class="keypad-button keypad-button--equals keypad-button--wide">=</button>
+		<button class="keypad-button keypad-button--equals keypad-button--wide" v-on:click="equate">=</button>
+
+		<history @append-result="appendResult"></history>
 	</div>
 	<script src="js/vue.min.js"></script>
 	<script src="js/app.js"></script>
