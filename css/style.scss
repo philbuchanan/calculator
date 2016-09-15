@@ -49,6 +49,7 @@ html, body, div, span, ul, li {
 
 html {
 	box-sizing: border-box;
+	touch-action: manipulation;
 }
 
 *, *:before, *:after {

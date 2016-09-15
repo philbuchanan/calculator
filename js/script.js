@@ -4,12 +4,12 @@
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.3.1
+ * @version 3.3.2
  */
 
 "use strict";
 
-var devmode = true;
+var devmode = false;
 
 /**
  * Returns the contents of the first item of an array
@@ -64,7 +64,7 @@ if (!Array.prototype.appendToLast) {
  */
 function Calculator() {
 	this.settings = {
-		version: '3.3.1',
+		version: '3.3.2',
 		history: 50,
 		fontsize: 60,
 		decimals: 2
@@ -139,7 +139,7 @@ Calculator.prototype.addEventHandlers = function() {
 	var buttonModeStart = 'mousedown',
 		buttonModeEnd = 'mouseup';
 
-	if (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) {
+	if (!devmode) {
 		buttonModeStart = 'touchstart';
 		buttonModeEnd = 'touchend';
 	}
@@ -1021,10 +1021,4 @@ Calculator.prototype.removeTimer = function() {
 
 
 
-// Is app installed?
-if ((window.navigator.hasOwnProperty('standalone') && window.navigator.standalone) || devmode) {
-	var calculator = new Calculator();
-}
-else {
-	document.body.setAttribute('class', 'install');
-}
+var calculator = new Calculator();
