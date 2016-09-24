@@ -27,20 +27,57 @@
 		<button
 			class="keypad-button"
 			@click="buttonClick"
-			:class="{ 'keypad-button--operator': isOperator, 'keypad-button--is-active': isActive }">
+			:class="classObject">
 				{{ label }}
 		</button>
 	</template>
 
 	<template id="keypad">
 		<div class="keypad">
+			<!-- First Row of Buttons -->
+			<btn
+				label="c"
+				value="c"
+				type="clear">
+			</btn>
+
+			<btn
+				label="History"
+				value="history"
+				type="history">
+			</btn>
+
+			<btn
+				label="Backspace"
+				value="backspace"
+				type="backspace">
+			</btn>
+
 			<!-- Second Row of Buttons -->
+			<btn
+				value="+/-"
+				label="+/&minus;"
+				type="plus-minus">
+			</btn>
+
+			<btn
+				value="("
+				label="("
+				type="bracket">
+			</btn>
+
+			<btn
+				value=")"
+				label=")"
+				type="bracket">
+			</btn>
+
 			<btn
 				@click="appendOperator"
 				value="/"
 				label="&divide;"
-				:is-operator="true"
-				:active-btn="activeBtn">
+				:active-btn="activeBtn"
+				type="operator">
 			</btn>
 
 			<!-- Third Row of Buttons -->
@@ -65,8 +102,8 @@
 			<btn
 				@click="appendOperator"
 				value="*" label="&times;"
-				:is-operator="true"
-				:active-btn="activeBtn">
+				:active-btn="activeBtn"
+				type="operator">
 			</btn>
 
 			<!-- Fourth Row of Buttons -->
@@ -93,7 +130,8 @@
 				value="-"
 				label="&minus;"
 				:is-operator="true"
-				:active-btn="activeBtn">
+				:active-btn="activeBtn"
+				type="operator">
 			</btn>
 
 			<!-- Fifth Row of Buttons -->
@@ -120,7 +158,8 @@
 				value="+"
 				label="+"
 				:is-operator="true"
-				:active-btn="activeBtn">
+				:active-btn="activeBtn"
+				type="operator">
 			</btn>
 
 			<!-- Sixth Row of Buttons -->
@@ -128,6 +167,18 @@
 				@click="appendDigit"
 				:value="0"
 				label="0">
+			</btn>
+
+			<btn
+				label="."
+				value="."
+				type="decimal">
+			</btn>
+
+			<btn
+				label="="
+				value="="
+				type="equals">
 			</btn>
 		</div>
 	</template>

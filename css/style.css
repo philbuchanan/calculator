@@ -148,6 +148,7 @@ button {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 25px 16px;
+  text-indent: -200px;
 }
 
 .keypad-button--clear {
