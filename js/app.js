@@ -23,17 +23,31 @@ Vue.component('btn', {
 			type: [String, Number],
 			required: true
 		},
-		isOperator: {
-			type: Boolean,
-			default: false
-		},
 		activeBtn: {
 			type: [String, Number]
+		},
+		type: {
+			type: String,
+			default: 'digit'
 		}
 	},
 	computed: {
-		isActive: function() {
-			return this.activeBtn == this.value;
+		classObject: function() {
+			var classes = 'keypad-button'
+
+			if (this.type !== 'digit') {
+				classes += ' keypad-button--' + this.type
+			}
+
+			if (this.type === 'history' || this.type === 'equals') {
+				classes += ' keypad-button--wide'
+			}
+
+			if (this.activeBtn == this.value) {
+				classes += ' keypad-button--is-active'
+			}
+
+			return classes
 		}
 	},
 	methods: {
