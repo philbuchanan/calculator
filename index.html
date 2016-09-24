@@ -23,21 +23,119 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
+	<template id="btn">
+		<button
+			class="keypad-button"
+			@click="buttonClick"
+			:class="{ 'keypad-button--operator': isOperator, 'keypad-button--is-active': isActive }">
+				{{ label }}
+		</button>
+	</template>
+
+	<template id="keypad">
+		<div class="keypad">
+			<!-- Second Row of Buttons -->
+			<btn
+				@click="appendOperator"
+				value="/"
+				label="&divide;"
+				:is-operator="true"
+				:active-btn="activeBtn">
+			</btn>
+
+			<!-- Third Row of Buttons -->
+			<btn
+				@click="appendDigit"
+				:value="7"
+				label="7">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="8"
+				label="8">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="9"
+				label="9">
+			</btn>
+
+			<btn
+				@click="appendOperator"
+				value="*" label="&times;"
+				:is-operator="true"
+				:active-btn="activeBtn">
+			</btn>
+
+			<!-- Fourth Row of Buttons -->
+			<btn
+				@click="appendDigit"
+				:value="4"
+				label="4">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="5"
+				label="5">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="6"
+				label="6">
+			</btn>
+
+			<btn
+				@click="appendOperator"
+				value="-"
+				label="&minus;"
+				:is-operator="true"
+				:active-btn="activeBtn">
+			</btn>
+
+			<!-- Fifth Row of Buttons -->
+			<btn
+				@click="appendDigit"
+				:value="1"
+				label="1">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="2"
+				label="2">
+			</btn>
+
+			<btn
+				@click="appendDigit"
+				:value="3"
+				label="3">
+			</btn>
+
+			<btn
+				@click="appendOperator"
+				value="+"
+				label="+"
+				:is-operator="true"
+				:active-btn="activeBtn">
+			</btn>
+
+			<!-- Sixth Row of Buttons -->
+			<btn
+				@click="appendDigit"
+				:value="0"
+				label="0">
+			</btn>
+		</div>
+	</template>
+
 	<div class="app" id="app">
-		<button class="keypad-button" v-on:click="appendDigit(7)">7</button>
-		<button class="keypad-button" v-on:click="appendDigit(8)">8</button>
-		<button class="keypad-button" v-on:click="appendDigit(9)">9</button>
-
-		<button class="keypad-button" v-on:click="appendDigit(4)">4</button>
-		<button class="keypad-button" v-on:click="appendDigit(5)">5</button>
-		<button class="keypad-button" v-on:click="appendDigit(6)">6</button>
-
-		<button class="keypad-button" v-on:click="appendDigit(1)">1</button>
-		<button class="keypad-button" v-on:click="appendDigit(2)">2</button>
-		<button class="keypad-button" v-on:click="appendDigit(3)">3</button>
-
-		<button class="keypad-button" v-on:click="appendDigit(0)">0</button>
+		<keypad></keypad>
 	</div>
+
 	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </body>
