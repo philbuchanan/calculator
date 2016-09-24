@@ -24,7 +24,19 @@
 </head>
 <body>
 	<div class="app" id="app">
+		<button class="keypad-button" v-on:click="appendDigit(7)">7</button>
+		<button class="keypad-button" v-on:click="appendDigit(8)">8</button>
+		<button class="keypad-button" v-on:click="appendDigit(9)">9</button>
 
+		<button class="keypad-button" v-on:click="appendDigit(4)">4</button>
+		<button class="keypad-button" v-on:click="appendDigit(5)">5</button>
+		<button class="keypad-button" v-on:click="appendDigit(6)">6</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(1)">1</button>
+		<button class="keypad-button" v-on:click="appendDigit(2)">2</button>
+		<button class="keypad-button" v-on:click="appendDigit(3)">3</button>
+
+		<button class="keypad-button" v-on:click="appendDigit(0)">0</button>
 	</div>
 	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
