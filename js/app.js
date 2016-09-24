@@ -16,5 +16,34 @@
  * including keypad, display result and display equation.
  */
 var app = new Vue({
-	el: '#app'
+	el: '#app',
+	data: {
+		input: [],
+		last: ''
+	},
+	computed: {
+		lastInputIndex: function() {
+			return this.input.length - 1
+		}
+	},
+	methods: {
+		/**
+		 * Append digit to equation
+		 *
+		 * @param digit int The digit to append
+		 */
+		appendDigit: function(digit) {
+			switch(this.last) {
+				case 'digit':
+					var newDigit = parseInt(this.input[this.lastInputIndex].toString() + digit, 10)
+
+					Vue.set(this.input, this.lastInputIndex, newDigit)
+					break
+				default:
+					this.input.push(digit)
+			}
+
+			this.last = 'digit'
+		}
+	}
 })
