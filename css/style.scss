@@ -146,12 +146,16 @@ button {
 // ----------------------------------
 
 // Keypad buttons
+.keypad {
+	font-size: 0;
+}
+
 .keypad-button {
-	float: left;
+	display: inline-block;
 	color: $color-grey100;
 	background: $color-grey20;
 	font-family: $fontStack;
-	font-size: 1.1em;
+	font-size: 1.1rem;
 	border: 1px solid $color-grey0;
 	width: 25%;
 	transition: color 0.2s ease, background-color 0.2s ease;
@@ -166,7 +170,7 @@ button {
 }
 
 // Keypad button modifiers
-.keypad-button--active {
+.keypad-button--is-active {
 	color: $color-primary;
 	border: 1.5px solid $color-grey0;
 }

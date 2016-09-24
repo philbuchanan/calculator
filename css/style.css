@@ -92,12 +92,16 @@ button {
   margin-right: 0;
 }
 
+.keypad {
+  font-size: 0;
+}
+
 .keypad-button {
-  float: left;
+  display: inline-block;
   color: #fff;
   background: #333;
   font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   border: 1px solid #000;
   width: 25%;
   transition: color 0.2s ease, background-color 0.2s ease;
@@ -113,7 +117,7 @@ button {
   background-color: #099d93;
 }
 
-.keypad-button--active {
+.keypad-button--is-active {
   color: #099d93;
   border: 1.5px solid #000;
 }

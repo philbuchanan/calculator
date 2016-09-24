@@ -10,16 +10,52 @@
 
 
 /**
- * App Vue
- *
- * The main calculator application view. Handles all aspects of the calculator
- * including keypad, display result and display equation.
+ * Button Component
  */
-var app = new Vue({
-	el: '#app',
-	data: {
-		input: [],
-		last: ''
+Vue.component('btn', {
+	template: '#btn',
+	props: {
+		label: {
+			type: String,
+			required: true
+		},
+		value: {
+			type: [String, Number],
+			required: true
+		},
+		isOperator: {
+			type: Boolean,
+			default: false
+		},
+		activeBtn: {
+			type: [String, Number]
+		}
+	},
+	computed: {
+		isActive: function() {
+			return this.activeBtn == this.value;
+		}
+	},
+	methods: {
+		buttonClick: function() {
+			this.$emit('click', this.value)
+		}
+	},
+})
+
+
+
+/**
+ * Keypad Component
+ */
+Vue.component('keypad', {
+	template: '#keypad',
+	data: function() {
+		return {
+			input: [],
+			last: '',
+			activeBtn: null
+		}
 	},
 	computed: {
 		lastInputIndex: function() {
@@ -44,6 +80,39 @@ var app = new Vue({
 			}
 
 			this.last = 'digit'
+			this.activeBtn = null
+		},
+
+
+
+		/**
+		 * Append operator to equation
+		 *
+		 * @param operator string The value of the operator
+		 */
+		appendOperator: function(operator) {
+			if (this.last === 'operator') {
+				this.input.pop()
+				this.input.push(operator)
+				this.activeBtn = operator
+			}
+
+			if (this.last === 'digit' || this.last === ')') {
+				this.input.push(operator)
+				this.last = 'operator'
+				this.activeBtn = operator
+			}
 		}
 	}
+})
+
+
+
+/**
+ * App Vue
+ *
+ * The main calculator application view.
+ */
+var app = new Vue({
+	el: '#app'
 })
