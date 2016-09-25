@@ -67,7 +67,7 @@ Vue.component('keypad', {
 	data: function() {
 		return {
 			input: [],
-			last: '',
+			last: null,
 			activeBtn: null
 		}
 	},
@@ -78,6 +78,43 @@ Vue.component('keypad', {
 	},
 	methods: {
 		/**
+		 * Is the given number a valid number (e.g. -12.34)
+		 *
+		 * @param num double The number to test
+		 * return bool True if valid, else false
+		 */
+		isValidNum: function(num) {
+			/**
+			 * Regex eplainaition:
+			 * ^              Match at start of string
+			 * \-?            Optional negative
+			 * 0|             Zero, or
+			 * 0(?!\.)|       Zero if followed by decimal, or
+			 * ([1-9]{1}\d*)| Exactly one 1-9 and zero or more digits, or
+			 * \.(?!\.)\d*    A decimal only if not followed by another decimal plus zero or more digits
+			 * (\.\d*){0,1}   Only one grouping of a decimal and zero or more digits
+			 * $              Match end of string
+			 */
+			return /^\-?(0|0(?!\.)|([1-9]{1}\d*)|\.(?!\.)\d*)(\.\d*){0,1}$/.test(num)
+		},
+
+
+
+		/**
+		 * Update a number in the input stack
+		 *
+		 * @param num The number to update
+		 */
+		updateNumber: function(num) {
+			// Only update if the new number is valid
+			if (this.isValidNum(num)) {
+				Vue.set(this.input, this.lastInputIndex, num.toString())
+			}
+		},
+
+
+
+		/**
 		 * Append digit to equation
 		 *
 		 * @param digit int The digit to append
@@ -85,16 +122,37 @@ Vue.component('keypad', {
 		appendDigit: function(digit) {
 			switch(this.last) {
 				case 'digit':
-					var newDigit = parseInt(this.input[this.lastInputIndex].toString() + digit, 10)
+				case 'decimal':
+					var newNum = this.input[this.lastInputIndex] + digit
 
-					Vue.set(this.input, this.lastInputIndex, newDigit)
+					this.updateNumber(newNum)
 					break
 				default:
-					this.input.push(digit)
+					this.input.push(digit.toString())
 			}
 
 			this.last = 'digit'
 			this.activeBtn = null
+		},
+
+
+
+		/**
+		 * Append a decimal to the current number
+		 */
+		appendDecimal: function() {
+			switch(this.last) {
+				case 'digit':
+					this.updateNumber(this.input[this.lastInputIndex] + '.')
+					this.last = 'decimal'
+					break
+				case null:
+				case 'operator':
+				case '(':
+					this.input.push('0.')
+					this.last = 'decimal'
+					break
+			}
 		},
 
 
@@ -105,16 +163,18 @@ Vue.component('keypad', {
 		 * @param operator string The value of the operator
 		 */
 		appendOperator: function(operator) {
-			if (this.last === 'operator') {
-				this.input.pop()
-				this.input.push(operator)
-				this.activeBtn = operator
-			}
-
-			if (this.last === 'digit' || this.last === ')') {
-				this.input.push(operator)
-				this.last = 'operator'
-				this.activeBtn = operator
+			switch(this.last) {
+				case 'operator':
+					this.input.pop()
+					this.input.push(operator)
+					this.activeBtn = operator
+					break
+				case 'digit':
+				case ')':
+					this.input.push(operator)
+					this.last = 'operator'
+					this.activeBtn = operator
+					break
 			}
 		}
 	}
