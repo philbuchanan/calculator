@@ -2,7 +2,7 @@
 
 **A calculator iOS web app.**
 
-[Install the app](http://philbuchanan.com/calculator/).
+[Install the app](https://philbuchanan.github.io/calculator/).
 
 ## Support
 
