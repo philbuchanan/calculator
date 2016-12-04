@@ -2,8 +2,6 @@
 
 **A calculator iOS web app.**
 
-[Install the app](https://philbuchanan.github.io/calculator/).
-
 ## Support
 
 The current version has been fully tested on iOS 9 running on iPhone 5s, iPhone 6 and iPhone 6+. It should *work* on iOS 7 and 8, but iOS 9 is highly recommended.
