@@ -1,10 +1,10 @@
 /**
- * Copyright 2013-2015 Phil Buchanan
+ * Copyright 2013-2017 Phil Buchanan
  *
  * A calculator iOS web application that supports brackets, backspace and saved
  * calculation history. The app uses HTML5 app caching so it will work offline.
  *
- * @version 3.3.2
+ * @version 3.3.3
  */
 
 "use strict";
@@ -192,7 +192,14 @@ Calculator.prototype.addEventHandlers = function() {
 
 	this.historyList.addEventListener(buttonModeEnd, function(event) {
 		if (!this.dragging) {
-			this.appendHistoryItemToEquation(event.target.value);
+			// Need this because of the <span> for the equation inside the button
+			if (event.target.value) {
+				this.appendHistoryItemToEquation(event.target.value);
+			}
+			else {
+				this.appendHistoryItemToEquation(event.toElement.parentNode.value);
+			}
+
 			this.closeHistoryPanel();
 		}
 	}.bind(this), false);
@@ -711,6 +718,36 @@ Calculator.prototype.updateDisplayEquation = function() {
 
 
 /**
+ * Escape operators
+ *
+ * @param equ array The equation array to replace the operators in
+ * return array An updated array with HTML escaped operators
+ */
+Calculator.prototype.escapeOperators = function(equ) {
+	var output = [];
+
+	equ.forEach(function(item) {
+		switch(item) {
+			case '*':
+				output.push('&times;');
+				break;
+			case '/':
+				output.push('&divide;');
+				break;
+			case '-':
+				output.push('&minus;');
+				break;
+			default:
+				output.push(item);
+		}
+	});
+
+	return output;
+}
+
+
+
+/**
  * Replace operators with display strings
  *
  * @param equ array The equation array to replace the operators in
@@ -902,7 +939,7 @@ Calculator.prototype.createHistoryElement = function(obj) {
 	button.innerText = this.addCommas(obj.result);
 
 	span.className = 'history-button-equation';
-	span.innerHTML = this.replaceOperators(obj.equ);
+	span.innerHTML = this.escapeOperators(obj.equ).join(' ');
 
 	button.appendChild(span);
 	li.appendChild(button);
