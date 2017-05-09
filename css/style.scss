@@ -326,3 +326,76 @@ button {
 		}
 	}
 }
+
+
+
+// INSTALL SCREEN
+// ----------------------------------
+
+.installation {
+	display: none;
+}
+
+.install {
+	background: #383838;
+	background-attachment: fixed;
+	height: 100%;
+
+	.app {
+		display: none;
+	}
+
+	.installation {
+		display: block;
+	}
+}
+
+.installation {
+	margin: 0 auto;
+	width: 175px;
+}
+
+.instructions {
+	position: absolute;
+	top: 50%;
+	color: #d9d9d9;
+	text-align: center;
+	font-size: 14px;
+	line-height: 20px;
+	text-shadow: 0 1px 2px #000;
+	width: 175px;
+	height: 180px;
+	margin-top: -90px;
+
+	span {
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-size: 16px;
+		font-weight: 800;
+	}
+}
+
+.app-icon {
+	background: url("../assets/app-icon-large.png") no-repeat;
+	background-size: 125px 125px;
+	width: 125px;
+	height: 125px;
+	margin: 0 auto 20px;
+}
+
+.twitter {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	color: $color-primary;
+	text-align: center;
+	font-size: 14px;
+	line-height: 20px;
+	text-decoration: none;
+	text-shadow: 0 1px 2px #000;
+	width: 130px;
+	margin-left: -65px;
+
+	&:hover {
+		color: #d9d9d9;
+	}
+}
