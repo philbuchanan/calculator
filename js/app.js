@@ -512,11 +512,24 @@ var app = new Vue({
 				return;
 			}
 
+			// If the number is prefixed with `-`
 			if (/^-/.test(this.input[this.lastInputIndex])) {
+				// Remove `-`
 				this.updateNumber(this.input[this.lastInputIndex].slice(1));
 			}
 			else {
-				this.updateNumber('-' + this.input[this.lastInputIndex]);
+				if (this.input[this.lastInputIndex - 1] === '-') {
+					// Switch previous operator to `+`
+					Vue.set(this.input, this.lastInputIndex - 1, '+');
+				}
+				else if (this.input[this.lastInputIndex - 1] === '+') {
+					// Switch previous operator to `-`
+					Vue.set(this.input, this.lastInputIndex - 1, '-');
+				}
+				else {
+					// Add `-` prefix to number
+					this.updateNumber('-' + this.input[this.lastInputIndex]);
+				}
 			}
 		},
 
