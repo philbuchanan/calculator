@@ -1,20 +1,6 @@
 // Screen Sizes
 // ----------------------------------
 
-$screenHeights: (
-	// iPhones
-	"iPhone4":            480px,
-	"iPhone5":            568px,
-	"iPhone6":            667px,
-	"iPhone6 Plus":       736px,
-	// iPads
-	"iPad Portrait":      768px,
-	"iPad Landscape":     1024px,
-	"iPad Pro Landscape": 1366px
-);
-
-
-
 // Global Variables
 // ----------------------------------
 
@@ -61,7 +47,7 @@ html {
 // Layout
 // ----------------------------------
 
-body {
+html {
 	color: $color-grey20;
 	background: $color-grey20;
 	font-family: $fontStack;
@@ -84,7 +70,14 @@ button {
 }
 
 .app {
+	height: 100vh;
 	position: relative;
+}
+
+.application {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 
@@ -93,35 +86,69 @@ button {
 // ----------------------------------
 
 .display {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
 	background-color: $color-grey100;
 	border-bottom: $display-borderWidth solid $color-primary;
 }
 
 .result,
 .equation {
+	display: flex;
 	text-align: right;
+	width: 100%;
 	white-space: nowrap;
+	overflow: hidden;
+	align-items: center;
+	justify-content: right;
+}
+
+.result,
+.eq {
 	padding-left: 12px;
 	padding-right: 12px;
-	overflow: hidden;
 }
 
 .result {
-	font-size: 3em;
+	flex-grow: 1;
+	font-size: 60px;
 	font-weight: 200;
+
+	> div {
+		width: 100%;
+	}
 }
 
 .equation {
+	position: relative;
 	color: $color-primary;
 	border-top: 1px solid $color-grey85;
+	height: 54px;
 
 	@media (-webkit-min-device-pixel-ratio: 2) {
 		border-width: 0.5px;
 	}
+
+	&:after {
+		display: block;
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 36px;
+		background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 33.3333%, rgba(255,255,255,0) 100%);
+		background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 33.3333%,rgba(255,255,255,0) 100%);
+		background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 33.3333%,rgba(255,255,255,0) 100%);
+	}
 }
 
 .eq {
+	position: absolute;
+	right: 0;
 	display: inline;
+	float: right;
 }
 
 .left-bracket,
@@ -146,14 +173,21 @@ button {
 // ----------------------------------
 
 // Keypad buttons
+.keypad {
+	display: flex;
+	flex-flow: row wrap;
+	font-size: 0;
+}
+
 .keypad-button {
-	float: left;
+	display: inline-block;
 	color: $color-grey100;
 	background: $color-grey20;
 	font-family: $fontStack;
-	font-size: 1.1em;
+	font-size: 1.1rem;
 	border: 1px solid $color-grey0;
 	width: 25%;
+	height: 71px;
 	transition: color 0.2s ease, background-color 0.2s ease;
 
 	@media (-webkit-min-device-pixel-ratio: 2) {
@@ -163,14 +197,14 @@ button {
 	&:active {
 		background-color: $color-primary;
 	}
+
+	&.is-active {
+		color: $color-primary;
+		border: 1.5px solid $color-grey0;
+	}
 }
 
 // Keypad button modifiers
-.keypad-button--active {
-	color: $color-primary;
-	border: 1.5px solid $color-grey0;
-}
-
 .keypad-button--wide {
 	width: 50%;
 }
@@ -212,14 +246,11 @@ button {
 	position: absolute;
 	bottom: 0;
 	left: 0;
+	height: 426px;
 	-webkit-backdrop-filter: blur(10px);
 	        backdrop-filter: blur(10px);
 	width: 100%;
 	z-index: 90;
-	-webkit-transform: translateY(100%);
-	        transform: translateY(100%);
-	-webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
-	        transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 
 .history-title-bar {
@@ -253,6 +284,8 @@ button {
 }
 
 .history-button {
+	display: flex;
+	justify-content: space-between;
 	color: $color-grey85;
 	background-color: transparent;
 	text-align: left;
@@ -265,66 +298,29 @@ button {
 }
 
 .history-button-equation {
-	float: right;
 	color: $color-grey70;
 	font-size: 0.7em;
 	line-height: 20px;
 	max-width: 100%;
-	padding: 3px 0 0 5px;
+	padding: 3px 0 0 24px;
 	white-space: nowrap;
-	text-align: right;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
 
-.history--open {
-	.history-container {
-		-webkit-transform: translateY(0);
-		        transform: translateY(0);
-	}
+
+
+// Animations
+// -----------------------------------------------------------------------------
+
+.slide-enter-active,
+.slide-leave-active {
+	transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 
-
-
-// Responsive Styles for Screen Sizes
-// ----------------------------------
-
-@each $phone, $screenHeight in $screenHeights {
-	$appHeights: (
-		"in-call": $screenHeight - 40,
-		"default": $screenHeight - 20
-	);
-
-	@each $status, $appHeight in $appHeights {
-		$buttonHeight:   ceil(($appHeight * 0.65) / 6);
-		$resultHeight:   ceil($appHeight * 0.25);
-		$equationHeight: ($appHeight - $resultHeight - $display-borderWidth - ($buttonHeight * 6));
-
-		/* #{$phone} - #{$status} */
-		@media (min-height: $appHeight) {
-			.app {
-				height: $appHeight;
-			}
-
-			.result {
-				height: $resultHeight;
-				line-height: ($resultHeight - 2);
-			}
-
-			.equation {
-				height: $equationHeight;
-				line-height: ($equationHeight - 2);
-			}
-
-			.keypad-button {
-				height: $buttonHeight;
-			}
-
-			.history-container {
-				height: ($buttonHeight * 6);
-			}
-		}
-	}
+.slide-enter,
+.slide-leave-to  {
+	transform: translateY(100%);
 }
 
 

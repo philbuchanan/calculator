@@ -16,7 +16,7 @@ html {
   box-sizing: inherit;
 }
 
-body {
+html {
   color: #333;
   background: #333;
   font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -39,31 +39,56 @@ button {
 }
 
 .app {
+  height: 100vh;
   position: relative;
 }
 
+.application {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .display {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   background-color: #fff;
   border-bottom: 6px solid #099d93;
 }
 
 .result,
 .equation {
+  display: flex;
   text-align: right;
+  width: 100%;
   white-space: nowrap;
+  overflow: hidden;
+  align-items: center;
+  justify-content: right;
+}
+
+.result,
+.eq {
   padding-left: 12px;
   padding-right: 12px;
-  overflow: hidden;
 }
 
 .result {
-  font-size: 3em;
+  flex-grow: 1;
+  font-size: 60px;
   font-weight: 200;
 }
 
+.result > div {
+  width: 100%;
+}
+
 .equation {
+  position: relative;
   color: #099d93;
   border-top: 1px solid #d9d9d9;
+  height: 54px;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2) {
@@ -72,8 +97,24 @@ button {
   }
 }
 
+.equation:after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 36px;
+  background: -moz-linear-gradient(left, white 0%, white 33.3333%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(left, white 0%, white 33.3333%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to right, white 0%, white 33.3333%, rgba(255, 255, 255, 0) 100%);
+}
+
 .eq {
+  position: absolute;
+  right: 0;
   display: inline;
+  float: right;
 }
 
 .left-bracket,
@@ -92,14 +133,21 @@ button {
   margin-right: 0;
 }
 
+.keypad {
+  display: flex;
+  flex-flow: row wrap;
+  font-size: 0;
+}
+
 .keypad-button {
-  float: left;
+  display: inline-block;
   color: #fff;
   background: #333;
   font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   border: 1px solid #000;
   width: 25%;
+  height: 71px;
   transition: color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -113,7 +161,7 @@ button {
   background-color: #099d93;
 }
 
-.keypad-button--active {
+.keypad-button.is-active {
   color: #099d93;
   border: 1.5px solid #000;
 }
@@ -154,14 +202,11 @@ button {
   position: absolute;
   bottom: 0;
   left: 0;
+  height: 426px;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   width: 100%;
   z-index: 90;
-  -webkit-transform: translateY(100%);
-  transform: translateY(100%);
-  -webkit-transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
-  transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 
 .history-title-bar {
@@ -195,6 +240,8 @@ button {
 }
 
 .history-button {
+  display: flex;
+  justify-content: space-between;
   color: #d9d9d9;
   background-color: transparent;
   text-align: left;
@@ -207,315 +254,24 @@ button {
 }
 
 .history-button-equation {
-  float: right;
   color: #b3b3b3;
   font-size: 0.7em;
   line-height: 20px;
   max-width: 100%;
-  padding: 3px 0 0 5px;
+  padding: 3px 0 0 24px;
   white-space: nowrap;
-  text-align: right;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.history--open .history-container {
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);
 }
 
-/* iPhone4 - in-call */
-@media (min-height: 440px) {
-  .app {
-    height: 440px;
-  }
-  .result {
-    height: 110px;
-    line-height: 108px;
-  }
-  .equation {
-    height: 36px;
-    line-height: 34px;
-  }
-  .keypad-button {
-    height: 48px;
-  }
-  .history-container {
-    height: 288px;
-  }
-}
-
-/* iPhone4 - default */
-@media (min-height: 460px) {
-  .app {
-    height: 460px;
-  }
-  .result {
-    height: 115px;
-    line-height: 113px;
-  }
-  .equation {
-    height: 39px;
-    line-height: 37px;
-  }
-  .keypad-button {
-    height: 50px;
-  }
-  .history-container {
-    height: 300px;
-  }
-}
-
-/* iPhone5 - in-call */
-@media (min-height: 528px) {
-  .app {
-    height: 528px;
-  }
-  .result {
-    height: 132px;
-    line-height: 130px;
-  }
-  .equation {
-    height: 42px;
-    line-height: 40px;
-  }
-  .keypad-button {
-    height: 58px;
-  }
-  .history-container {
-    height: 348px;
-  }
-}
-
-/* iPhone5 - default */
-@media (min-height: 548px) {
-  .app {
-    height: 548px;
-  }
-  .result {
-    height: 137px;
-    line-height: 135px;
-  }
-  .equation {
-    height: 45px;
-    line-height: 43px;
-  }
-  .keypad-button {
-    height: 60px;
-  }
-  .history-container {
-    height: 360px;
-  }
-}
-
-/* iPhone6 - in-call */
-@media (min-height: 627px) {
-  .app {
-    height: 627px;
-  }
-  .result {
-    height: 157px;
-    line-height: 155px;
-  }
-  .equation {
-    height: 56px;
-    line-height: 54px;
-  }
-  .keypad-button {
-    height: 68px;
-  }
-  .history-container {
-    height: 408px;
-  }
-}
-
-/* iPhone6 - default */
-@media (min-height: 647px) {
-  .app {
-    height: 647px;
-  }
-  .result {
-    height: 162px;
-    line-height: 160px;
-  }
-  .equation {
-    height: 53px;
-    line-height: 51px;
-  }
-  .keypad-button {
-    height: 71px;
-  }
-  .history-container {
-    height: 426px;
-  }
-}
-
-/* iPhone6 Plus - in-call */
-@media (min-height: 696px) {
-  .app {
-    height: 696px;
-  }
-  .result {
-    height: 174px;
-    line-height: 172px;
-  }
-  .equation {
-    height: 60px;
-    line-height: 58px;
-  }
-  .keypad-button {
-    height: 76px;
-  }
-  .history-container {
-    height: 456px;
-  }
-}
-
-/* iPhone6 Plus - default */
-@media (min-height: 716px) {
-  .app {
-    height: 716px;
-  }
-  .result {
-    height: 179px;
-    line-height: 177px;
-  }
-  .equation {
-    height: 63px;
-    line-height: 61px;
-  }
-  .keypad-button {
-    height: 78px;
-  }
-  .history-container {
-    height: 468px;
-  }
-}
-
-/* iPad Portrait - in-call */
-@media (min-height: 728px) {
-  .app {
-    height: 728px;
-  }
-  .result {
-    height: 182px;
-    line-height: 180px;
-  }
-  .equation {
-    height: 66px;
-    line-height: 64px;
-  }
-  .keypad-button {
-    height: 79px;
-  }
-  .history-container {
-    height: 474px;
-  }
-}
-
-/* iPad Portrait - default */
-@media (min-height: 748px) {
-  .app {
-    height: 748px;
-  }
-  .result {
-    height: 187px;
-    line-height: 185px;
-  }
-  .equation {
-    height: 63px;
-    line-height: 61px;
-  }
-  .keypad-button {
-    height: 82px;
-  }
-  .history-container {
-    height: 492px;
-  }
-}
-
-/* iPad Landscape - in-call */
-@media (min-height: 984px) {
-  .app {
-    height: 984px;
-  }
-  .result {
-    height: 246px;
-    line-height: 244px;
-  }
-  .equation {
-    height: 90px;
-    line-height: 88px;
-  }
-  .keypad-button {
-    height: 107px;
-  }
-  .history-container {
-    height: 642px;
-  }
-}
-
-/* iPad Landscape - default */
-@media (min-height: 1004px) {
-  .app {
-    height: 1004px;
-  }
-  .result {
-    height: 251px;
-    line-height: 249px;
-  }
-  .equation {
-    height: 93px;
-    line-height: 91px;
-  }
-  .keypad-button {
-    height: 109px;
-  }
-  .history-container {
-    height: 654px;
-  }
-}
-
-/* iPad Pro Landscape - in-call */
-@media (min-height: 1326px) {
-  .app {
-    height: 1326px;
-  }
-  .result {
-    height: 332px;
-    line-height: 330px;
-  }
-  .equation {
-    height: 124px;
-    line-height: 122px;
-  }
-  .keypad-button {
-    height: 144px;
-  }
-  .history-container {
-    height: 864px;
-  }
-}
-
-/* iPad Pro Landscape - default */
-@media (min-height: 1346px) {
-  .app {
-    height: 1346px;
-  }
-  .result {
-    height: 337px;
-    line-height: 335px;
-  }
-  .equation {
-    height: 127px;
-    line-height: 125px;
-  }
-  .keypad-button {
-    height: 146px;
-  }
-  .history-container {
-    height: 876px;
-  }
+.slide-enter,
+.slide-leave-to {
+  transform: translateY(100%);
 }
 
 .installation {
