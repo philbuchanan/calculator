@@ -121,7 +121,8 @@ var app = new Vue({
 		 * Is the app installed on an iPhone home screen?
 		 */
 		isInstalled: function() {
-			return (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone);
+			return true
+			//return (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone);
 		},
 
 
