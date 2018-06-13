@@ -23,169 +23,189 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
-	<template id="btn">
-		<button
-			class="keypad-button"
-			@click="buttonClick"
-			:class="classObject">
-				{{ label }}
-		</button>
-	</template>
-
-	<template id="keypad">
-		<div class="keypad">
-			<!-- First Row of Buttons -->
-			<btn
-				label="c"
-				value="c"
-				type="clear">
-			</btn>
-
-			<btn
-				label="History"
-				value="history"
-				type="history">
-			</btn>
-
-			<btn
-				label="Backspace"
-				value="backspace"
-				type="backspace">
-			</btn>
-
-			<!-- Second Row of Buttons -->
-			<btn
-				value="+/-"
-				label="+/&minus;"
-				type="plus-minus">
-			</btn>
-
-			<btn
-				value="("
-				label="("
-				type="bracket">
-			</btn>
-
-			<btn
-				value=")"
-				label=")"
-				type="bracket">
-			</btn>
-
-			<btn
-				@click="appendOperator"
-				value="/"
-				label="&divide;"
-				:active-btn="activeBtn"
-				type="operator">
-			</btn>
-
-			<!-- Third Row of Buttons -->
-			<btn
-				@click="appendDigit"
-				:value="7"
-				label="7">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="8"
-				label="8">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="9"
-				label="9">
-			</btn>
-
-			<btn
-				@click="appendOperator"
-				value="*" label="&times;"
-				:active-btn="activeBtn"
-				type="operator">
-			</btn>
-
-			<!-- Fourth Row of Buttons -->
-			<btn
-				@click="appendDigit"
-				:value="4"
-				label="4">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="5"
-				label="5">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="6"
-				label="6">
-			</btn>
-
-			<btn
-				@click="appendOperator"
-				value="-"
-				label="&minus;"
-				:is-operator="true"
-				:active-btn="activeBtn"
-				type="operator">
-			</btn>
-
-			<!-- Fifth Row of Buttons -->
-			<btn
-				@click="appendDigit"
-				:value="1"
-				label="1">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="2"
-				label="2">
-			</btn>
-
-			<btn
-				@click="appendDigit"
-				:value="3"
-				label="3">
-			</btn>
-
-			<btn
-				@click="appendOperator"
-				value="+"
-				label="+"
-				:is-operator="true"
-				:active-btn="activeBtn"
-				type="operator">
-			</btn>
-
-			<!-- Sixth Row of Buttons -->
-			<btn
-				@click="appendDigit"
-				:value="0"
-				label="0">
-			</btn>
-
-			<btn
-				@click="appendDecimal"
-				label="."
-				value="."
-				type="decimal">
-			</btn>
-
-			<btn
-				label="="
-				value="="
-				type="equals">
-			</btn>
+	<div id="app" class="app">
+		<transition name="slide">
+			<div v-if="historyIsOpen" class="history-container">
+				<div class="history-title-bar">
+					History
+					<button
+						v-on:click="closeHistory"
+						v-on:touchend="closeHistory"
+						class="history-close-button"
+						aria-label="Close history">
+							&times;
+					</button>
+				</div>
+				<div id="history-list-scroll" class="history-list-scroll">
+					<ul
+						v-on:touchstart="setDragging(false)"
+						v-on:touchmove="setDragging(true)"
+						class="history-list">
+							<li v-for="item in history">
+								<button
+									v-on:click="appendHistoryValueToEquation(item.result)"
+									v-on:touchend="appendHistoryValueToEquation(item.result)"
+									class="history-button">
+										<span class="history-button-result">
+											{{ item.result | addCommas }}
+										</span>
+										<span v-html="$options.filters.equation(item.equ)" class="history-button-equation"></span>
+								</button>
+							</li>
+					</ul>
+				</div>
+			</div>
+		</transition>
+		<div class="application" v-on:touchstart="disableBounceScrolling">
+			<div class="display">
+				<div class="result">
+					<div v-bind:style="{ fontSize: resultFontSize + 'px' }">
+						{{ result | addCommas}}
+					</div>
+				</div>
+				<div class="equation">
+					<div v-html="$options.filters.equation(input)" class="eq"></div>
+				</div>
+			</div>
+			<div class="keypad">
+				<button
+					v-on:click="clearAll(null)"
+					v-on:touchend="clearAll(null)"
+					class="keypad-button keypad-button--clear">
+						c
+				</button>
+				<button
+					v-on:click="openHistory"
+					v-on:touchend="openHistory"
+					class="keypad-button keypad-button--wide keypad-button--history">
+						History
+				</button>
+				<button
+					v-on:click="backspace"
+					v-on:touchend="backspace"
+					class="keypad-button keypad-button--backspace"
+					aria-label="Backspcae">
+				</button>
+				<button
+					v-on:click="invertNumber"
+					v-on:touchend="invertNumber"
+					class="keypad-button keypad-button--plus-minus">
+						+/&minus;
+				</button>
+				<button
+					v-on:click="appendOpenBracket"
+					v-on:touchend="appendOpenBracket"
+					class="keypad-button keypad-button--bracket">
+						(
+				</button>
+				<button
+					v-on:click="appendCloseBracket"
+					v-on:touchend="appendCloseBracket"
+					class="keypad-button keypad-button--bracket">
+						)
+				</button>
+				<button
+					v-on:click="appendOperator('/')"
+					v-on:touchend="appendOperator('/')"
+					v-bind:class="{ 'is-active': isDivideActive }"
+					class="keypad-button keypad-button--operator">
+						&divide;
+				</button>
+				<button
+					v-on:click="appendDigit(7)"
+					v-on:touchend="appendDigit(7)"
+					class="keypad-button">
+						7
+				</button>
+				<button
+					v-on:click="appendDigit(8)"
+					v-on:touchend="appendDigit(8)"
+					class="keypad-button">
+						8
+				</button>
+				<button
+					v-on:click="appendDigit(9)"
+					v-on:touchend="appendDigit(9)"
+					class="keypad-button">
+						9
+				</button>
+				<button
+					v-on:click="appendOperator('*')"
+					v-on:touchend="appendOperator('*')"
+					v-bind:class="{ 'is-active': isMultiplyActive }"
+					class="keypad-button keypad-button--operator">
+						&times;
+				</button>
+				<button
+					v-on:click="appendDigit(4)"
+					v-on:touchend="appendDigit(4)"
+					class="keypad-button">
+						4
+				</button>
+				<button
+					v-on:click="appendDigit(5)"
+					v-on:touchend="appendDigit(5)"
+					class="keypad-button">
+						5
+				</button>
+				<button
+					v-on:click="appendDigit(6)"
+					v-on:touchend="appendDigit(6)"
+					class="keypad-button">
+						6
+				</button>
+				<button
+					v-on:click="appendOperator('-')"
+					v-on:touchend="appendOperator('-')"
+					v-bind:class="{ 'is-active': isSubtractActive }"
+					class="keypad-button keypad-button--operator">
+						&minus;
+				</button>
+				<button
+					v-on:click="appendDigit(1)"
+					v-on:touchend="appendDigit(1)"
+					class="keypad-button">
+						1
+				</button>
+				<button
+					v-on:click="appendDigit(2)"
+					v-on:touchend="appendDigit(2)"
+					class="keypad-button">
+						2
+				</button>
+				<button
+					v-on:click="appendDigit(3)"
+					v-on:touchend="appendDigit(3)"
+					class="keypad-button">
+						3
+				</button>
+				<button
+					v-on:click="appendOperator('+')"
+					v-on:touchend="appendOperator('+')"
+					v-bind:class="{ 'is-active': isAddActive }"
+					class="keypad-button keypad-button--operator">
+						+
+				</button>
+				<button
+					v-on:click="appendDigit(0)"
+					v-on:touchend="appendDigit(0)"
+					class="keypad-button">
+						0
+				</button>
+				<button
+					v-on:click="appendDecimal"
+					v-on:touchend="appendDecimal"
+					class="keypad-button keypad-button--decimal">
+						.
+				</button>
+				<button
+					v-on:click="equate"
+					v-on:touchend="equate"
+					class="keypad-button keypad-button--wide keypad-button--equals">
+						=
+				</button>
+			</div>
 		</div>
-	</template>
-
-	<div class="app" id="app">
-		<keypad></keypad>
 	</div>
 
 	<script type="text/javascript" src="js/vue.js"></script>
