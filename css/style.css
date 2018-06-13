@@ -274,10 +274,6 @@ button {
   transform: translateY(100%);
 }
 
-.installation {
-  display: none;
-}
-
 .install {
   background: #383838;
   background-attachment: fixed;
