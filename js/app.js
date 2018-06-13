@@ -118,12 +118,19 @@ var app = new Vue({
 	},
 	computed: {
 		/**
+		 * Is the app installed on an iPhone home screen?
+		 */
+		isInstalled: function() {
+			return (window.navigator.hasOwnProperty('standalone') && window.navigator.standalone);
+		},
+
+
+
+		/**
 		 * Display the result
 		 */
 		result: function() {
 			var result = this.compute();
-
-			console.log(this.last, this.input);
 
 			if (isNaN(result)) {
 				return 0;

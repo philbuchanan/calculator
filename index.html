@@ -55,7 +55,7 @@
 				</div>
 			</div>
 		</transition>
-		<div class="application" v-on:touchstart="disableBounceScrolling">
+		<div class="application" v-on:touchstart="disableBounceScrolling" v-if="isInstalled">
 			<div class="display">
 				<div class="result">
 					<div v-bind:style="{ fontSize: resultFontSize + 'px' }">
@@ -205,9 +205,17 @@
 				</button>
 			</div>
 		</div>
+		<div class="installation" v-else>
+			<div class="instructions">
+				<div class="app-icon"></div>
+				<span>Add to Home Screen</span><br/>
+				to install on the iPhone
+			</div>
+			<a href="https://twitter.com/philbuchanan" target="_blank" class="twitter">@philbuchanan</a>
+		</div>
 	</div>
 
-	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
