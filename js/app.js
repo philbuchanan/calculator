@@ -109,6 +109,15 @@ var HistoryComponent = {
 			if (!this.dragging) {
 				this.$emit('append-history-value', value);
 			}
+		},
+
+
+
+		/**
+		 * If user is dragging
+		 */
+		setDragging: function(value) {
+			this.dragging = value;
 		}
 	}
 };
@@ -741,16 +750,7 @@ var app = new Vue({
 			}
 
 			this.historyIsOpen = false;
-		},
-
-
-
-		/**
-		 * If user is dragging
-		 */
-		setDragging: function(value) {
-			this.dragging = value;
-		},
+		}
 
 
 
