@@ -158,6 +158,7 @@ button {
 }
 
 .keypad-button:active {
+  color: #fff;
   background-color: #099d93;
 }
 
@@ -168,15 +169,6 @@ button {
 
 .keypad-button--wide {
   width: 50%;
-}
-
-.keypad-button--equals:active,
-.keypad-button--operator:active,
-.keypad-button--bracket:active,
-.keypad-button--plus-minus:active,
-.keypad-button--clear:active,
-.keypad-button--history:active {
-  color: #fff;
 }
 
 .keypad-button--equals,
