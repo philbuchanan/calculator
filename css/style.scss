@@ -210,6 +210,17 @@ button {
 }
 
 .keypad-button--equals,
+.keypad-button--operator,
+.keypad-button--bracket,
+.keypad-button--plus-minus,
+.keypad-button--clear,
+.keypad-button--history, {
+	&:active {
+		color: #fff;
+	}
+}
+
+.keypad-button--equals,
 .keypad-button--operator {
 	color: $color-primary;
 }
