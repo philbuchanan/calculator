@@ -195,6 +195,7 @@ button {
 	}
 
 	&:active {
+		color: #fff;
 		background-color: $color-primary;
 	}
 
@@ -207,17 +208,6 @@ button {
 // Keypad button modifiers
 .keypad-button--wide {
 	width: 50%;
-}
-
-.keypad-button--equals,
-.keypad-button--operator,
-.keypad-button--bracket,
-.keypad-button--plus-minus,
-.keypad-button--clear,
-.keypad-button--history, {
-	&:active {
-		color: #fff;
-	}
 }
 
 .keypad-button--equals,
