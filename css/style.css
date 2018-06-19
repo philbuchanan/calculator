@@ -170,6 +170,15 @@ button {
   width: 50%;
 }
 
+.keypad-button--equals:active,
+.keypad-button--operator:active,
+.keypad-button--bracket:active,
+.keypad-button--plus-minus:active,
+.keypad-button--clear:active,
+.keypad-button--history:active {
+  color: #fff;
+}
+
 .keypad-button--equals,
 .keypad-button--operator {
   color: #099d93;
