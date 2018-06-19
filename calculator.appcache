@@ -1,10 +1,11 @@
 CACHE MANIFEST
-# v4.1.1: 2018-06-19
+# v4.2: 2018-06-19
 index.html
 js/vue.min.js
 js/app.js
 css/style.css
 assets/backspace-icon.svg
+assets/close-icon.svg
 assets/touch-icon-iphone-114.png
 assets/touch-icon-iphone-120.png
 assets/touch-icon-iphone-152.png

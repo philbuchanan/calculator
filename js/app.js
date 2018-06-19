@@ -750,7 +750,7 @@ var app = new Vue({
 			}
 
 			this.historyIsOpen = false;
-		}
+		},
 
 
 
