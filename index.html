@@ -22,38 +22,46 @@
 	<link rel="apple-touch-icon-precomposed" sizes="76x76"   href="assets/touch-icon-iphone-76.png">
 </head>
 <body>
+	<template id="history-component">
+		<div class="history-container">
+			<div class="history-title-bar">
+				History
+				<button
+					v-on:click="$emit('close-history')"
+					v-on:touchend="$emit('close-history')"
+					class="history-close-button"
+					aria-label="Close history">
+						&times;
+				</button>
+			</div>
+			<div id="history-list-scroll" class="history-list-scroll">
+				<ul
+					v-on:touchstart="setDragging(false)"
+					v-on:touchmove="setDragging(true)"
+					class="history-list">
+						<li v-for="item in history">
+							<button
+								v-on:click="emitHistoryValue(item.result)"
+								v-on:touchend="appendHistoryValueToEquation(item.result)"
+								class="history-button">
+									<span class="history-button-result">
+										{{ item.result | addCommas }}
+									</span>
+									<span v-html="$options.filters.equation(item.equ)" class="history-button-equation"></span>
+							</button>
+						</li>
+				</ul>
+			</div>
+		</div>
+	</template>
+
 	<div id="app" class="app">
 		<transition name="slide">
-			<div v-if="historyIsOpen" class="history-container">
-				<div class="history-title-bar">
-					History
-					<button
-						v-on:click="closeHistory"
-						v-on:touchend="closeHistory"
-						class="history-close-button"
-						aria-label="Close history">
-							&times;
-					</button>
-				</div>
-				<div id="history-list-scroll" class="history-list-scroll">
-					<ul
-						v-on:touchstart="setDragging(false)"
-						v-on:touchmove="setDragging(true)"
-						class="history-list">
-							<li v-for="item in history">
-								<button
-									v-on:click="appendHistoryValueToEquation(item.result)"
-									v-on:touchend="appendHistoryValueToEquation(item.result)"
-									class="history-button">
-										<span class="history-button-result">
-											{{ item.result | addCommas }}
-										</span>
-										<span v-html="$options.filters.equation(item.equ)" class="history-button-equation"></span>
-								</button>
-							</li>
-					</ul>
-				</div>
-			</div>
+			<history
+				v-if="historyIsOpen"
+				v-on:close-history="closeHistory"
+				v-on:append-history-value="appendHistoryValueToEquation"
+				v-bind:history="history"/>
 		</transition>
 		<div class="application" v-on:touchstart="disableBounceScrolling" v-if="isInstalled">
 			<div class="display">

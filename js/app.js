@@ -87,6 +87,34 @@ Vue.filter('equation', function(equ) {
 
 
 
+var HistoryComponent = {
+	template: '#history-component',
+	data: function() {
+		return {
+			dragging: false
+		}
+	},
+	props: {
+		history: {
+			type: Array,
+			required: true
+		}
+	},
+	methods: {
+		/**
+		 * Emit an event with the result from a history item so it can be added
+		 * to the current equation.
+		 */
+		emitHistoryValue: function(value) {
+			if (!this.dragging) {
+				this.$emit('append-history-value', value);
+			}
+		}
+	}
+};
+
+
+
 /**
  * App Vue
  *
@@ -94,6 +122,9 @@ Vue.filter('equation', function(equ) {
  */
 var app = new Vue({
 	el: '#app',
+	components: {
+		'history': HistoryComponent,
+	},
 	data: function() {
 		return {
 			settings: {
@@ -106,12 +137,12 @@ var app = new Vue({
 			activeOperator: null,
 			brackets: 0,
 			historyIsOpen: false,
-			history: [],
-			dragging: false
+			history: []
 		}
 	},
 	created: function() {
 		this.restoreAppState();
+		this.restoreHistoryState();
 	},
 	updated: function() {
 		this.saveAppState();
@@ -221,8 +252,7 @@ var app = new Vue({
 		 * Retrieve and restore the application state from local storage
 		 */
 		restoreAppState: function() {
-			var appSave     = localStorage.getItem('appState');
-			var historySave = localStorage.getItem('history');
+			var appSave = localStorage.getItem('appState');
 			var data;
 
 			// Restore app state
@@ -233,11 +263,6 @@ var app = new Vue({
 				this.last           = data.last;
 				this.activeOperator = data.activeOperator;
 				this.brackets       = data.brackets;
-			}
-
-			// Restore history array
-			if (historySave !== null && historySave !== '') {
-				this.history = JSON.parse(historySave);
 			}
 		},
 
@@ -255,6 +280,20 @@ var app = new Vue({
 			};
 
 			localStorage.setItem('appState', JSON.stringify(appState));
+		},
+
+
+
+		/**
+		 * Retrieve and restore the history state from local storage
+		 */
+		restoreHistoryState: function() {
+			var history = localStorage.getItem('history');
+
+			// Restore history array
+			if (history !== null && history !== '') {
+				this.history = JSON.parse(history);
+			}
 		},
 
 
@@ -687,23 +726,21 @@ var app = new Vue({
 		 * Append the result from a history item to the current equation
 		 */
 		appendHistoryValueToEquation: function(value) {
-			if (!this.dragging) {
-				var valueString = value.toString();
+			var valueString = value.toString();
 
-				switch(this.last) {
-					case null:
-						this.input = [valueString];
-						this.setLast(valueString.charAt(valueString.length - 1));
-						break;
-					case 'operator':
-					case '(':
-						this.input.push(valueString);
-						this.setLast(valueString.charAt(valueString.length - 1));
-						break;
-				}
-
-				this.historyIsOpen = false;
+			switch(this.last) {
+				case null:
+					this.input = [valueString];
+					this.setLast(valueString.charAt(valueString.length - 1));
+					break;
+				case 'operator':
+				case '(':
+					this.input.push(valueString);
+					this.setLast(valueString.charAt(valueString.length - 1));
+					break;
 			}
+
+			this.historyIsOpen = false;
 		},
 
 
