@@ -247,39 +247,47 @@ button {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	height: 426px;
-	-webkit-backdrop-filter: blur(10px);
-	        backdrop-filter: blur(10px);
+	height: 426px + $display-borderWidth;
 	width: 100%;
 	z-index: 90;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+	-webkit-backdrop-filter: blur(10px);
+	        backdrop-filter: blur(10px);
 }
 
 .history-title-bar {
 	position: relative;
 	color: $color-grey100;
-	background-color: rgba($color-primary, 0.3);
-	text-align: center;
+	background-color: $color-primary;
+	text-align: left;
 	font-size: 0.85em;
 	font-weight: bold;
-	line-height: 52px;
-	height: 52px;
+	line-height: 45px;
+	height: 45px;
+	padding-left: 15px;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .history-close-button {
 	position: absolute;
 	right: 0;
-	color: $color-grey85;
+	color: #fff;
 	background-color: transparent;
+	background-image: url("../assets/close-icon.svg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 48px 45px;
 	text-align: right;
+	font-size: 30px;
 	font-weight: 100;
-	width: 52px;
-	height: 52px;
+	width: 48px;
+	height: 45px;
 	margin: 0;
-	padding-right: 12px;
+	padding-right: 15px;
 }
 
 .history-list-scroll {
-	height: calc(100% - 52px);
+	height: calc(100% - 45px);
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
 }
@@ -291,7 +299,8 @@ button {
 	background-color: transparent;
 	text-align: left;
 	width: 100%;
-	padding: 10px 12px;
+	padding: 10px 15px;
+	border-bottom: 0.5px solid #444;
 
 	&:active {
 		background-color: $color-primary;
