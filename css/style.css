@@ -289,6 +289,16 @@ button {
   overflow: hidden;
 }
 
+@media (min-height: 812px) {
+  .c-spacer {
+    background-color: #000;
+    height: 58px;
+  }
+  .history-container {
+    height: 490px;
+  }
+}
+
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.35s cubic-bezier(0.66, 0, 0.33, 1);

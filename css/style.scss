@@ -335,6 +335,22 @@ button {
 
 
 
+// ## Media Queries
+// -----------------------------------------------------------------------------
+
+@media (min-height: 812px) {
+	.c-spacer {
+		background-color: $color-grey0;
+		height: 58px;
+	}
+
+	.history-container {
+		height: 490px;
+	}
+}
+
+
+
 // Animations
 // -----------------------------------------------------------------------------
 
