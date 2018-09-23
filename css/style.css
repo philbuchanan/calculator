@@ -289,7 +289,7 @@ button {
   overflow: hidden;
 }
 
-@media (min-height: 812px) {
+@media (min-height: 668px) {
   .c-spacer {
     background-color: #000;
     height: 58px;
