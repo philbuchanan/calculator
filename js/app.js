@@ -146,7 +146,8 @@ var app = new Vue({
 			activeOperator: null,
 			brackets: 0,
 			historyIsOpen: false,
-			history: []
+			history: [],
+			saveInterval: null,
 		}
 	},
 	created: function() {
@@ -154,7 +155,13 @@ var app = new Vue({
 		this.restoreHistoryState();
 	},
 	updated: function() {
-		this.saveAppState();
+		var _self = this;
+
+		clearTimeout(this.saveInterval);
+
+		this.saveInterval = setTimeout(function() {
+			_self.saveAppState();
+		}, 1000);
 	},
 	computed: {
 		/**
