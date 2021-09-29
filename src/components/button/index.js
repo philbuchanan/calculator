@@ -4,6 +4,7 @@ import { classnames } from '../../utils';
 import './index.scss';
 
 export default ({
+	isBare = false,
 	isActive,
 	isDangerous,
 	isPrimary,
@@ -11,21 +12,24 @@ export default ({
 	isTertiary,
 	isWide,
 	onClick,
+	className,
 	children,
 	...props
 }) => {
 	return (
 		<button
 			className={ classnames(
-				'c-button',
+				'o-button-bare',
 				{
+					'c-button': !isBare,
 					'c-button--dangerous': !!isDangerous,
 					'c-button--primary': !!isPrimary,
 					'c-button--secondary': !!isSecondary,
 					'c-button--tertiary': !!isTertiary,
 					'c-button--wide': !!isWide,
 					'is-active': !!isActive,
-				}
+				},
+				className
 			) }
 			onClick={ onClick }
 			{ ...props }

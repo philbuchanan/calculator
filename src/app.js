@@ -1,14 +1,50 @@
 import React from 'react';
-import { useEffect, useMemo, useReducer, useRef } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
-import { Display, Keypad } from './components';
+import { Display, Keypad, History } from './components';
 import { useDebounceEffect, useLocalStorage } from './hooks';
 import { compute } from './utils';
 import './app.scss';
 
 const App = () => {
+	const [historyOpen, setHistoryOpen] = useState(false);
 	const resultDisplay = useRef();
 	const isComputedResult = useRef(false);
+
+	const historyReducer = (state, action) => {
+		if (action.type === 'add') {
+			if (
+				state.length > 0 &&
+				state[0].result === action.value.result &&
+				state[0].equ.join() === action.value.equ.join()
+			) {
+				return state;
+			}
+
+			let newHistory = [ action.value, ...state ];
+
+			if (newHistory.length > 50) {
+				newHistory.splice(50, newHistory.length - 50);
+			}
+
+			return newHistory;
+		}
+		else if (action.type === 'clear') {
+			return [];
+		}
+		else {
+			return state;
+		}
+	};
+
+	const [history, setHistory] = useLocalStorage('history', []);
+	const [historyState, dispatchHistory] = useReducer(historyReducer, history);
+
+	useEffect(() => {
+		if (history !== historyState) {
+			setHistory(historyState);
+		}
+	}, [historyState]);
 
 	const equationReducer = (state, action) => {
 		let newState = [ ...state ];
@@ -31,6 +67,15 @@ const App = () => {
 		}
 		else if (action.type === 'compute') {
 			isComputedResult.current = true;
+
+			dispatchHistory({
+				type: 'add',
+				value: {
+					result: resultDisplay.current,
+					equ: state,
+				},
+			});
+
 			return [resultDisplay.current.toString()];
 		}
 		else if (action.type === 'clear') {
@@ -42,9 +87,7 @@ const App = () => {
 		}
 	};
 
-	const [history, setHistory] = useLocalStorage('history', []);
 	const [equation, setEquation] = useLocalStorage('equation', []);
-
 	const [equationState, dispatch] = useReducer(equationReducer, equation);
 
 	useDebounceEffect(() => {
@@ -78,7 +121,33 @@ const App = () => {
 				equation={ equationState }
 				isComputedResult={ isComputedResult.current }
 				dispatch={ dispatch }
-				onShowHistory={ () => console.log('show history') }
+				onShowHistory={ () => setHistoryOpen(true) }
+			/>
+			<History
+				history={ historyState }
+				dispatch={ dispatchHistory }
+				isOpen={ !!historyOpen }
+				onHistoryItemClick={ (value) => {
+					const equationString = equationState.join();
+
+					switch(equationString[equationString.length - 1]) {
+						case '(':
+						case '+':
+						case '-':
+						case '*':
+						case '/':
+							dispatch({
+								type: 'add',
+								value: value,
+							});
+
+							setHistoryOpen(false);
+
+							break;
+					}
+				} }
+				onOpenHistory={ () => setHistoryOpen(true) }
+				onCloseHistory={ () => setHistoryOpen(false) }
 			/>
 			<div className="c-spacer"></div>
 		</div>

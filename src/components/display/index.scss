@@ -65,19 +65,3 @@
 	display: inline;
 	float: right;
 }
-
-.c-display__eq-part--left-bracket,
-.c-display__eq-part--right-bracket,
-.c-display__eq-part--operator {
-	color: #999;
-	font-weight: 100;
-	margin: 0 0.2em;
-}
-
-.c-display__eq-part--left-bracket {
-	margin-left: 0;
-}
-
-.c-display__eq-part--right-bracket {
-	margin-right: 0;
-}

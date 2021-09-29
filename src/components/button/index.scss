@@ -1,28 +1,38 @@
+.o-button-bare {
+	display: inline-block;
+	color: inherit;
+	background-color: transparent;
+	text-align: center;
+	vertical-align: middle;
+	font: inherit;
+	text-decoration: none;
+	direction: ltr;
+	border: none;
+	border-radius: 0;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: 0s;
+	box-shadow: none;
+	overflow: auto;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+			appearance: none;
+}
+
 .c-button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: #fff;
 	background: #333;
-	text-align: center;
-	vertical-align: middle;
-	font: inherit;
 	font-size: 1.1rem;
 	font-weight: 300;
-	text-decoration: none;
-	direction: ltr;
 	border: 1px solid #000;
-	border-radius: 0;
 	width: 25%;
-	margin: 0;
-	padding: 0;
-	cursor: pointer;
 	transition: color 0.2s ease, background-color 0.2s ease;
-	box-shadow: none;
-	overflow: auto;
-	-webkit-appearance: none;
-	   -moz-appearance: none;
-			appearance: none;
 
 	@media (-webkit-min-device-pixel-ratio: 2) {
 		border-width: 0.5px;

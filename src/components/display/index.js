@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLayoutEffect, useState } from 'react';
 
+import { Equation } from '../../components';
 import { addCommas, classnames } from '../../utils';
 import './index.scss';
 
@@ -54,30 +55,10 @@ export default ({
 				</div>
 			</div>
 			<div className="c-display__equation-wrapper">
-				<div className="c-display__equation-body">
-					{ equation.length > 0
-						? equation.map((part, index) => {
-							return (
-								<span
-									key={ index }
-									className={ classnames(
-										'c-display__eq-part',
-										{
-											'c-display__eq-part--operator': operators.hasOwnProperty(part),
-											'c-display__eq-part--left-bracket': part === '(',
-											'c-display__eq-part--right-bracket': part === ')',
-										}
-									) }
-								>
-									{ operators.hasOwnProperty(part)
-										? operators[part]
-										: addCommas(part)
-									}
-								</span>
-							);
-						}) : 0
-					}
-				</div>
+				<Equation
+					className="c-display__equation-body"
+					equation={ equation }
+				/>
 			</div>
 		</div>
 	);
