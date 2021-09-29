@@ -50,7 +50,7 @@ export default ({
 		<div className="c-display">
 			<div className="c-display__result-wrapper">
 				<div className="c-display__result-body" style={ {fontSize: resultFontSize + 'px'} }>
-					{ result }
+					{ result === undefined ? 0 : addCommas(result) }
 				</div>
 			</div>
 			<div className="c-display__equation-wrapper">

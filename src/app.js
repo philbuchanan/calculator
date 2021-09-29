@@ -1,14 +1,18 @@
 import React from 'react';
-import { useEffect, useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer, useRef } from 'react';
 
 import { Display, Keypad } from './components';
 import { useDebounceEffect, useLocalStorage } from './hooks';
-import { addCommas, compute } from './utils';
+import { compute } from './utils';
 import './app.scss';
 
 const App = () => {
+	const resultDisplay = useRef();
+	const isComputedResult = useRef(false);
+
 	const equationReducer = (state, action) => {
 		let newState = [ ...state ];
+		isComputedResult.current = false;
 
 		if (action.type === 'add') {
 			return [ ...state, action.value ];
@@ -26,9 +30,11 @@ const App = () => {
 			return newState;
 		}
 		else if (action.type === 'compute') {
-			return [];
+			isComputedResult.current = true;
+			return [resultDisplay.current.toString()];
 		}
 		else if (action.type === 'clear') {
+			resultDisplay.current = 0;
 			return [];
 		}
 		else {
@@ -47,17 +53,30 @@ const App = () => {
 		}
 	}, 1000, [equationState]);
 
-	const result = useMemo(() => compute(equationState), [equationState]);
+	const result = useMemo(() => {
+		let computed = 0;
+
+		if (equationState.length > 0) {
+			computed = compute(equationState);
+
+			if (computed !== null) {
+				resultDisplay.current = computed;
+			}
+		}
+
+		return computed;
+	}, [equationState]);
 
 	return (
 		<div className="c-application">
 			<Display
-				result={ result }
+				result={ resultDisplay.current }
 				equation={ equationState }
 			/>
 			<Keypad
 				result={ result }
 				equation={ equationState }
+				isComputedResult={ isComputedResult.current }
 				dispatch={ dispatch }
 				onShowHistory={ () => console.log('show history') }
 			/>

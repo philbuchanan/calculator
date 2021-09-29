@@ -9,6 +9,7 @@ import './index.scss';
 export default ({
 	result,
 	equation,
+	isComputedResult,
 	dispatch,
 	onShowHistory,
 }) => {
@@ -23,7 +24,7 @@ export default ({
 		let activeOperator = null;
 		let bracketsCount = 0;
 
-		if (equation.length > 0) {
+		if (!isComputedResult && equation.length > 0) {
 			const lastItem = equation[equation.length - 1];
 
 			if (lastItem.length > 1) {
@@ -78,7 +79,7 @@ export default ({
 	}, [equation]);
 
 	const disableCompute = equation.length === 0 || result === null;
-	const disableClear = equation.length === 0;
+	const disableBackspace = equation.length === 0;
 	const disableOperators = !last || last === 'decimal';
 	const disableDigits = last === ')';
 	const disableDecimal = last === ')' || last === 'decimal';
@@ -94,16 +95,10 @@ export default ({
 		dispatch({type: 'compute'});
 	};
 
-	const clear = (result) => {
-		if (disableClear) {
-			return;
-		}
-
-		dispatch({type: 'clear'});
-	};
+	const clear = (result) => dispatch({type: 'clear'});
 
 	const backspace = () => {
-		if (disableClear) {
+		if (disableBackspace) {
 			return;
 		}
 
@@ -137,6 +132,16 @@ export default ({
 			return;
 		}
 
+		if (isComputedResult) {
+			dispatch({
+				type: 'replace',
+				index: 0,
+				value: digit.toString(),
+			});
+
+			return;
+		}
+
 		switch(last) {
 			case null:
 			case 'operator':
@@ -166,6 +171,16 @@ export default ({
 
 	const appendDecimal = () => {
 		if (disableDecimal) {
+			return;
+		}
+
+		if (isComputedResult) {
+			dispatch({
+				type: 'replace',
+				index: 0,
+				value: '0.',
+			});
+
 			return;
 		}
 
@@ -217,6 +232,16 @@ export default ({
 
 	const appendOpenBracket = () => {
 		if (disableOpenBracket) {
+			return;
+		}
+
+		if (isComputedResult) {
+			dispatch({
+				type: 'replace',
+				index: 0,
+				value: '(',
+			});
+
 			return;
 		}
 
@@ -339,7 +364,6 @@ export default ({
 				isDangerous={ true }
 				isTertiary={ true }
 				onClick={ clear }
-				disabled={ disableClear }
 			>
 				c
 			</Button>
@@ -353,7 +377,7 @@ export default ({
 			<Button
 				isTertiary={ true }
 				onClick={ backspace }
-				disabled={ disableClear }
+				disabled={ disableBackspace }
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="36" height="24" viewBox="0 0 36 24" fill="currentcolor">
 					<path d="M33.88,24H10.63A2.13,2.13,0,0,1,9,23.27L.51,13.38a2.12,2.12,0,0,1,0-2.76L9,.73A2.12,2.12,0,0,1,10.63,0H33.88A2.12,2.12,0,0,1,36,2.12V21.88A2.12,2.12,0,0,1,33.88,24ZM10.63,1.41a.69.69,0,0,0-.53.25L1.58,11.54a.7.7,0,0,0,0,.92l8.52,9.88a.69.69,0,0,0,.53.25H33.88a.71.71,0,0,0,.71-.71V2.12a.71.71,0,0,0-.71-.71Z"/>
