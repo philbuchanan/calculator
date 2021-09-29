@@ -1,0 +1,75 @@
+.c-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	background: #333;
+	text-align: center;
+	vertical-align: middle;
+	font: inherit;
+	font-size: 1.1rem;
+	font-weight: 300;
+	text-decoration: none;
+	direction: ltr;
+	border: 1px solid #000;
+	border-radius: 0;
+	width: 25%;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: color 0.2s ease, background-color 0.2s ease;
+	box-shadow: none;
+	overflow: auto;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+			appearance: none;
+
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		border-width: 0.5px;
+	}
+
+	&:active {
+		color: #fff;
+		background-color: var(--color--primary);
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: inset 0 0 0 1px #000;
+	}
+
+	&.is-active {
+		color: var(--color--primary);
+		box-shadow: inset 0 0 0 1px #000;
+		background-color: #2d2d2d;
+	}
+
+	&[disabled] {
+		&,
+		* {
+			pointer-events: none;
+		}
+	}
+}
+
+.c-button--primary {
+	color: var(--color--primary);
+	font-weight: 600;
+}
+
+.c-button--secondary {
+	color: #b3b3b3;
+}
+
+.c-button--tertiary {
+	color: #b3b3b3;
+	background-color: #262626;
+}
+
+.c-button--wide {
+	width: 50%;
+}
+
+.c-button--dangerous {
+	color: var(--color--danger);
+}

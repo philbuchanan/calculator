@@ -1,3 +1,8 @@
+:root {
+	--color--primary: #099d93;
+	--color--danger: #ff0f0f;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -41,12 +46,16 @@ table {
 
 html {
 	box-sizing: border-box;
-	color: #000;
+	color: #fff;
+	background-color: #333;
 	font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 16px;
-	line-height: 1.5;
-	overflow-y: scroll;
+	font-size: 20px;
+	font-weight: 200;
+	line-height: 1.2;
 	height: 100%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+			user-select: none;
 }
 
 body {
@@ -58,5 +67,25 @@ body {
 	&:before,
 	&:after {
 		box-sizing: inherit;
+	}
+}
+
+// # Application
+// -----------------------------------------------------------------------------
+
+#root {
+	height: 100vh;
+}
+
+.c-application {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+@media (min-height: 668px) {
+	.c-spacer {
+		height: 58px;
 	}
 }
