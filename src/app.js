@@ -79,7 +79,7 @@ const App = () => {
 			return [];
 		}
 		else if (action.type === 'clear') {
-			resultDisplay.current = 0;
+			resultDisplay.current = '0';
 			return [];
 		}
 		else {
@@ -103,7 +103,7 @@ const App = () => {
 			computed = compute(equationState);
 
 			if (computed !== null) {
-				resultDisplay.current = computed;
+				resultDisplay.current = computed.toString();
 			}
 		}
 
@@ -126,28 +126,9 @@ const App = () => {
 			/>
 			<History
 				history={ historyState }
-				dispatch={ dispatchHistory }
+				equation={ equationState }
+				dispatch={ dispatch }
 				isOpen={ !!historyOpen }
-				onHistoryItemClick={ (value) => {
-					const equationString = equationState.join();
-
-					switch(equationString[equationString.length - 1]) {
-						case undefined:
-						case '(':
-						case '+':
-						case '-':
-						case '*':
-						case '/':
-							dispatch({
-								type: 'add',
-								value: value,
-							});
-
-							setHistoryOpen(false);
-
-							break;
-					}
-				} }
 				onOpenHistory={ () => setHistoryOpen(true) }
 				onCloseHistory={ () => setHistoryOpen(false) }
 			/>
