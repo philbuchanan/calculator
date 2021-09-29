@@ -1,10 +1,7 @@
 import React from 'react';
 import { useLayoutEffect, useState } from 'react';
 
-import {
-	addCommas,
-	classnames,
-} from '../../utils';
+import { addCommas, classnames } from '../../utils';
 import './index.scss';
 
 const operators = {

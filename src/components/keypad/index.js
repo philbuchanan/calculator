@@ -86,8 +86,6 @@ export default ({
 	const disableCloseBracket = !last || last === 'operator' || last === 'decimal' || bracketsCount === 0;
 	const disableInvert = !last || last === 'operator' || last === '(' || last === ')';
 
-//console.log(equation, last, activeOperator, bracketsCount);
-
 	const compute = () => {
 		if (disableCompute) {
 			return;

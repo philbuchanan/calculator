@@ -1,18 +1,9 @@
 import React from 'react';
-import { useReducer, useRef } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 
-import {
-	Display,
-	Keypad,
-} from './components';
-import {
-	useDebounceEffect,
-	useLocalStorage,
-} from './hooks';
-import {
-	addCommas,
-	compute,
-} from './utils';
+import { Display, Keypad } from './components';
+import { useDebounceEffect, useLocalStorage } from './hooks';
+import { addCommas, compute } from './utils';
 import './app.scss';
 
 const App = () => {
@@ -51,20 +42,17 @@ const App = () => {
 	const [equationState, dispatch] = useReducer(equationReducer, equation);
 
 	useDebounceEffect(() => {
-		setEquation(equationState);
+		if (equation !== equationState) {
+			setEquation(equationState);
+		}
 	}, 1000, [equationState]);
 
-	const result = compute(equationState);
-	const resultDisplay = useRef();
-
-	if (result !== null) {
-		resultDisplay.current = addCommas(result);
-	}
+	const result = useMemo(() => compute(equationState), [equationState]);
 
 	return (
 		<div className="c-application">
 			<Display
-				result={ resultDisplay.current }
+				result={ result }
 				equation={ equationState }
 			/>
 			<Keypad
