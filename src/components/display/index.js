@@ -14,6 +14,7 @@ const operators = {
 
 export default ({
 	result,
+	computedResult,
 	equation,
 }) => {
 	const [resultFontSize, setResultFontSize] = useState(60);
@@ -57,7 +58,10 @@ export default ({
 			<div className="c-display__equation-wrapper">
 				<Equation
 					className="c-display__equation-body"
-					equation={ equation }
+					equation={ computedResult !== undefined
+						? [computedResult]
+						: equation
+					}
 				/>
 			</div>
 		</div>

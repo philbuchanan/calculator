@@ -9,7 +9,7 @@ import './index.scss';
 export default ({
 	result,
 	equation,
-	isComputedResult,
+	computedResult,
 	dispatch,
 	onShowHistory,
 }) => {
@@ -24,7 +24,7 @@ export default ({
 		let activeOperator = null;
 		let bracketsCount = 0;
 
-		if (!isComputedResult && equation.length > 0) {
+		if (computedResult === undefined && equation.length > 0) {
 			const lastItem = equation[equation.length - 1];
 
 			if (lastItem.length > 1) {
@@ -132,7 +132,7 @@ export default ({
 			return;
 		}
 
-		if (isComputedResult) {
+		if (computedResult !== undefined) {
 			dispatch({
 				type: 'replace',
 				index: 0,
@@ -174,7 +174,7 @@ export default ({
 			return;
 		}
 
-		if (isComputedResult) {
+		if (computedResult !== undefined) {
 			dispatch({
 				type: 'replace',
 				index: 0,
@@ -235,7 +235,7 @@ export default ({
 			return;
 		}
 
-		if (isComputedResult) {
+		if (computedResult !== undefined) {
 			dispatch({
 				type: 'replace',
 				index: 0,

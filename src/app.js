@@ -9,7 +9,7 @@ import './app.scss';
 const App = () => {
 	const [historyOpen, setHistoryOpen] = useState(false);
 	const resultDisplay = useRef();
-	const isComputedResult = useRef(false);
+	const computedResult = useRef();
 
 	const historyReducer = (state, action) => {
 		if (action.type === 'add') {
@@ -48,7 +48,7 @@ const App = () => {
 
 	const equationReducer = (state, action) => {
 		let newState = [ ...state ];
-		isComputedResult.current = false;
+		computedResult.current = undefined;
 
 		if (action.type === 'add') {
 			return [ ...state, action.value ];
@@ -66,7 +66,7 @@ const App = () => {
 			return newState;
 		}
 		else if (action.type === 'compute') {
-			isComputedResult.current = true;
+			computedResult.current = resultDisplay.current;
 
 			dispatchHistory({
 				type: 'add',
@@ -76,7 +76,7 @@ const App = () => {
 				},
 			});
 
-			return [resultDisplay.current.toString()];
+			return [];
 		}
 		else if (action.type === 'clear') {
 			resultDisplay.current = 0;
@@ -114,12 +114,13 @@ const App = () => {
 		<div className="c-application">
 			<Display
 				result={ resultDisplay.current }
+				computedResult={ computedResult.current }
 				equation={ equationState }
 			/>
 			<Keypad
 				result={ result }
 				equation={ equationState }
-				isComputedResult={ isComputedResult.current }
+				computedResult={ computedResult.current }
 				dispatch={ dispatch }
 				onShowHistory={ () => setHistoryOpen(true) }
 			/>
@@ -131,6 +132,7 @@ const App = () => {
 					const equationString = equationState.join();
 
 					switch(equationString[equationString.length - 1]) {
+						case undefined:
 						case '(':
 						case '+':
 						case '-':
