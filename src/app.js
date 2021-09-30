@@ -55,7 +55,6 @@ const App = () => {
 			return newHistory;
 		}
 		else if (action.type === 'clear') {
-			console.log('test');
 			return [];
 		}
 		else {
@@ -77,7 +76,9 @@ const App = () => {
 		computedResult.current = undefined;
 
 		if (action.type === 'add') {
-			return [ ...state, action.value ];
+			return typeof action.value === 'object'
+				? [ ...state, ...action.value ]
+				: [ ...state, action.value ];
 		}
 		else if (action.type === 'insert') {
 			newState.splice(action.index, 0, action.value);
@@ -130,18 +131,18 @@ const App = () => {
 		if (equation.length > 0) {
 			computed = compute(equation, settings.decimals);
 
-			if (computed !== null) {
-				resultDisplay.current = computed.toString();
+			if (computed !== undefined) {
+				resultDisplay.current = computed;
 			}
 		}
 
 		return computed;
-	}, [equation]);
+	}, [equation, settings.decimals]);
 
 	return (
 		<div className="c-application">
 			<Display
-				result={ resultDisplay.current }
+				result={ result }
 				computedResult={ computedResult.current }
 				equation={ equation }
 			/>

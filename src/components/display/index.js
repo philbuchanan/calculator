@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { Equation } from '../../components';
 import { addCommas, classnames } from '../../utils';
@@ -17,42 +17,53 @@ export default ({
 	computedResult,
 	equation,
 }) => {
+	const [cachedResult, setCachedResult] = useState(0);
 	const [resultFontSize, setResultFontSize] = useState(60);
+
+	const resultDisplay = computedResult !== undefined
+		? computedResult.toString()
+		: cachedResult.toString();
 
 	useLayoutEffect(() => {
 		let size = 60;
 
-		if (result) {
-			const resultString = result.toString();
+		const length = resultDisplay.length;
 
-			if (resultString.length > 18) {
-				size = 25;
-			}
-			else if (resultString.length > 16) {
-				size = 28;
-			}
-			else if (resultString.length > 15) {
-				size = 30;
-			}
-			else if (resultString.length > 13) {
-				size = 35;
-			}
-			else if (resultString.length > 11) {
-				size = 40;
-			}
-			else if (resultString.length > 9) {
-				size = 50;
-			}
+		if (length > 18) {
+			size = 25;
+		}
+		else if (length > 16) {
+			size = 28;
+		}
+		else if (length > 15) {
+			size = 30;
+		}
+		else if (length > 13) {
+			size = 35;
+		}
+		else if (length > 11) {
+			size = 40;
+		}
+		else if (length > 9) {
+			size = 50;
+		}
 
+		if (resultFontSize !== size) {
 			setResultFontSize(size);
 		}
-	}, [result ? result.length : 0]);
+	}, [resultDisplay.length]);
+
+	useEffect(() => {
+		if (result !== undefined) {
+			setCachedResult(result);
+		}
+	}, [result]);
 
 	return (
 		<div className="c-display">
 			<div className="c-display__result-wrapper">
 				<div className="c-display__result-body" style={ {fontSize: resultFontSize + 'px'} }>
-					{ result === undefined ? 0 : addCommas(result) }
+					{ addCommas(resultDisplay) }
 				</div>
 			</div>
 			<div className="c-display__equation-wrapper">

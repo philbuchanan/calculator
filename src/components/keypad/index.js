@@ -8,8 +8,8 @@ import { default as KeypadButton } from './button';
 
 export default ({
 	result,
-	equation,
 	computedResult,
+	equation,
 	dispatch,
 	settings,
 	onShowHistory,
@@ -82,7 +82,7 @@ export default ({
 
 	const disableCompute = equation.length === 0 || result === null;
 	const disableBackspace = equation.length === 0;
-	const disableOperators = !last || last === 'decimal';
+	const disableOperators = computedResult === undefined && (!last || last === 'decimal');
 	const disableDigits = last === ')';
 	const disableDecimal = last === ')' || last === 'decimal';
 	const disableOpenBracket = last === ')';
@@ -213,22 +213,33 @@ export default ({
 			return;
 		}
 
-		switch(last) {
-			case 'operator':
-				dispatch({
-					type: 'replace',
-					index: equation.length - 1,
-					value: operator,
-				});
-				break;
-			case null:
-			case 'digit':
-			case ')':
-				dispatch({
-					type: 'add',
-					value: operator,
-				});
-				break;
+		if (computedResult !== undefined) {
+			dispatch({
+				type: 'add',
+				value: [
+					computedResult.toString(),
+					operator,
+				],
+			});
+		}
+		else {
+			switch(last) {
+				case 'operator':
+					dispatch({
+						type: 'replace',
+						index: equation.length - 1,
+						value: operator,
+					});
+					break;
+				case null:
+				case 'digit':
+				case ')':
+					dispatch({
+						type: 'add',
+						value: operator,
+					});
+					break;
+			}
 		}
 	};
 
