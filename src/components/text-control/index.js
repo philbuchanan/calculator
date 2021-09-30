@@ -25,7 +25,7 @@ export default ({
 				type="text"
 				id={ id }
 				name={ id }
-				value={ value !== undefined ? value : '' }
+				value={ value === undefined || value === null ? '' : value.toString() }
 				onChange={ onChangeEvent }
 				{ ...props }
 			/>

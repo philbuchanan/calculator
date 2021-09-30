@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 export default function useKeyPress(targetKey, onPress) {
 	useEffect(() => {
 		// If pressed key is our target key then set to true
-		function handler({key}) {
-			if (key === targetKey) {
+		function handler(event) {
+			// Don’t call callback if the event targets an input element
+			if (event.target.tagName !== 'INPUT' && event.key === targetKey) {
 				onPress();
 			}
 		}
