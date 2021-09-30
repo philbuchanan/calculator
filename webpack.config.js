@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: path.resolve(__dirname, './src/index.js'),
@@ -33,6 +34,15 @@ module.exports = {
 			template: __dirname + '/src/index.html',
 			filename: 'index.html',
 			inject: 'body',
+		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: 'src/assets',
+					to: 'assets'
+				},
+				{ from: 'calculator.appcache' },
+			]
 		}),
 	],
 	optimization: {
