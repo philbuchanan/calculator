@@ -36,3 +36,9 @@ I take privacy seriously. Absolutely no personal or identifiable information is 
 ## Questions / Suggestions / Bug Reports
 
 If you'd like to get in touch please find me on my website [philbuchanan.com](https://philbuchanan.com).
+
+## Deploy
+
+```
+git subtree push --prefix build origin gh-pages
+```
