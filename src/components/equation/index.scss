@@ -1,0 +1,15 @@
+.c-equation__part--left-bracket,
+.c-equation__part--right-bracket,
+.c-equation__part--operator {
+	color: #999;
+	font-weight: 100;
+	margin: 0 0.2em;
+}
+
+.c-equation__part--left-bracket {
+	margin-left: 0;
+}
+
+.c-equation__part--right-bracket {
+	margin-right: 0;
+}

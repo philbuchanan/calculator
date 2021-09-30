@@ -1,0 +1,58 @@
+.c-keypad {
+	display: flex;
+	flex-wrap: wrap;
+	flex: 0 0 auto;
+	justify-content: stretch;
+	align-items: stretch;
+	height: 100%;
+	max-height: 426px;
+}
+
+.c-keypad__brackets {
+	position: relative;
+	display: flex;
+	justify-content: stretch;
+	align-items: stretch;
+	width: 50%;
+
+	> .c-button {
+		width: 50%;
+	}
+}
+
+.c-keypad__brackets-count {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: #b3b3b3;
+	background-color: #333;
+	font-size: 0.8em;
+	font-weight: 400;
+	text-align: center;
+	border: 2px solid #000;
+	border-radius: 8px;
+	padding: 8px 16px;
+
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		border-width: 1px;
+	}
+}
+
+.c-keypad__button {
+	font-size: 1.1rem;
+	border-radius: 0;
+	width: 25%;
+
+	&.c-button--destructive {
+		border-color: #000;
+	}
+
+	@media (-webkit-min-device-pixel-ratio: 2) {
+		border-width: 0.5px;
+	}
+}
+
+.c-keypad__button--half {
+	width: 50%;
+}
