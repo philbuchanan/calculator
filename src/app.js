@@ -30,11 +30,11 @@ const App = () => {
 	});
 	const [settings, dispatchSettings] = useReducer(settingsReducer, settingsInitialState);
 
-	useEffect(() => {
+	useDebounceEffect(() => {
 		if (settingsInitialState !== settings) {
 			setSettings(settings);
 		}
-	}, [settings]);
+	}, 1000, [settings]);
 
 	const historyReducer = (state, action) => {
 		if (action.type === 'add') {
