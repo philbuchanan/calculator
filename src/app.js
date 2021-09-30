@@ -24,17 +24,17 @@ const App = () => {
 		}
 	};
 
-	const [settings, setSettings] = useLocalStorage('settings', {
+	const [settingsInitialState, setSettings] = useLocalStorage('settings', {
 		decimals: 2,
 		historySaveItems: 50,
 	});
-	const [settingsState, dispatchSettings] = useReducer(settingsReducer, settings);
+	const [settings, dispatchSettings] = useReducer(settingsReducer, settingsInitialState);
 
 	useEffect(() => {
-		if (settings !== settingsState) {
-			setSettings(settingsState);
+		if (settingsInitialState !== settings) {
+			setSettings(settings);
 		}
-	}, [settingsState]);
+	}, [settings]);
 
 	const historyReducer = (state, action) => {
 		if (action.type === 'add') {
@@ -48,8 +48,8 @@ const App = () => {
 
 			let newHistory = [ action.value, ...state ];
 
-			if (newHistory.length > settingsState.historySaveItems) {
-				newHistory.splice(settingsState.historySaveItems, newHistory.length - settingsState.historySaveItems);
+			if (newHistory.length > settings.historySaveItems) {
+				newHistory.splice(settings.historySaveItems, newHistory.length - settings.historySaveItems);
 			}
 
 			return newHistory;
@@ -63,14 +63,14 @@ const App = () => {
 		}
 	};
 
-	const [history, setHistory] = useLocalStorage('history', []);
-	const [historyState, dispatchHistory] = useReducer(historyReducer, history);
+	const [historyInitialState, setHistory] = useLocalStorage('history', []);
+	const [history, dispatchHistory] = useReducer(historyReducer, historyInitialState);
 
 	useEffect(() => {
-		if (history !== historyState) {
-			setHistory(historyState);
+		if (historyInitialState !== history) {
+			setHistory(history);
 		}
-	}, [historyState]);
+	}, [history]);
 
 	const equationReducer = (state, action) => {
 		let newState = [ ...state ];
@@ -94,7 +94,7 @@ const App = () => {
 		else if (action.type === 'compute') {
 			computedResult.current = resultDisplay.current;
 
-			if (settingsState.historySaveItems > 0) {
+			if (settings.historySaveItems > 0) {
 				dispatchHistory({
 					type: 'add',
 					value: {
@@ -115,20 +115,20 @@ const App = () => {
 		}
 	};
 
-	const [equation, setEquation] = useLocalStorage('equation', []);
-	const [equationState, dispatch] = useReducer(equationReducer, equation);
+	const [equationInitialState, setEquation] = useLocalStorage('equation', []);
+	const [equation, dispatch] = useReducer(equationReducer, equationInitialState);
 
 	useDebounceEffect(() => {
-		if (equation !== equationState) {
-			setEquation(equationState);
+		if (equationInitialState !== equation) {
+			setEquation(equation);
 		}
-	}, 1000, [equationState]);
+	}, 1000, [equation]);
 
 	const result = useMemo(() => {
 		let computed = 0;
 
-		if (equationState.length > 0) {
-			computed = compute(equationState, settingsState.decimals);
+		if (equation.length > 0) {
+			computed = compute(equation, settings.decimals);
 
 			if (computed !== null) {
 				resultDisplay.current = computed.toString();
@@ -136,36 +136,36 @@ const App = () => {
 		}
 
 		return computed;
-	}, [equationState]);
+	}, [equation]);
 
 	return (
 		<div className="c-application">
 			<Display
 				result={ resultDisplay.current }
 				computedResult={ computedResult.current }
-				equation={ equationState }
+				equation={ equation }
 			/>
 			<Keypad
 				result={ result }
-				equation={ equationState }
+				equation={ equation }
 				computedResult={ computedResult.current }
 				dispatch={ dispatch }
-				settings={ settingsState }
+				settings={ settings }
 				onShowHistory={ () => setHistoryOpen(true) }
 				onShowSettings={ () => setSettingsOpen(true) }
 			/>
 			<History
-				history={ historyState }
-				equation={ equationState }
+				history={ history }
+				equation={ equation }
 				dispatch={ dispatch }
 				isOpen={ !!historyOpen }
 				onOpenHistory={ () => setHistoryOpen(true) }
 				onCloseHistory={ () => setHistoryOpen(false) }
 			/>
 			<Settings
-				settings={ settingsState }
+				settings={ settings }
 				dispatchSettings={ dispatchSettings }
-				history={ historyState }
+				history={ history }
 				dispatchHistory={ dispatchHistory }
 				isOpen={ !!settingsOpen }
 				onOpenSettings={ () => setSettingsOpen(true) }
