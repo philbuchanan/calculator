@@ -1,15 +1,40 @@
 import React from 'react';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
-import { Display, Keypad, History } from './components';
+import { Display, Keypad, History, Settings } from './components';
 import { useDebounceEffect, useLocalStorage } from './hooks';
 import { compute } from './utils';
 import './app.scss';
 
 const App = () => {
 	const [historyOpen, setHistoryOpen] = useState(false);
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const resultDisplay = useRef();
 	const computedResult = useRef();
+
+	const settingsReducer = (state, action) => {
+		let newSettings = { ...state };
+
+		if (action.type === 'update') {
+			newSettings[action.setting] = action.value;
+			return newSettings;
+		}
+		else {
+			return state;
+		}
+	};
+
+	const [settings, setSettings] = useLocalStorage('settings', {
+		decimals: 2,
+		historySaveItems: 50,
+	});
+	const [settingsState, dispatchSettings] = useReducer(settingsReducer, settings);
+
+	useEffect(() => {
+		if (settings !== settingsState) {
+			setSettings(settingsState);
+		}
+	}, [settingsState]);
 
 	const historyReducer = (state, action) => {
 		if (action.type === 'add') {
@@ -23,13 +48,14 @@ const App = () => {
 
 			let newHistory = [ action.value, ...state ];
 
-			if (newHistory.length > 50) {
-				newHistory.splice(50, newHistory.length - 50);
+			if (newHistory.length > settingsState.historySaveItems) {
+				newHistory.splice(settingsState.historySaveItems, newHistory.length - settingsState.historySaveItems);
 			}
 
 			return newHistory;
 		}
 		else if (action.type === 'clear') {
+			console.log('test');
 			return [];
 		}
 		else {
@@ -68,13 +94,15 @@ const App = () => {
 		else if (action.type === 'compute') {
 			computedResult.current = resultDisplay.current;
 
-			dispatchHistory({
-				type: 'add',
-				value: {
-					result: resultDisplay.current,
-					equ: state,
-				},
-			});
+			if (settingsState.historySaveItems > 0) {
+				dispatchHistory({
+					type: 'add',
+					value: {
+						result: resultDisplay.current,
+						equ: state,
+					},
+				});
+			}
 
 			return [];
 		}
@@ -100,7 +128,7 @@ const App = () => {
 		let computed = 0;
 
 		if (equationState.length > 0) {
-			computed = compute(equationState);
+			computed = compute(equationState, settingsState.decimals);
 
 			if (computed !== null) {
 				resultDisplay.current = computed.toString();
@@ -122,7 +150,9 @@ const App = () => {
 				equation={ equationState }
 				computedResult={ computedResult.current }
 				dispatch={ dispatch }
+				settings={ settingsState }
 				onShowHistory={ () => setHistoryOpen(true) }
+				onShowSettings={ () => setSettingsOpen(true) }
 			/>
 			<History
 				history={ historyState }
@@ -131,6 +161,15 @@ const App = () => {
 				isOpen={ !!historyOpen }
 				onOpenHistory={ () => setHistoryOpen(true) }
 				onCloseHistory={ () => setHistoryOpen(false) }
+			/>
+			<Settings
+				settings={ settingsState }
+				dispatchSettings={ dispatchSettings }
+				history={ historyState }
+				dispatchHistory={ dispatchHistory }
+				isOpen={ !!settingsOpen }
+				onOpenSettings={ () => setSettingsOpen(true) }
+				onCloseSettings={ () => setSettingsOpen(false) }
 			/>
 			<div className="c-spacer"></div>
 		</div>

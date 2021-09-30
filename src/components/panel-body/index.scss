@@ -1,0 +1,9 @@
+.c-panel-body {
+	height: calc(100% - 45px);
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+
+	&.is-padded {
+		padding: 24px;
+	}
+}

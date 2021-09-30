@@ -1,0 +1,61 @@
+button,
+input,
+select,
+textarea {
+	vertical-align: middle;
+	color: inherit;
+	background: none;
+	font: inherit;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+	white-space: normal;
+	box-shadow: none;
+}
+
+[type="date"],
+[type="datetime"],
+[type="datetime-local"],
+[type="email"],
+[type="month"],
+[type="number"],
+[type="password"],
+[type="range"],
+[type="search"],
+[type="tel"],
+[type="text"],
+[type="time"],
+[type="url"],
+[type="week"],
+textarea,
+select {
+	color: #fff;
+	background-color: #262626;
+	font-size: 1rem;
+	border-radius: 4px;
+	border: 1px solid #dedede;
+	width: 100%;
+	padding: 1em;
+	-webkit-appearance: none;
+	   -moz-appearance: none;
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 1px var(--color--primary);
+		border-color: var(--color--primary);
+	}
+}
+
+textarea {
+	resize: vertical;
+}
+
+.c-control {
+	margin-bottom: 36px;
+}
+
+.c-control__label {
+	display: block;
+	margin-bottom: 4px;
+}

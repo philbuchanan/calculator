@@ -28,16 +28,12 @@
 	align-items: center;
 	color: #fff;
 	background: #333;
-	font-size: 1.1rem;
 	font-weight: 300;
+	border-radius: 4px;
 	border: 1px solid #000;
-	width: 25%;
+	width: 100%;
 	min-height: 71px;
 	transition: color 0.2s ease, background-color 0.2s ease;
-
-	@media (-webkit-min-device-pixel-ratio: 2) {
-		border-width: 0.5px;
-	}
 
 	&:active {
 		color: #fff;
@@ -61,6 +57,10 @@
 			pointer-events: none;
 		}
 	}
+
+	svg {
+		margin-right: 8px;
+	}
 }
 
 .c-button--primary {
@@ -77,10 +77,7 @@
 	background-color: #262626;
 }
 
-.c-button--wide {
-	width: 50%;
-}
-
-.c-button--dangerous {
+.c-button--destructive {
 	color: var(--color--danger);
+	border-color: var(--color--danger);
 }

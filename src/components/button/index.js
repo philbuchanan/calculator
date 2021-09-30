@@ -6,7 +6,7 @@ import './index.scss';
 export default ({
 	isBare = false,
 	isActive,
-	isDangerous,
+	isDestructive,
 	isPrimary,
 	isSecondary,
 	isTertiary,
@@ -22,11 +22,10 @@ export default ({
 				'o-button-bare',
 				{
 					'c-button': !isBare,
-					'c-button--dangerous': !!isDangerous,
+					'c-button--destructive': !!isDestructive,
 					'c-button--primary': !!isPrimary,
 					'c-button--secondary': !!isSecondary,
 					'c-button--tertiary': !!isTertiary,
-					'c-button--wide': !!isWide,
 					'is-active': !!isActive,
 				},
 				className

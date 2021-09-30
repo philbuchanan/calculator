@@ -28,15 +28,12 @@ export default ({
 					aria-label="Close panel"
 					onClick={ onClosePanel }
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="48" height="45" viewBox="0 0 48 45">
-						<line x1="22" y1="17" x2="33" y2="28" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="1.5"/>
-						<line x1="22" y1="28" x2="33" y2="17" fill="none" stroke="#fff" strokeMiterlimit="10" strokeWidth="1.5"/>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentcolor">
+						<path fillRule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
 					</svg>
 				</Button>
 			</div>
-			<div className="c-panel__list-scroll">
-				{ children }
-			</div>
+			{ children }
 		</div>
 	);
 };

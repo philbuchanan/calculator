@@ -23,9 +23,9 @@
 	color: #fff;
 	background-color: var(--color--primary);
 	font-size: 0.85em;
-	font-weight: 700;
+	font-weight: 500;
 	height: 45px;
-	padding-left: 15px;
+	padding-left: 24px;
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
@@ -34,21 +34,14 @@
 	align-items: center;
 
 	svg {
-		margin-right: 6px;
+		margin-right: 8px;
 	}
 }
 
 .c-panel__close-button {
-	text-align: right;
-	width: 48px;
-	height: 45px;
-	padding-right: 15px;
-}
-
-.c-panel__list-scroll {
-	height: calc(100% - 45px);
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
+	height: 100%;
+	padding-left: 24px;
+	padding-right: 24px;
 }
 
 @media (min-height: 668px) {

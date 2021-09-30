@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Equation, Panel } from '../../components';
+import { Button, Equation, Panel, PanelBody } from '../../components';
 import { addCommas, classnames } from '../../utils';
 import './index.scss';
 
@@ -24,47 +24,49 @@ export default ({
 			onOpenPanel={ onOpenHistory }
 			onClosePanel={ onCloseHistory }
 		>
-			<ul className="c-history__list">
-				{ history.map((item, index) => {
-					return <li
-						key={ index }
-						className="c-history__list-item"
-					>
-						<Button
-							isBare={ true }
-							className="c-history__button"
-							onClick={ (value) => {
-								const equationString = equation.join();
-
-								switch(equationString[equationString.length - 1]) {
-									case undefined:
-									case '(':
-									case '+':
-									case '-':
-									case '*':
-									case '/':
-										dispatch({
-											type: 'add',
-											value: item.result.toString(),
-										});
-
-										onCloseHistory();
-
-										break;
-								}
-							} }
+			<PanelBody isPadded={ false }>
+				<ul className="c-history__list">
+					{ history.map((item, index) => {
+						return <li
+							key={ index }
+							className="c-history__list-item"
 						>
-								<span className="c-history__result">
-									{ addCommas(item.result) }
-								</span>
-								<Equation
-									className="c-history__equation"
-									equation={ item.equ }
-								/>
-						</Button>
-					</li>
-				}) }
-			</ul>
+							<Button
+								isBare={ true }
+								className="c-history__button"
+								onClick={ (value) => {
+									const equationString = equation.join();
+
+									switch(equationString[equationString.length - 1]) {
+										case undefined:
+										case '(':
+										case '+':
+										case '-':
+										case '*':
+										case '/':
+											dispatch({
+												type: 'add',
+												value: item.result.toString(),
+											});
+
+											onCloseHistory();
+
+											break;
+									}
+								} }
+							>
+									<span className="c-history__result">
+										{ addCommas(item.result) }
+									</span>
+									<Equation
+										className="c-history__equation"
+										equation={ item.equ }
+									/>
+							</Button>
+						</li>
+					}) }
+				</ul>
+			</PanelBody>
 		</Panel>
 	);
 };
