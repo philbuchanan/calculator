@@ -4,7 +4,7 @@
 
 ## Support
 
-The current version has been fully tested on iOS 9 running on iPhone 5s, iPhone 6 and iPhone 6+. It should *work* on iOS 7 and 8, but iOS 9 is highly recommended.
+The current version has been fully tested on iOS 15 running on iPhone 12.
 
 ## Features
 
@@ -12,16 +12,16 @@ The current version has been fully tested on iOS 9 running on iPhone 5s, iPhone 
 - brackets
 - invert individual numbers (+/-)
 - backspace
-- 50 item calculation history
+- calculation history
 - HTML5 app caching (so it'll work offline)
 
 ### History
 
-Every time you tap the equals button the result of the current equation is saved to the history list. The list can store up to 100 recent items.
+Every time you tap the equals button the result of the current equation is saved to the history list. The number of history items saved can be set in settings.
 
 Any history item can be used in the current equation by simply tapping on it in the history list.
 
-The history can be cleared by simply tapping and holding on the history close button for a few seconds.
+The history can be cleared in settings.
 
 ### HTML5 App Caching
 
@@ -35,4 +35,4 @@ I take privacy seriously. Absolutely no personal or identifiable information is 
 
 ## Questions / Suggestions / Bug Reports
 
-If you'd like to get in touch please find me on Twitter [@philbuchanan](https://twitter.com/philbuchanan).
+If you'd like to get in touch please find me on my website [philbuchanan.com](https://philbuchanan.com).
