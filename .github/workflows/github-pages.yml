@@ -6,11 +6,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm run build
-      - run: git subtree push --prefix build origin gh-pages
+      - name: Build calculator
+        run: npm install
+        run: npm run build
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+          if: ${{ github.ref == 'refs/heads/main' }}
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./build
