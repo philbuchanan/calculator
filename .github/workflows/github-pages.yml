@@ -11,7 +11,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+      - name: Install
         run: npm install
+      - name: Build
         run: npm run build
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
