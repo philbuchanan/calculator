@@ -41,7 +41,7 @@ module.exports = {
 					from: 'src/assets',
 					to: 'assets'
 				},
-				{ from: 'calculator.appcache' },
+				{ from: 'src/calculator.appcache' },
 			]
 		}),
 	],
