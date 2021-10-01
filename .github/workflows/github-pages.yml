@@ -1,13 +1,22 @@
 name: Deploy to GitHub Pages
 on:
   push:
-	branches:
-	  - master
+    branches:
+      - master
 jobs:
   deploy:
-	steps:
-	  - name: Deploy
-		uses: peaceiris/actions-gh-pages@v3.7.3
-		with:
-		  github_token: ${{ secrets.GITHUB_TOKEN }}
-		  publish_dir: ./build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
