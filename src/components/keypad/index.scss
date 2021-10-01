@@ -43,6 +43,7 @@
 	font-size: 1.1rem;
 	border-radius: 0;
 	width: 25%;
+	min-height: 71px;
 
 	&.c-button--destructive {
 		border-color: #000;
@@ -50,6 +51,10 @@
 
 	@media (-webkit-min-device-pixel-ratio: 2) {
 		border-width: 0.5px;
+	}
+
+	svg {
+		margin-right: 0;
 	}
 }
 
