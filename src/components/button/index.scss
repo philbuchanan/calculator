@@ -16,7 +16,7 @@
 	cursor: pointer;
 	transition: 0s;
 	box-shadow: none;
-	overflow: auto;
+	overflow: hidden;
 	-webkit-appearance: none;
 	   -moz-appearance: none;
 			appearance: none;
@@ -32,7 +32,7 @@
 	border-radius: 4px;
 	border: 1px solid #000;
 	width: 100%;
-	min-height: 71px;
+	padding: 12px;
 
 	&:active {
 		color: #fff;

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Panel, PanelBody, TextControl } from '../../components';
 import { classnames } from '../../utils';
+import './index.scss';
 
 export default ({
 	history,
@@ -24,7 +25,7 @@ export default ({
 			onOpenPanel={ onOpenSettings }
 			onClosePanel={ onCloseSettings }
 		>
-			<PanelBody>
+			<PanelBody className="c-settings__panel-body">
 				<TextControl
 					id="decimals"
 					type="number"
@@ -66,6 +67,7 @@ export default ({
 						Delete all history items
 					</Button>
 				) }
+				<p className="c-settings__version-number">Version 5.0.3</p>
 			</PanelBody>
 		</Panel>
 	);
