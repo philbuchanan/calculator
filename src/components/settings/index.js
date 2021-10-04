@@ -56,7 +56,7 @@ export default ({
 					<Button
 						isDestructive={ true }
 						onClick={ () => {
-							if (confirm('Are you sure you want to delete you entire calculation history? This action cannot be undone.')) {
+							if (confirm('Are you sure you want to delete your entire calculation history? This action cannot be undone.')) {
 								dispatchHistory({type: 'clear'});
 							}
 						} }
