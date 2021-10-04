@@ -107,11 +107,24 @@ export default ({
 		if (equation[lastIndex].length > 1) {
 			/**
 			 * If the current input item is longer than 1 character, it must
-			 * be a number. If this is a negative, single digit number
-			 * (e.g. `-6`), clear everything.
+			 * be a number.
 			 */
-			if (equation[0].length === 2 && /^-/.test(equation[0])) {
-				clear();
+			if (equation[lastIndex].length === 2 && /^-/.test(equation[lastIndex])) {
+				/**
+				 * If this is a negative, single digit number (e.g. `-6`),
+				 * remove the negative symbol as well.
+				 */
+				dispatch({
+					type: 'remove',
+					index: lastIndex,
+				});
+			}
+			else if (equation[lastIndex] === '0.') {
+				// If the current input item is '0.' remove the entire item
+				dispatch({
+					type: 'remove',
+					index: lastIndex,
+				});
 			}
 			else {
 				dispatch({
