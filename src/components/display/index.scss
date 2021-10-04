@@ -21,8 +21,8 @@
 .c-display__previous-wrapper,
 .c-display__result-wrapper,
 .c-display__equation-body {
-	padding-left: 12px;
-	padding-right: 12px;
+	padding-left: 20px;
+	padding-right: 24px;
 }
 
 .c-display__previous-wrapper {
@@ -47,6 +47,9 @@
 }
 
 .c-display__result-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	flex: 1 1 auto;
 	font-size: 3rem;
 	font-weight: var(--font--weight--light);
