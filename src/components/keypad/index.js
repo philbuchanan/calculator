@@ -1,364 +1,32 @@
-import React from 'react';
-import { useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 import { Button } from '../../components';
 import { useKeyPress } from '../../hooks';
-import { classnames, isValidNumber } from '../../utils';
+import { classnames } from '../../utils';
+
+import { default as DigitButton } from './digit';
+import { default as OperatorButton } from './operator';
 import './index.scss';
 
 export default ({
-	result,
-	computedResult,
-	equation,
+	state,
 	dispatch,
-	settings,
 	onShowHistory,
 	onShowSettings,
 }) => {
-	const lastIndex = equation.length > 0 ? equation.length - 1 : 0;
-
-	const [
-		last,
+	const {
 		activeOperator,
 		bracketsCount,
-	] = useMemo(() => {
-		let last = null;
-		let activeOperator = null;
-		let bracketsCount = 0;
+		settings,
+	} = state;
 
-		if (computedResult === undefined && equation.length > 0) {
-			const lastItem = equation[equation.length - 1];
-
-			if (lastItem.length > 1) {
-				last = lastItem[lastItem.length - 1] === '.'
-					? 'decimal' : 'digit';
-			}
-			else {
-				switch(lastItem) {
-					case '+':
-					case '-':
-					case '/':
-					case '*':
-						last = 'operator';
-						activeOperator = lastItem;
-						break;
-					case '0':
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-					case '9':
-						last = 'digit';
-						break;
-					case '(':
-						last = '(';
-						break;
-					case ')':
-						last = ')';
-						break;
-				}
-			}
-
-			equation.forEach((eqItem) => {
-				if (eqItem === '(') {
-					bracketsCount += 1;
-				}
-				else if (eqItem === ')') {
-					bracketsCount -= 1;
-				}
-			});
-		}
-
-		return [
-			last,
-			activeOperator,
-			bracketsCount,
-		];
-	}, [equation]);
-
-	const disableCompute = equation.length === 0 || result === null;
-	const disableBackspace = equation.length === 0;
-	const disableOperators = computedResult === undefined && (!last || last === 'decimal');
-	const disableDigits = last === ')';
-	const disableDecimal = last === ')' || last === 'decimal';
-	const disableOpenBracket = last === ')';
-	const disableCloseBracket = !last || last === 'operator' || last === 'decimal' || bracketsCount === 0;
-	const disableInvert = !last || last === 'operator' || last === '(' || last === ')';
-
-	const compute = () => {
-		if (disableCompute) {
-			return;
-		}
-
-		dispatch({type: 'compute'});
-	};
-
-	const clear = (result) => dispatch({type: 'clear'});
-
-	const backspace = () => {
-		if (disableBackspace) {
-			return;
-		}
-
-		if (equation[lastIndex].length > 1) {
-			/**
-			 * If the current input item is longer than 1 character, it must
-			 * be a number.
-			 */
-			if (equation[lastIndex].length === 2 && /^-/.test(equation[lastIndex])) {
-				/**
-				 * If this is a negative, single digit number (e.g. `-6`),
-				 * remove the negative symbol as well.
-				 */
-				dispatch({
-					type: 'remove',
-					index: lastIndex,
-				});
-			}
-			else if (equation[lastIndex] === '0.') {
-				// If the current input item is '0.' remove the entire item
-				dispatch({
-					type: 'remove',
-					index: lastIndex,
-				});
-			}
-			else {
-				dispatch({
-					type: 'replace',
-					index: lastIndex,
-					value: equation[lastIndex].substring(0, equation[lastIndex].length - 1),
-				});
-			}
-		}
-		else {
-			dispatch({
-				type: 'remove',
-				index: lastIndex,
-			});
-		}
-	};
-
-	const appendDigit = (digit) => {
-		if (disableDigits) {
-			return;
-		}
-
-		if (computedResult !== undefined) {
-			dispatch({
-				type: 'replace',
-				index: 0,
-				value: digit.toString(),
-			});
-
-			return;
-		}
-
-		switch(last) {
-			case null:
-			case 'operator':
-			case '(':
-				dispatch({
-					type: 'add',
-					value: digit.toString(),
-				});
-				break;
-			case 'digit':
-			case 'decimal':
-				const newNumber = equation[lastIndex] + digit;
-				/**
-				 * We explicitly check if the number is valid, otherwise a user
-				 * could add a double "0".
-				 */
-				if (isValidNumber(newNumber)) {
-					dispatch({
-						type: 'replace',
-						index: lastIndex,
-						value: newNumber,
-					});
-				}
-				break;
-		}
-	};
-
-	const appendDecimal = () => {
-		if (disableDecimal) {
-			return;
-		}
-
-		if (computedResult !== undefined) {
-			dispatch({
-				type: 'replace',
-				index: 0,
-				value: '0.',
-			});
-
-			return;
-		}
-
-		switch(last) {
-			case 'digit':
-				const newNumber = equation[lastIndex] + '.';
-				if (isValidNumber(newNumber)) {
-					dispatch({
-						type: 'replace',
-						index: lastIndex,
-						value: newNumber,
-					});
-				}
-				break;
-			case null:
-			case 'operator':
-			case '(':
-				dispatch({
-					type: 'add',
-					value: '0.',
-				});
-				break;
-		}
-	};
-
-	const appendOperator = (operator) => {
-		if (disableOperators) {
-			return;
-		}
-
-		if (computedResult !== undefined) {
-			dispatch({
-				type: 'add',
-				value: [
-					computedResult.toString(),
-					operator,
-				],
-			});
-		}
-		else {
-			switch(last) {
-				case 'operator':
-					dispatch({
-						type: 'replace',
-						index: equation.length - 1,
-						value: operator,
-					});
-					break;
-				case null:
-				case 'digit':
-				case ')':
-					dispatch({
-						type: 'add',
-						value: operator,
-					});
-					break;
-			}
-		}
-	};
-
-	const appendOpenBracket = () => {
-		if (disableOpenBracket) {
-			return;
-		}
-
-		if (computedResult !== undefined) {
-			dispatch({
-				type: 'replace',
-				index: 0,
-				value: '(',
-			});
-
-			return;
-		}
-
-		switch(last) {
-			case null:
-			case 'operator':
-			case '(':
-				dispatch({
-					type: 'add',
-					value: '(',
-				});
-				break;
-			case 'digit':
-			case 'decimal':
-				// Append the `(` to the beginning of the current number
-				dispatch({
-					type: 'insert',
-					index: lastIndex,
-					value: '(',
-				});
-				break;
-		}
-	};
-
-	const appendCloseBracket = () => {
-		if (disableCloseBracket) {
-			return;
-		}
-
-		switch(last) {
-			case 'digit':
-			case ')':
-				if (bracketsCount > 0) {
-					dispatch({
-						type: 'add',
-						value: ')',
-					});
-				}
-				break;
-			case '(':
-				backspace();
-				break;
-		}
-	};
-
-	const invertNumber = () => {
-		if (disableInvert) {
-			return;
-		}
-
-		// If the input is only a zero, don't let users invert a number
-		if (equation.length === 1 && equation[0] == '0') {
-			return;
-		}
-
-		// If the number is prefixed with `-`
-		if (/^-/.test(equation[lastIndex])) {
-			// Remove `-`
-			dispatch({
-				type: 'replace',
-				index: lastIndex,
-				value: equation[lastIndex].replace('-', ''),
-			});
-		}
-		else {
-			if (equation[lastIndex - 1] === '-') {
-				// Switch previous operator to `+`
-				dispatch({
-					type: 'replace',
-					index: lastIndex - 1,
-					value: '+',
-				});
-			}
-			else if (equation[lastIndex - 1] === '+') {
-				// Switch previous operator to `-`
-				dispatch({
-					type: 'replace',
-					index: lastIndex - 1,
-					value: '-',
-				});
-			}
-			else {
-				// Add `-` prefix to number
-				dispatch({
-					type: 'replace',
-					index: lastIndex,
-					value: '-' + equation[lastIndex],
-				});
-			}
-		}
-	};
+	const clear = useCallback(() => dispatch({type: 'clear'}), []);
+	const backspace = useCallback(() => dispatch({type: 'backspace'}), []);
+	const compute = useCallback(() => dispatch({type: 'compute'}), []);
+	const appendOpenBracket = useCallback(() => dispatch({type: 'appendOpenBracket'}), []);
+	const appendCloseBracket = useCallback(() => dispatch({type: 'appendCloseBracket'}), []);
+	const appendDecimal = useCallback(() => dispatch({type: 'appendDecimal'}), []);
+	const invertNumber = useCallback(() => dispatch({type: 'invertNumber'}), []);
 
 	useKeyPress('Escape', clear);
 	useKeyPress('c', clear);
@@ -369,20 +37,6 @@ export default ({
 	useKeyPress('.', appendDecimal);
 	useKeyPress('(', appendOpenBracket);
 	useKeyPress(')', appendCloseBracket);
-	useKeyPress('1', () => appendDigit(1));
-	useKeyPress('2', () => appendDigit(2));
-	useKeyPress('3', () => appendDigit(3));
-	useKeyPress('4', () => appendDigit(4));
-	useKeyPress('5', () => appendDigit(5));
-	useKeyPress('6', () => appendDigit(6));
-	useKeyPress('7', () => appendDigit(7));
-	useKeyPress('8', () => appendDigit(8));
-	useKeyPress('9', () => appendDigit(9));
-	useKeyPress('0', () => appendDigit(0));
-	useKeyPress('+', () => appendOperator('+'));
-	useKeyPress('-', () => appendOperator('-'));
-	useKeyPress('/', () => appendOperator('/'));
-	useKeyPress('*', () => appendOperator('*'));
 
 	return (
 		<div className="c-keypad">
@@ -466,98 +120,66 @@ export default ({
 					</div>
 				) }
 			</div>
-			<Button
-				className="c-keypad__button"
-				isPrimary={ true }
-				isActive={ activeOperator === '/' }
-				onClick={ () => appendOperator('/') }
-			>
-				÷
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(7) }
-			>
-				7
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(8) }
-			>
-				8
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(9) }
-			>
-				9
-			</Button>
-			<Button
-				className="c-keypad__button"
-				isPrimary={ true }
-				isActive={ activeOperator === '*' }
-				onClick={ () => appendOperator('*') }
-			>
-				×
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(4) }
-			>
-				4
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(5) }
-			>
-				5
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(6) }
-			>
-				6
-			</Button>
-			<Button
-				className="c-keypad__button"
-				isPrimary={ true }
-				onClick={ () => appendOperator('-') }
-				isActive={ activeOperator === '-' }
-			>
-				−
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(1) }
-			>
-				1
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(2) }
-			>
-				2
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(3) }
-			>
-				3
-			</Button>
-			<Button
-				className="c-keypad__button"
-				isPrimary={ true }
-				onClick={ () => appendOperator('+') }
-				isActive={ activeOperator === '+' }
-			>
-				+
-			</Button>
-			<Button
-				className="c-keypad__button"
-				onClick={ () => appendDigit(0) }
-			>
-				0
-			</Button>
+			<OperatorButton
+				value="/"
+				activeOperator={ activeOperator }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 7 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 8 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 9 }
+				dispatch={ dispatch }
+			/>
+			<OperatorButton
+				value="*"
+				activeOperator={ activeOperator }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 4 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 5 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 6 }
+				dispatch={ dispatch }
+			/>
+			<OperatorButton
+				value="-"
+				activeOperator={ activeOperator }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 1 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 2 }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 3 }
+				dispatch={ dispatch }
+			/>
+			<OperatorButton
+				value="+"
+				activeOperator={ activeOperator }
+				dispatch={ dispatch }
+			/>
+			<DigitButton
+				value={ 0 }
+				dispatch={ dispatch }
+			/>
 			<Button
 				className="c-keypad__button"
 				onClick={appendDecimal }

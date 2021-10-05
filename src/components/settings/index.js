@@ -5,10 +5,8 @@ import { classnames } from '../../utils';
 import './index.scss';
 
 export default ({
-	history,
-	settings,
-	dispatchSettings,
-	dispatchHistory,
+	state,
+	dispatch,
 	onOpenSettings,
 	onCloseSettings,
 	isOpen = false,
@@ -30,9 +28,9 @@ export default ({
 					id="decimals"
 					type="number"
 					label="Number of decimals to round values to"
-					value={ settings.decimals }
-					onChange={ (value) => dispatchSettings({
-						type: 'update',
+					value={ state.settings.decimals }
+					onChange={ (value) => dispatch({
+						type: 'updateSetting',
 						setting: 'decimals',
 						value: parseInt(value, 10),
 					}) }
@@ -43,21 +41,21 @@ export default ({
 					id="historySaveItems"
 					type="number"
 					label="Number of history items to save"
-					value={ settings.historySaveItems }
-					onChange={ (value) => dispatchSettings({
-						type: 'update',
+					value={ state.settings.historySaveItems }
+					onChange={ (value) => dispatch({
+						type: 'updateSetting',
 						setting: 'historySaveItems',
 						value: parseInt(value, 10),
 					}) }
 					min={ 0 }
 					max={ 100 }
 				/>
-				{ history.length > 0 && (
+				{ state.history.length > 0 && (
 					<Button
 						isDestructive={ true }
 						onClick={ () => {
 							if (confirm('Are you sure you want to delete your entire calculation history? This action cannot be undone.')) {
-								dispatchHistory({type: 'clear'});
+								dispatch({type: 'clearHistory'});
 							}
 						} }
 					>
@@ -67,7 +65,7 @@ export default ({
 						Delete all history items
 					</Button>
 				) }
-				<p className="c-settings__version-number">Version 5.0.6</p>
+				<p className="c-settings__version-number">Version 5.1.0</p>
 			</PanelBody>
 		</Panel>
 	);
