@@ -5,13 +5,16 @@ import { addCommas, classnames } from '../../utils';
 import './index.scss';
 
 export default ({
-	history,
-	equation,
+	state,
 	dispatch,
 	onOpenHistory,
 	onCloseHistory,
 	isOpen = false,
 }) => {
+	const {
+		history,
+	} = state;
+
 	return (
 		<Panel
 			icon={
@@ -34,34 +37,21 @@ export default ({
 							<Button
 								isBare={ true }
 								className="c-history__button"
-								onClick={ (value) => {
-									const equationString = equation.join();
-
-									switch(equationString[equationString.length - 1]) {
-										case undefined:
-										case '(':
-										case '+':
-										case '-':
-										case '*':
-										case '/':
-											dispatch({
-												type: 'add',
-												value: item.result.toString(),
-											});
-
-											onCloseHistory();
-
-											break;
-									}
+								onClick={ () => {
+									onCloseHistory();
+									dispatch({
+										type: 'appendDigit',
+										value: item.result,
+									});
 								} }
 							>
-									<span className="c-history__result">
-										{ addCommas(item.result) }
-									</span>
-									<Equation
-										className="c-history__equation"
-										equation={ item.equ }
-									/>
+								<span className="c-history__result">
+									{ addCommas(item.result) }
+								</span>
+								<Equation
+									className="c-history__equation"
+									equation={ item.eq }
+								/>
 							</Button>
 						</li>
 					}) }

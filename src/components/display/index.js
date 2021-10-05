@@ -1,8 +1,8 @@
 import React from 'react';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import { Equation } from '../../components';
-import { addCommas, classnames } from '../../utils';
+import { addCommas } from '../../utils';
 import './index.scss';
 
 const operators = {
