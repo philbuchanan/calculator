@@ -430,7 +430,6 @@ export default ({
 				className="c-keypad__button"
 				isTertiary={ true }
 				onClick={ backspace }
-				disabled={ disableBackspace }
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentcolor">
 					<path fillRule="evenodd" d="M10.78 19.03a.75.75 0 01-1.06 0l-6.25-6.25a.75.75 0 010-1.06l6.25-6.25a.75.75 0 111.06 1.06L5.81 11.5h14.44a.75.75 0 010 1.5H5.81l4.97 4.97a.75.75 0 010 1.06z"></path>
@@ -440,7 +439,6 @@ export default ({
 				className="c-keypad__button"
 				isSecondary={ true }
 				onClick={ invertNumber }
-				disabled={ disableInvert }
 			>
 				+/−
 			</Button>
@@ -449,7 +447,6 @@ export default ({
 					className="c-keypad__button"
 					isSecondary={ true }
 					onClick={ appendOpenBracket }
-					disabled={ disableOpenBracket }
 					style={ {width: bracketsCount === 0 ? '100%' : null} }
 				>
 					{ '(' }
@@ -459,7 +456,6 @@ export default ({
 						className="c-keypad__button"
 						isSecondary={ true }
 						onClick={ appendCloseBracket }
-						disabled={ disableCloseBracket }
 					>
 						{ ')' }
 					</Button>
@@ -475,28 +471,24 @@ export default ({
 				isPrimary={ true }
 				isActive={ activeOperator === '/' }
 				onClick={ () => appendOperator('/') }
-				disabled={ disableOperators || activeOperator === '/' }
 			>
 				÷
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(7) }
-				disabled={ disableDigits }
 			>
 				7
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(8) }
-				disabled={ disableDigits }
 			>
 				8
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(9) }
-				disabled={ disableDigits }
 			>
 				9
 			</Button>
@@ -505,28 +497,24 @@ export default ({
 				isPrimary={ true }
 				isActive={ activeOperator === '*' }
 				onClick={ () => appendOperator('*') }
-				disabled={ disableOperators || activeOperator === '*' }
 			>
 				×
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(4) }
-				disabled={ disableDigits }
 			>
 				4
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(5) }
-				disabled={ disableDigits }
 			>
 				5
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(6) }
-				disabled={ disableDigits }
 			>
 				6
 			</Button>
@@ -535,28 +523,24 @@ export default ({
 				isPrimary={ true }
 				onClick={ () => appendOperator('-') }
 				isActive={ activeOperator === '-' }
-				disabled={ disableOperators || activeOperator === '-' }
 			>
 				−
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(1) }
-				disabled={ disableDigits }
 			>
 				1
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(2) }
-				disabled={ disableDigits }
 			>
 				2
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(3) }
-				disabled={ disableDigits }
 			>
 				3
 			</Button>
@@ -565,21 +549,18 @@ export default ({
 				isPrimary={ true }
 				onClick={ () => appendOperator('+') }
 				isActive={ activeOperator === '+' }
-				disabled={ disableOperators || activeOperator === '+' }
 			>
 				+
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={ () => appendDigit(0) }
-				disabled={ disableDigits }
 			>
 				0
 			</Button>
 			<Button
 				className="c-keypad__button"
 				onClick={appendDecimal }
-				disabled={ disableDecimal }
 			>
 				.
 			</Button>
@@ -587,7 +568,6 @@ export default ({
 				className="c-keypad__button c-keypad__button--half"
 				isPrimary={ true }
 				onClick={ compute }
-				disabled={ disableCompute }
 			>
 				=
 			</Button>
