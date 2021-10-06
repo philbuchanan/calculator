@@ -76,7 +76,7 @@ export default ({
 			{ history.length > 0 && (
 				<div className="c-display__previous-wrapper">
 					<Button
-						className="c-display__previous-body"
+						className="c-display__previous-button"
 						isBare={ true }
 						onClick={ () => dispatch({
 							type: 'appendHistoryItem',

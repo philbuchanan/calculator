@@ -27,7 +27,6 @@
 	align-items: center;
 	color: #fff;
 	background: #333;
-	font-weight: 300;
 	border-radius: 4px;
 	border: 1px solid #000;
 	width: 100%;
@@ -53,7 +52,7 @@
 
 .c-button--primary {
 	color: var(--color--primary);
-	font-weight: 600;
+	font-weight: var(--font--weight--bold);
 }
 
 .c-button--secondary {

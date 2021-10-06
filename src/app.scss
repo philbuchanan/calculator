@@ -1,6 +1,9 @@
 :root {
 	--color--primary: #099d93;
 	--color--danger: #ff0f0f;
+	--font--weight--light: 200;
+	--font--weight--normal: 300;
+	--font--weight--bold: 600;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -58,7 +61,7 @@ html {
 	background-color: #000;
 	font-family: -apple-system, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 20px;
-	font-weight: 200;
+	font-weight: var(--font--weight--normal);
 	line-height: 1.2;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;

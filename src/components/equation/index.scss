@@ -2,7 +2,7 @@
 .c-equation__part--right-bracket,
 .c-equation__part--operator {
 	color: #999;
-	font-weight: 100;
+	font-weight: var(--font--weight--light);
 	margin: 0 0.2em;
 }
 
