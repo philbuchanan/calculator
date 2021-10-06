@@ -47,16 +47,14 @@ const App = () => {
 			<History
 				state={ state }
 				dispatch={ dispatch }
-				isOpen={ !!historyOpen }
-				onOpenHistory={ () => setHistoryOpen(true) }
-				onCloseHistory={ () => setHistoryOpen(false) }
+				isOpen={ historyOpen }
+				onClose={ () => setHistoryOpen(false) }
 			/>
 			<Settings
 				state={ state }
 				dispatch={ dispatch }
-				isOpen={ !!settingsOpen }
-				onOpenSettings={ () => setSettingsOpen(true) }
-				onCloseSettings={ () => setSettingsOpen(false) }
+				isOpen={ settingsOpen }
+				onClose={ () => setSettingsOpen(false) }
 			/>
 			<div className="c-spacer"></div>
 		</div>
