@@ -34,13 +34,12 @@
 	height: 44px;
 }
 
-.c-display__previous-body {
+.c-display__previous-button {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	color: #999;
+	color: #767676;
 	font-size: 0.8rem;
-	font-weight: 300;
 
 	svg {
 		margin-right: 8px;
@@ -49,8 +48,8 @@
 
 .c-display__result-wrapper {
 	flex: 1 1 auto;
-	font-size: 60px;
-	font-weight: 200;
+	font-size: 3rem;
+	font-weight: var(--font--weight--light);
 
 	> div {
 		width: 100%;
