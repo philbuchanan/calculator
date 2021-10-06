@@ -38,8 +38,8 @@ export default ({
 								onClick={ () => {
 									onClose();
 									dispatch({
-										type: 'appendDigit',
-										value: item.result,
+										type: 'appendHistoryItem',
+										value: item.result.toString(),
 									});
 								} }
 							>
