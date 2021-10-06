@@ -1,5 +1,4 @@
-import React from 'react';
-import { useMemo, useReducer, useState } from 'react';
+import React, { useMemo, useReducer, useState } from 'react';
 
 import { Display, Keypad, History, Settings } from './components';
 import { useDebounceEffect, useLocalStorage } from './hooks';
@@ -34,9 +33,9 @@ const App = () => {
 	return (
 		<div className="c-application">
 			<Display
+				state={ state }
+				dispatch={ dispatch }
 				result={ result }
-				computedResult={ state.computedResult }
-				equation={ state.eq }
 			/>
 			<Keypad
 				state={ state }

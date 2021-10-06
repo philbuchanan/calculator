@@ -39,7 +39,7 @@ export default ({
 									onClose();
 									dispatch({
 										type: 'appendHistoryItem',
-										value: item.result.toString(),
+										value: item.result,
 									});
 								} }
 							>

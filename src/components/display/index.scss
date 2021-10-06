@@ -18,10 +18,33 @@
 	justify-content: right;
 }
 
+.c-display__previous-wrapper,
 .c-display__result-wrapper,
 .c-display__equation-body {
 	padding-left: 12px;
 	padding-right: 12px;
+}
+
+.c-display__previous-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	border-bottom: 1px solid #d9d9d9;
+	width: 100%;
+	height: 44px;
+}
+
+.c-display__previous-body {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	color: #999;
+	font-size: 0.8rem;
+	font-weight: 300;
+
+	svg {
+		margin-right: 8px;
+	}
 }
 
 .c-display__result-wrapper {
