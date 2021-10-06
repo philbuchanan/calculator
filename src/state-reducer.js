@@ -141,6 +141,18 @@ function stateReducer(state, action) {
 		return recalculateState(newState);
 	};
 
+	const getIndexOfLast = (item) => {
+		const eq = [ ...state.eq ].reverse();
+
+		for (let i = 0; i < eq.length; i += 1) {
+			if (eq[i].indexOf(item) !== -1) {
+				return eq.length - 1 - i;
+			}
+		}
+
+		return undefined;
+	};
+
 	// If there is a preexisting computed value
 	if (computedResult !== undefined) {
 		switch(action.type) {
@@ -333,16 +345,28 @@ function stateReducer(state, action) {
 	}
 	else if (action.type === 'invertNumber') {
 		if (
-			computedResult === undefined
-			&& (
-				!last
-				|| last === 'operator'
-				|| last === '('
-				|| last === ')'
-				|| (eq.length === 1 && eq[0] == '0')
-			)
+			!last
+			|| last === 'operator'
+			|| last === '('
+			|| (eq.length === 1 && eq[0] == '0')
 		) {
 			return state;
+		}
+		else if (last === ')') {
+			const lastOpenBracketIndex = getIndexOfLast('(');
+
+			if (lastOpenBracketIndex === undefined) {
+				return state;
+			}
+
+			const lastOpenBracket = state.eq[lastOpenBracketIndex];
+
+			return {
+				...replace(
+					lastOpenBracketIndex,
+					lastOpenBracket === '(' ? '-(' : '('
+				)
+			};
 		}
 
 		return replace(lastIndex, invertNumber(eq[lastIndex]).toString());

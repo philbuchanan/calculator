@@ -27,7 +27,7 @@ export default ({
 							'c-equation__part',
 							{
 								'c-equation__part--operator': operators.hasOwnProperty(part),
-								'c-equation__part--left-bracket': part === '(',
+								'c-equation__part--left-bracket': part === '(' || part === '-(',
 								'c-equation__part--right-bracket': part === ')',
 							}
 						) }
