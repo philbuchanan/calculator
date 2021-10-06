@@ -63,7 +63,7 @@ export default ({
 						Delete all history items
 					</Button>
 				) }
-				<p className="c-settings__version-number">Version 5.1.0</p>
+				<p className="c-settings__version-number">Version 5.2.0</p>
 			</PanelBody>
 		</Panel>
 	);
