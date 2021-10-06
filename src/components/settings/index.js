@@ -7,9 +7,8 @@ import './index.scss';
 export default ({
 	state,
 	dispatch,
-	onOpenSettings,
-	onCloseSettings,
-	isOpen = false,
+	isOpen,
+	onClose,
 }) => {
 	return (
 		<Panel
@@ -20,8 +19,7 @@ export default ({
 			}
 			title="Settings"
 			isOpen={ isOpen }
-			onOpenPanel={ onOpenSettings }
-			onClosePanel={ onCloseSettings }
+			onClose={ onClose }
 		>
 			<PanelBody className="c-settings__panel-body">
 				<TextControl
@@ -65,7 +63,7 @@ export default ({
 						Delete all history items
 					</Button>
 				) }
-				<p className="c-settings__version-number">Version 5.1.0</p>
+				<p className="c-settings__version-number">Version 5.2.0</p>
 			</PanelBody>
 		</Panel>
 	);

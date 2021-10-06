@@ -7,9 +7,8 @@ import './index.scss';
 export default ({
 	state,
 	dispatch,
-	onOpenHistory,
-	onCloseHistory,
-	isOpen = false,
+	isOpen,
+	onClose,
 }) => {
 	const {
 		history,
@@ -24,8 +23,7 @@ export default ({
 			}
 			title="History"
 			isOpen={ isOpen }
-			onOpenPanel={ onOpenHistory }
-			onClosePanel={ onCloseHistory }
+			onClose={ onClose }
 		>
 			<PanelBody isPadded={ false }>
 				<ul className="c-history__list">
@@ -38,10 +36,10 @@ export default ({
 								isBare={ true }
 								className="c-history__button"
 								onClick={ () => {
-									onCloseHistory();
+									onClose();
 									dispatch({
-										type: 'appendDigit',
-										value: item.result,
+										type: 'appendHistoryItem',
+										value: item.result.toString(),
 									});
 								} }
 							>
