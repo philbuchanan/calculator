@@ -377,7 +377,7 @@ function stateReducer(state, action) {
 			case 'operator':
 			case '(':
 				return {
-					...add(action.value),
+					...add(action.value.toString()),
 					last: 'history',
 					activeOperator: null,
 					computedResult: undefined,
