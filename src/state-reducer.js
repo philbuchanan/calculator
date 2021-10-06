@@ -173,10 +173,6 @@ function stateReducer(state, action) {
 	}
 
 	if (action.type === 'appendDigit') {
-		if (last === ')') {
-			return state;
-		}
-
 		switch(last) {
 			case null:
 			case 'operator':
@@ -204,11 +200,7 @@ function stateReducer(state, action) {
 		}
 	}
 	else if (action.type === 'appendOperator') {
-		if (
-			!last
-			|| last === 'decimal'
-			|| activeOperator === action.value
-		) {
+		if (activeOperator === action.value) {
 			return state;
 		}
 
@@ -219,9 +211,9 @@ function stateReducer(state, action) {
 					last: 'operator',
 					activeOperator: action.value,
 				};
-			case null:
 			case 'digit':
 			case ')':
+			case 'history':
 				return {
 					...add(action.value),
 					last: 'operator',
@@ -231,10 +223,6 @@ function stateReducer(state, action) {
 		}
 	}
 	else if (action.type === 'appendOpenBracket') {
-		if (last === ')') {
-			return state;
-		}
-
 		switch(last) {
 			case null:
 			case 'operator':
@@ -248,6 +236,7 @@ function stateReducer(state, action) {
 				};
 			case 'digit':
 			case 'decimal':
+			case 'history':
 				// Append the `(` to the beginning of the current number
 				return {
 					...insert(lastIndex, '('),
@@ -256,13 +245,14 @@ function stateReducer(state, action) {
 		}
 	}
 	else if (action.type === 'appendCloseBracket') {
-		if (!last || last === 'operator' || last === 'decimal' || bracketsCount === 0) {
+		if (bracketsCount === 0) {
 			return state;
 		}
 
 		switch(last) {
 			case 'digit':
 			case ')':
+			case 'history':
 				return {
 					...add(')'),
 					last: ')',
@@ -276,10 +266,6 @@ function stateReducer(state, action) {
 		return backspace();
 	}
 	else if (action.type === 'appendDecimal') {
-		if (last === ')' || last === 'decimal') {
-			return state;
-		}
-
 		switch(last) {
 			case 'digit':
 				const newNumber = eq[lastIndex] + '.';
@@ -359,16 +345,20 @@ function stateReducer(state, action) {
 			return state;
 		}
 
-		if (computedResult !== undefined) {
-			return {
-				...state,
-				eq: [invertNumber(computedResult).toString()],
-				last: 'digit',
-				computedResult: undefined,
-			};
-		}
-
 		return replace(lastIndex, invertNumber(eq[lastIndex]).toString());
+	}
+	else if (action.type === 'appendHistoryItem') {
+		switch (last) {
+			case null:
+			case 'operator':
+			case '(':
+				return {
+					...add(action.value),
+					last: 'history',
+					activeOperator: null,
+					computedResult: undefined,
+				};
+		}
 	}
 	else if (action.type === 'clearHistory') {
 		return {
