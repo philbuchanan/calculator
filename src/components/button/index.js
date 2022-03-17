@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useKeyPress } from '../../hooks';
 import { classnames } from '../../utils';
 import './index.scss';
 
@@ -12,10 +13,17 @@ export default ({
 	isTertiary,
 	isWide,
 	onClick,
+	keyboardShortcut,
 	className,
 	children,
 	...props
 }) => {
+	if (keyboardShortcut) {
+		(Array.isArray(keyboardShortcut) ? keyboardShortcut : [keyboardShortcut]).forEach(shortcut => (
+			useKeyPress(shortcut, onClick)
+		));
+	}
+
 	return (
 		<button
 			className={ classnames(
