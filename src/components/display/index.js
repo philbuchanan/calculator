@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
-import { Button, Equation } from '../../components';
-import { addCommas } from '../../utils';
+import { Button, CopyToClipboardButton, Equation } from '../../components';
+import { addCommas, classnames } from '../../utils';
 import './index.scss';
 
 const operators = {
@@ -91,6 +91,11 @@ export default ({
 				</div>
 			) }
 			<div className="c-display__result-wrapper">
+				{ computedResult !== undefined && (
+					<CopyToClipboardButton
+						value={ resultDisplay }
+					/>
+				) }
 				<div className="c-display__result-body" style={ {fontSize: resultFontSize + 'px'} }>
 					{ addCommas(resultDisplay) }
 				</div>

@@ -1,5 +1,6 @@
 export { default as BaseControl } from './base-control';
 export { default as Button } from './button';
+export { default as CopyToClipboardButton } from './copy-to-clipboard-button';
 export { default as Display } from './display';
 export { default as Equation } from './equation';
 export { default as History } from './history';
