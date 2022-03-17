@@ -30,7 +30,7 @@ export default ({
 				},
 				className
 			) }
-			onTouchStart={ onClick }
+			onClick={ onClick }
 			{ ...props }
 		>
 			{ children }
