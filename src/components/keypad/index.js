@@ -11,8 +11,8 @@ import './index.scss';
 export default ({
 	state,
 	dispatch,
-	onShowHistory,
-	onShowSettings,
+	onToggleHistory,
+	onToggleSettings,
 }) => {
 	const {
 		activeOperator,
@@ -30,7 +30,8 @@ export default ({
 
 	useKeyPress('Escape', clear);
 	useKeyPress('c', clear);
-	useKeyPress('h', onShowHistory);
+	useKeyPress('h', onToggleHistory);
+	useKeyPress('s', onToggleSettings);
 	useKeyPress('Backspace', backspace);
 	useKeyPress('Enter', compute);
 	useKeyPress('=', compute);
@@ -56,7 +57,7 @@ export default ({
 				<Button
 					className="c-keypad__button"
 					isTertiary={ true }
-					onClick={ onShowHistory }
+					onClick={ onToggleHistory }
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentcolor">
 						<path d="M11.998 2.5A9.503 9.503 0 003.378 8H5.75a.75.75 0 010 1.5H2a1 1 0 01-1-1V4.75a.75.75 0 011.5 0v1.697A10.997 10.997 0 0111.998 1C18.074 1 23 5.925 23 12s-4.926 11-11.002 11C6.014 23 1.146 18.223 1 12.275a.75.75 0 011.5-.037 9.5 9.5 0 009.498 9.262c5.248 0 9.502-4.253 9.502-9.5s-4.254-9.5-9.502-9.5z"></path>
@@ -67,7 +68,7 @@ export default ({
 			<Button
 				className="c-keypad__button"
 				isTertiary={ true }
-				onClick={ onShowSettings }
+				onClick={ onToggleSettings }
 				className={ classnames(
 					'c-keypad__button',
 					{
