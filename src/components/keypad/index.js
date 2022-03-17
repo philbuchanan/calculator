@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 
 import { Button } from '../../components';
-import { useKeyPress } from '../../hooks';
 import { classnames } from '../../utils';
 
 import { default as DigitButton } from './digit';
@@ -28,17 +27,6 @@ export default ({
 	const appendDecimal = useCallback(() => dispatch({type: 'appendDecimal'}), []);
 	const invertNumber = useCallback(() => dispatch({type: 'invertNumber'}), []);
 
-	useKeyPress('Escape', clear);
-	useKeyPress('c', clear);
-	useKeyPress('h', onToggleHistory);
-	useKeyPress('s', onToggleSettings);
-	useKeyPress('Backspace', backspace);
-	useKeyPress('Enter', compute);
-	useKeyPress('=', compute);
-	useKeyPress('.', appendDecimal);
-	useKeyPress('(', appendOpenBracket);
-	useKeyPress(')', appendCloseBracket);
-
 	return (
 		<div className="c-keypad">
 			<Button
@@ -46,6 +34,10 @@ export default ({
 				isDestructive={ true }
 				isTertiary={ true }
 				onClick={ clear }
+				keyboardShortcut={ [
+					'Escape',
+					'c',
+				] }
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentcolor">
 					<path fillRule="evenodd" d="M16 1.75V3h5.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H8V1.75C8 .784 8.784 0 9.75 0h4.5C15.216 0 16 .784 16 1.75zm-6.5 0a.25.25 0 01.25-.25h4.5a.25.25 0 01.25.25V3h-5V1.75z"></path>
@@ -58,6 +50,7 @@ export default ({
 					className="c-keypad__button"
 					isTertiary={ true }
 					onClick={ onToggleHistory }
+					keyboardShortcut="h"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentcolor">
 						<path d="M11.998 2.5A9.503 9.503 0 003.378 8H5.75a.75.75 0 010 1.5H2a1 1 0 01-1-1V4.75a.75.75 0 011.5 0v1.697A10.997 10.997 0 0111.998 1C18.074 1 23 5.925 23 12s-4.926 11-11.002 11C6.014 23 1.146 18.223 1 12.275a.75.75 0 011.5-.037 9.5 9.5 0 009.498 9.262c5.248 0 9.502-4.253 9.502-9.5s-4.254-9.5-9.502-9.5z"></path>
@@ -69,6 +62,7 @@ export default ({
 				className="c-keypad__button"
 				isTertiary={ true }
 				onClick={ onToggleSettings }
+				keyboardShortcut="s"
 				className={ classnames(
 					'c-keypad__button',
 					{
@@ -85,6 +79,7 @@ export default ({
 				className="c-keypad__button"
 				isTertiary={ true }
 				onClick={ backspace }
+				keyboardShortcut="Backspace"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentcolor">
 					<path fillRule="evenodd" d="M10.78 19.03a.75.75 0 01-1.06 0l-6.25-6.25a.75.75 0 010-1.06l6.25-6.25a.75.75 0 111.06 1.06L5.81 11.5h14.44a.75.75 0 010 1.5H5.81l4.97 4.97a.75.75 0 010 1.06z"></path>
@@ -103,6 +98,7 @@ export default ({
 					isSecondary={ true }
 					onClick={ appendOpenBracket }
 					style={ {width: bracketsCount === 0 ? '100%' : null} }
+					keyboardShortcut="("
 				>
 					{ '(' }
 				</Button>
@@ -111,6 +107,7 @@ export default ({
 						className="c-keypad__button"
 						isSecondary={ true }
 						onClick={ appendCloseBracket }
+						keyboardShortcut=")"
 					>
 						{ ')' }
 					</Button>
@@ -184,6 +181,7 @@ export default ({
 			<Button
 				className="c-keypad__button"
 				onClick={appendDecimal }
+				keyboardShortcut="."
 			>
 				.
 			</Button>
@@ -191,6 +189,10 @@ export default ({
 				className="c-keypad__button c-keypad__button--half"
 				isPrimary={ true }
 				onClick={ compute }
+				keyboardShortcut={ [
+					'=',
+					'Enter',
+				] }
 			>
 				=
 			</Button>

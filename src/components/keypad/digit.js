@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 
 import { Button } from '../../components';
-import { useKeyPress } from '../../hooks';
 
 export default ({
 	value,
@@ -12,12 +11,11 @@ export default ({
 		value: value.toString(),
 	}), [value]);
 
-	useKeyPress(value.toString(), handleOnClick);
-
 	return (
 		<Button
 			className="c-keypad__button"
 			onClick={ handleOnClick }
+			keyboardShortcut={ value.toString() }
 		>
 			{ value }
 		</Button>

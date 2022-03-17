@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 
 import { Button } from '../../components';
-import { useKeyPress } from '../../hooks';
 
 const operators = {
 	'*': '×',
@@ -20,14 +19,13 @@ export default ({
 		value: value,
 	}), [value]);
 
-	useKeyPress(value, handleOnClick);
-
 	return (
 		<Button
 			className="c-keypad__button"
 			isPrimary={ true }
 			isActive={ activeOperator === value }
 			onClick={ handleOnClick }
+			keyboardShortcut={ value }
 		>
 			{ operators[value] }
 		</Button>
