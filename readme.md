@@ -13,7 +13,7 @@ The current version has been fully tested on iOS 15 running on iPhone 12.
 - invert individual numbers (+/-)
 - backspace
 - calculation history
-- HTML5 app caching (so it'll work offline)
+- service workers (so it'll work offline)
 
 ### History
 
@@ -23,7 +23,7 @@ Any history item can be used in the current equation by simply tapping on it in 
 
 The history can be cleared in settings.
 
-### HTML5 App Caching
+### Service Workers
 
 The app will function completely without any sort of internet connection. The entire app state is saved between app runs as well.
 
